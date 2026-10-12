@@ -1,0 +1,22 @@
+---
+import { sections } from '../data/site';
+interface Props { sec: string }
+const { sec } = Astro.props;
+---
+<dialog class="fan" id="fan" aria-label="Sections">
+  <ul class="fan-list">
+    {sections.map(s => (
+      <li class:list={{ current: s.n === sec }}>
+        <a href={s.href} data-sec={s.n} class={`tone-${s.tone}`} aria-current={s.n === sec ? 'page' : undefined}>
+          <span class="fan-label">
+            <span class="fan-n">{s.n}</span>
+            <span class="fan-t">{s.title}<small>{s.sub}</small><span class="lap"><span class="sr">visited</span></span></span>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <button class="fan-close" type="button" id="fanClose" aria-label="Close the section menu">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
+  </button>
+</dialog>

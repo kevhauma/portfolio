@@ -61,6 +61,9 @@ Success: a recruiter gets the essentials within seconds (or via recruiter mode),
 - Experience is a **race timing screen** (the metro-map fallback is dropped).
 - The map is **not** the main navigation; navigation is its own shared component.
 - WLED is a **simulated** LED strip; no live control of the real strip and no webcam.
+- The landing (intro) page uses the **Decal Sheet** structure: name, number, essentials and stack as die-cut decals on a backing sheet.
+- **One page per section, not one long scroll.** Each of the six sections is its own page, with a short loading transition (well under a second) on every switch; the longer arrival plays once per visit. Reduced motion makes it instant. Recruiter mode stays one plain page.
+- **Navy + orange is rejected**: it reads as Max Verstappen. The palette must be Kevin's own and stay clear of current F1 and MotoGP team liveries. The new palette is **inspired by the Castrol livery** (Castrol red, green and white) adapted with a navy, without any Castrol logo or wordmark. Navy carries the big panels, Castrol red is the signal, Castrol green is the second stripe. Exact values live in `docs/design-direction.md`.
 
 **Open product decisions**
 - Deploy target.
@@ -93,6 +96,6 @@ Success: a recruiter gets the essentials within seconds (or via recruiter mode),
 ## Accessibility & Inclusion
 
 - Full support for `prefers-reduced-motion`: every section must define its reduced-motion behaviour.
-- Complete keyboard navigation, including the map, scrubbers, the Discord simulation and the view-source inspector.
+- Complete keyboard navigation, including the map, scrubbers and the Discord simulation.
 - Readable contrast inside every section's style, including timing-screen, terminal and fog-of-war looks.
 - Tap equivalents for every hover interaction.

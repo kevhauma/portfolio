@@ -1,0 +1,29 @@
+---
+/* The navy panel that closes every sheet: stripes cross in at the rake, then the other sheets
+   in the kit as a raked ladder of links. */
+import { sections, github, raceNumber } from '../data/site';
+interface Props { current: string; heading: string }
+const { current, heading } = Astro.props;
+const others = sections.filter(s => s.n !== current);
+---
+<section class="kit" aria-labelledby="kit-title">
+  <div class="kit-stripes" aria-hidden="true"><i style="--t:26px;--c:var(--red)"></i><i style="--t:5px;--c:var(--white)"></i><i style="--t:12px;--c:var(--green)"></i></div>
+  <div class="kit-in">
+    <div class="kit-copy">
+      <h2 id="kit-title">{heading}</h2>
+      <div><slot /></div>
+    </div>
+    <ol class="kit-list" aria-label="Sheets in this kit">
+      {others.map((s, i) => (
+        <li class={`t-${s.tone}`} style={`--n:${i}`}>
+          <a href={s.href}>
+            <span class="kit-n">{s.n}</span>
+            <span class="kit-t">{s.title}<small>{s.sub}</small></span>
+            <svg class="kit-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <p class="kit-foot"><span>Kevin · race number {raceNumber}</span><a href={github.href}>{github.label}</a><span>Built with Astro · set in Anybody and Hanken Grotesk</span></p>
+  </div>
+</section>

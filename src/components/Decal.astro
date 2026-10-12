@@ -1,0 +1,15 @@
+---
+/* A die-cut vinyl decal in its slot, inside a dashed plotter cut line. */
+interface Props {
+  class: string;
+  round?: boolean;
+  as?: 'div' | 'li';
+  /** accessible name for decals that are pictures (the roundel) */
+  img?: string;
+  style?: string;
+}
+const { class: cls, round = false, as: Tag = 'div', img, style } = Astro.props;
+---
+<Tag class:list={['slot', cls, { round }]} style={style}>
+  <div class="decal" role={img ? "img" : undefined} aria-label={img}><slot /></div>
+</Tag>

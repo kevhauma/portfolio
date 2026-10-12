@@ -1,0 +1,86 @@
+---
+import '@fontsource-variable/anybody/standard.css';
+import '@fontsource-variable/anybody/standard-italic.css';
+import '@fontsource-variable/hanken-grotesk/wght.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '../styles/livery.css';
+import anybodyItalic from '@fontsource-variable/anybody/files/anybody-latin-standard-italic.woff2?url';
+import Fan from '../components/Fan.astro';
+import Pit from '../components/Pit.astro';
+import { sections } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** section number of this page, "01" to "06" */
+  sec: string;
+  /** play the raw-HTML-to-livery arrival (intro only, once per visit) */
+  arrival?: boolean;
+}
+const { title, description, sec, arrival = false } = Astro.props;
+const current = sections.find(s => s.n === sec)!;
+---
+<!doctype html>
+<html lang="en" data-sec={sec}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{title}</title>
+<meta name="description" content={description}>
+<meta name="theme-color" content="#F7F8FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#071229" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href={anybodyItalic} as="font" type="font/woff2" crossorigin>
+<script is:inline define:vars={{ arrival }}>
+(() => {
+  const root = document.documentElement;
+  let theme = null, limiter = false, arrived = false;
+  try { theme = localStorage.getItem('kh-theme'); limiter = localStorage.getItem('kh-limiter') === '1'; } catch (e) {}
+  try { arrived = sessionStorage.getItem('kh-arrived') === '1'; } catch (e) { arrived = true; }
+  if (theme === 'day' || theme === 'night') root.dataset.theme = theme;
+  if (limiter) root.classList.add('limiter');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (arrival && !arrived && !limiter && !still) {
+    root.classList.add('raw', 'arriving');
+    /* if the arrival script never runs, the livery still goes on */
+    setTimeout(() => { if (!window.khArrival) root.classList.remove('raw', 'arriving'); }, 3500);
+  }
+  /* every sheet switch arrives through the raked paint wipe */
+  addEventListener('pagereveal', e => {
+    if (!e.viewTransition) return;
+    if (root.classList.contains('raw')) { e.viewTransition.skipTransition(); return; }
+    root.classList.add('vt-in');
+    e.viewTransition.finished.finally(() => root.classList.remove('vt-in'));
+  });
+})();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="controls" role="group" aria-label="Display">
+  <button class="sw" id="limiter" type="button" aria-pressed="false" title="Recruiter mode: one plain page with the essentials"><span class="sw-led" aria-hidden="true"></span>Pit<span class="long">&nbsp;limiter</span></button>
+  <button class="sw" id="night" type="button" aria-pressed="false" title="Night race: the livery under floodlights"><span class="sw-led" aria-hidden="true"></span>Night<span class="long">&nbsp;race</span></button>
+</div>
+
+<button class="bubble" id="bubble" type="button" aria-haspopup="dialog" aria-controls="fan" aria-label={`Open the section menu. You are on ${current.n}, ${current.title}`}>
+  <span class="bubble-num" id="bubbleNum" aria-hidden="true">{sec === '01' ? '23' : sec}</span>
+</button>
+
+<Fan sec={sec} />
+
+<main id="livery">
+  <div id="main" tabindex="-1"></div>
+  <slot />
+</main>
+
+<Pit />
+
+<div class="wipe" aria-hidden="true"></div>
+{arrival && <div class="tape" aria-hidden="true"><i style="top:18%;--d:0ms"></i><i style="top:47%;--d:70ms"></i><i style="top:71%;--d:140ms"></i><i style="top:95%;--d:200ms"></i></div>}
+
+<script>
+  import '../scripts/shell';
+</script>
+</body>
+</html>

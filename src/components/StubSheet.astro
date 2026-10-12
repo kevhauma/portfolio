@@ -1,0 +1,37 @@
+---
+/* A sheet that is still masked off in the paint shop: its title and number decals,
+   plus what will be painted here. Replaced section by section. */
+import Livery from '../layouts/Livery.astro';
+import Decal from './Decal.astro';
+import Kit from './Kit.astro';
+import { sections } from '../data/site';
+import '../styles/sheet.css';
+
+interface Props { sec: string; lede: string; plans: string[]; description: string }
+const { sec, lede, plans, description } = Astro.props;
+const s = sections.find(x => x.n === sec)!;
+const liner = Array.from({ length: 44 }, () =>
+  Array.from({ length: 4 }, () => `kevhauma livery kit · sheet ${s.n} · ${s.title} · masked`).join(' · ')
+);
+---
+<Livery title={`${s.title} · Kevin`} description={description} sec={sec}>
+  <section class="sheet stub" aria-labelledby="sheet-title">
+    <div class="liner" aria-hidden="true">{liner.map(l => <span>{l}</span>)}</div>
+    <i class="reg tl" aria-hidden="true"></i><i class="reg tr" aria-hidden="true"></i><i class="reg br" aria-hidden="true"></i>
+    <div class="stub-in">
+      <Decal class={`st-title t-${s.tone}`} style={`--longest:${Math.max(...s.title.split(' ').map(w => w.length))}`}>
+        <h1 id="sheet-title">{s.title}</h1>
+      </Decal>
+      <Decal class={`st-num ${s.tone === 'red' ? 't-navy' : 't-red'}`} round img={`Sheet ${s.n}`}>
+        <span aria-hidden="true">{s.n}</span>
+      </Decal>
+      <Decal class="paint-shop t-primer">
+        <span class="ph">not painted yet</span>
+        <p class="ps-lede">{lede}</p>
+        <ul>{plans.map(p => <li set:html={p} />)}</ul>
+      </Decal>
+    </div>
+    <p class="sheet-print">Sheet {s.n} of 06 · masked off, in the paint shop</p>
+  </section>
+  <Kit current={sec} heading="The rest of the kit." />
+</Livery>

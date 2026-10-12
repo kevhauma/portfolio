@@ -1,0 +1,64 @@
+---
+import Livery from '../layouts/Livery.astro';
+import Decal from '../components/Decal.astro';
+import Kit from '../components/Kit.astro';
+import { github, raceNumber, stack } from '../data/site';
+import '../styles/sheet.css';
+
+const liner = Array.from({ length: 44 }, () =>
+  Array.from({ length: 4 }, () => `kevhauma livery kit · sheet 01 · race number ${raceNumber}`).join(' · ')
+);
+const tones = ['t-green', 't-black', 't-white', 't-red', 't-navy', 't-primer', 't-white'];
+---
+<Livery title="Kevin · frontend developer" description="Kevin is a frontend developer with a bachelor in applied computer science and five years of consultancy work. Race number 23." sec="01" arrival>
+  <section class="sheet intro" aria-labelledby="name">
+    <div class="liner" aria-hidden="true">{liner.map(l => <span>{l}</span>)}</div>
+    <i class="reg tl" aria-hidden="true"></i><i class="reg tr" aria-hidden="true"></i><i class="reg br" aria-hidden="true"></i>
+
+    <div class="plate">
+      <Decal class="d-name t-navy">
+        <h1 id="name">Kevin</h1>
+      </Decal>
+
+      <Decal class="d-num t-red" round img={`Race number ${raceNumber}`}>
+        <span aria-hidden="true">{raceNumber}</span>
+      </Decal>
+
+      <Decal class="d-spec t-white">
+        <p class="spec-t">Frontend developer</p>
+        <dl class="spec">
+          <dt>Degree</dt><dd>Bachelor, applied computer science</dd>
+          <dt>Consulting</dt><dd>Five years</dd>
+          <dt>Hashcode</dt><dd>#113 worldwide, 2018</dd>
+          <dt>Code</dt><dd><a href={github.href}>{github.label}</a></dd>
+        </dl>
+      </Decal>
+
+      <Decal class="d-note t-green">
+        <p class="note">One person, many interfaces.</p>
+      </Decal>
+
+      <p class="stack-label" id="stack-label">Stack, sized by use <span class="ph">placeholder sizes</span></p>
+      <ul class="stack" aria-labelledby="stack-label">
+        {stack.map((s, i) => (
+          <Decal as="li" class={`s${i + 1} ${tones[i]}`} round={i === 2}>
+            {s.name}
+          </Decal>
+        ))}
+      </ul>
+
+      <div class="stripe-decal" aria-hidden="true"><i style="--t:calc(var(--k)*3.2);--c:var(--red)"></i><i style="--t:calc(var(--k)*.6);--c:var(--ink)"></i><i style="--t:calc(var(--k)*1.6);--c:var(--green)"></i></div>
+    </div>
+
+    <p class="sheet-print">Sheet 01 of 06 · race number {raceNumber}</p>
+  </section>
+
+  <Kit current="01" heading="Frontend first.">
+    <p>Five years of frontend consultancy, after a bachelor in applied computer science. Outside work: photography, motorsport, travel, 3D printing and LED lighting.</p>
+    <p>Every sheet in this kit borrows the interface of what it shows: a timing screen for the experience, a map for the miles, a slicer for the prints.</p>
+  </Kit>
+</Livery>
+
+<script>
+  import '../scripts/arrival';
+</script>
