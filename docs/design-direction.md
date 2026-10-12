@@ -2,6 +2,23 @@
 
 Confirmed 2026-10-12. This is the pre-build direction for the shared design system: the shell that holds the six sections together. Product truth lives in [PRODUCT.md](../PRODUCT.md). `DESIGN.md` does not exist yet; it gets written from the finished build, and from then on it is the authority for tokens and components. Until then, this document is.
 
+## Updates since confirmation (2026-10-12, later the same day)
+
+These override the sections below where they conflict:
+- **Landing structure:** Decal Sheet, picked from three structures (Stripe Ladder, Tape Line, Decal Sheet). Mocks are in `.impeccable/mocks/decision/`.
+- **Pages, not one scroll:** each section is its own page with a short loading transition on every switch. This replaces the scroll-driven section hand-off. The bubble's ring needs a new meaning, because it no longer has one long page to track.
+- **Palette: Castrol-inspired, navy panels** (chosen from `palette-castrol-navy.html`; the green-panel variant and Oxblood, Petrol and Violet were declined). Navy + orange is out because it reads as Max Verstappen. No Castrol logo or wordmark anywhere. This replaces the palette table below:
+
+| Role | Day | Night race |
+| --- | --- | --- |
+| Ground | Livery white `#F7F8FA` | Deep navy `#071229` |
+| Ink / big panels | Navy `#13254F` | White on navy panels `#13254F` |
+| Signal (roundel, active states) | Castrol red `#E2001A` | Castrol red `#E2001A` |
+| Second stripe | Castrol green `#00843D` | Castrol green `#00843D` |
+| Bare metal / primer | Primer grey `#B9BEC6` | Primer grey `#B9BEC6` |
+
+Measured contrast: navy on white 14.1:1; white on red 4.9:1 and red on white 4.7:1, so red may carry text either way; white on green 4.8:1; navy on primer 8.0:1. **Navy on red is 3.0:1**, so text on red panels is white, and navy on red is for display sizes only. Red on deep navy is 3.8:1 and green on deep navy 3.9:1, so at night both are large-text or field colours, never body text.
+
 ## Decisions at a glance
 
 | Topic | Decision |
