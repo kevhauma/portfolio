@@ -18,7 +18,7 @@
 .t-green { --bg: var(--green); --fg: var(--white); }
 .t-black { --bg: var(--black); --fg: var(--white); }
 .t-white { --bg: var(--white); --fg: var(--navy); }
-.t-white .decal { box-shadow: inset 0 0 0 max(2px, calc(var(--k) * .16)) var(--navy); }
+.t-white .decal { --outline: inset 0 0 0 max(2px, calc(var(--k) * .16)) var(--navy); box-shadow: var(--outline); }
 .t-primer { --bg: var(--primer); --fg: var(--navy); }
 
 /* ---------- sheet 01: the intro plate ---------- */
@@ -43,7 +43,7 @@
 .s1 .decal { font: 900 italic 1.75rem/1 var(--display); letter-spacing: -.01em; }
 .s2 .decal { font: 900 2.25rem/1 var(--display); letter-spacing: .02em; }
 .s3 .decal { font: 900 italic 1rem/1 var(--display); }
-.stack .s3.t-white .decal { box-shadow: inset 0 0 0 max(5px, calc(var(--k) * .7)) var(--navy); }
+.stack .s3.t-white .decal { --outline: inset 0 0 0 max(5px, calc(var(--k) * .7)) var(--navy); }
 .s4 .decal { font: 800 italic 1.375rem/1 var(--display); }
 .s5 .decal { font: 900 1.375rem/1 var(--display); letter-spacing: .08em; }
 .s6 .decal { font: 800 1.125rem/1 var(--display); letter-spacing: .03em; }
@@ -113,6 +113,79 @@
   .s7 { left: calc(var(--k) * 51.6); top: calc(var(--k) * 52.6); width: calc(var(--k) * 8); height: calc(var(--k) * 3.6); }
   .s7 .decal { font-size: calc(var(--k) * 1.7); }
 }
+
+/* ---------- stickers: gloss vinyl and foil that catch the light ---------- */
+/* src/scripts/stickers.ts holds a lamp (the cursor) over the decal sheet. The plate tilts toward it as one sheet
+   (--rx/--ry in degrees), with the stickers, the cut lines and the car on it. Per sticker it writes --lx/--ly, where
+   the light falls on that sticker (%, past 0-100 when the lamp is off to the side), and --lit, how close the lamp
+   is (0-1). With no lamp the sheet lies flat under a low light from the top left. */
+.plate { --rx: 0; --ry: 0; transform: perspective(2400px) rotateX(calc(var(--rx) * 1deg)) rotateY(calc(var(--ry) * 1deg)); }
+[data-finish] { --lx: 22; --ly: 8; --lit: .3; }
+[data-finish] .decal {
+  isolation: isolate;
+  /* a sticker is a tenth of a millimetre thick: a tight contact shadow, cast away from the light */
+  box-shadow: var(--outline, 0 0 #0000),
+    calc(clamp(-1, (50 - var(--lx)) / 70, 1) * .8px) calc(.5px + clamp(-1, (50 - var(--ly)) / 70, 1) * .6px) 1.5px rgb(7 18 41 / .24);
+}
+[data-finish] .decal::before,
+[data-finish] .decal::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+
+/* clearcoat, over the ink: a soft hotspot where the light falls, a broad window streak, and a lit top edge */
+[data-finish] .decal::after {
+  background:
+    radial-gradient(circle at calc(var(--lx) * 1%) calc(var(--ly) * 1%), rgb(255 255 255 / calc(var(--lit) * .42)), rgb(255 255 255 / calc(var(--lit) * .12)) 90px, transparent 260px),
+    linear-gradient(112deg, transparent calc(var(--lx) * .8% - 34%), rgb(255 255 255 / calc(.05 + var(--lit) * .16)) calc(var(--lx) * .8% - 14%), rgb(255 255 255 / calc(.04 + var(--lit) * .1)) calc(var(--lx) * .8% - 4%), transparent calc(var(--lx) * .8% + 2%)),
+    linear-gradient(rgb(255 255 255 / .07), transparent 45%, rgb(7 18 41 / .07));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / calc(.12 + var(--lit) * .3)), inset 0 -1px 0 rgb(7 18 41 / .22);
+}
+[data-finish].t-white .decal::after { box-shadow: inset 0 1px 0 rgb(255 255 255 / .5); }
+
+/* holographic foil, under the ink: rainbow diffraction that slides with the light, and a glitter of flecks */
+[data-finish="holo"] .decal::before {
+  z-index: -1;
+  --at: calc(var(--lx) * 1%) calc(var(--ly) * 1%);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 14 0 0 0 -8.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(calc(118deg + var(--ry) * 5deg), hsl(350 95% 58%) 0%, hsl(32 100% 56%) 2.6%, hsl(58 95% 55%) 5.2%, hsl(140 80% 48%) 7.8%, hsl(190 95% 52%) 10.4%, hsl(250 90% 64%) 13%, hsl(305 85% 60%) 15.6%, hsl(350 95% 58%) 18.2%),
+    repeating-linear-gradient(45deg, rgb(255 255 255 / .18) 0 1px, transparent 1px 4px);
+  background-size: 180px 180px, 300% 300%, auto;
+  background-position: calc(var(--lx) * -.5px) calc(var(--ly) * -.5px), var(--at), 0 0;
+  /* the rainbow burns brightest where the light falls and fades out across the foil */
+  -webkit-mask: radial-gradient(circle at var(--at), #000, rgb(0 0 0 / .4) 55%, rgb(0 0 0 / .12));
+          mask: radial-gradient(circle at var(--at), #000, rgb(0 0 0 / .4) 55%, rgb(0 0 0 / .12));
+  mix-blend-mode: var(--holo-blend, screen);
+  opacity: calc(var(--holo) * (.3 + var(--lit) * .7));
+}
+/* red holo: pink-gold flashes in the Castrol red */
+[data-finish="holo"].t-red .decal::before { --holo: .8; filter: brightness(.8) saturate(1.5); }
+/* black holo: an oil slick */
+[data-finish="holo"].t-black .decal::before { --holo: .85; filter: brightness(.6) saturate(1.6); }
+/* white holo: pearl, the rainbow multiplied into the white */
+[data-finish="holo"].t-white .decal::before { --holo: .7; --holo-blend: multiply; filter: brightness(1.4) saturate(.85); }
+/* foil reflects harder than vinyl: a sharper, brighter hotspot */
+:is([data-finish="holo"], [data-finish="chrome"]) .decal::after {
+  background:
+    radial-gradient(circle at calc(var(--lx) * 1%) calc(var(--ly) * 1%), rgb(255 255 255 / calc(var(--lit) * .7)), rgb(255 255 255 / calc(var(--lit) * .18)) 46px, transparent 170px),
+    linear-gradient(rgb(255 255 255 / .06), transparent 45%, rgb(7 18 41 / .08));
+}
+
+/* chrome foil: the primer decal in brushed silver; a bright band rakes across as the light moves */
+[data-finish="chrome"] .decal { background: linear-gradient(calc(100deg + var(--ry) * 6deg), #8D939C, #C9CED5 calc(var(--lx) * .9% - 30%), #F4F6F8 calc(var(--lx) * .9% - 8%), #A9AFB8 calc(var(--lx) * .9% + 14%), #8D939C); }
+[data-finish="chrome"] .decal::before {
+  z-index: -1;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / .16) 0 1px, transparent 1px 2px, rgb(7 18 41 / .06) 2px 3px, transparent 3px 5px),
+    repeating-linear-gradient(90deg, transparent 0 13px, rgb(255 255 255 / .1) 13px 15px, transparent 15px 37px);
+  mix-blend-mode: overlay;
+}
+
+/* the placement guide is printed on the liner: rough matte ink with a print grain, it never catches the light */
+.car {
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3.4 0 0 0 -.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 140px 140px;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3.4 0 0 0 -.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 140px 140px;
+}
+
+@media (prefers-reduced-motion: reduce) { .plate { transform: none; } }
 
 /* ---------- stub sheets: masked off, not painted yet ---------- */
 .stub { padding: clamp(96px, 12vw, 152px) 5vw calc(var(--wedge) + clamp(48px, 5vw, 72px)); }

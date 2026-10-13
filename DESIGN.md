@@ -131,7 +131,8 @@ Motion is earned and visitor-owned: one arrival per visit (raw HTML, masking tap
 
 **Key Characteristics:**
 - White backing sheet, raked liner wordmark and dashed cut lines, framed by the sunset swoop.
-- Flat vinyl colour fields with square die-cut corners; the only round shapes are the roundel and the number bubble.
+- Vinyl colour fields with square die-cut corners; the only round shapes are the roundel and the number bubble.
+- On the intro sheet the decals are real stickers that catch the light: most are gloss vinyl, a few are holographic or chrome foil, and the decal sheet tilts toward the cursor as one piece. The printed liner and the car stay rough matte.
 - Sakana, slanted to the rake, for every piece of lettering; Hanken Grotesk for reading; mono only for print.
 - Everything leans at 14 degrees, except the stripes, which swoop.
 - Night race theme: the same livery under floodlights on deep navy.
@@ -153,10 +154,10 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 ### Neutral
 - **Livery White**: the backing sheet (day ground), text on dark vinyl, white decals (always with an inset navy outline so they read as cut vinyl on a white sheet), and the night-race ink.
 - **Night Deep**: the night-race ground, and the darkened navy tone for navy links inside the navy kit panel.
-- **Primer Grey**: what is under the paint. Primer-tone decals, inactive switch LEDs, disabled actions and placeholder chips.
+- **Primer Grey**: what is under the paint. Primer-tone decals, inactive switch LEDs, disabled actions and placeholder chips. On the intro sheet the primer sticker is cut from chrome foil (brushed silver, #8D939C to #F4F6F8), the one place the tone turns metal.
 - **Carbon Black**: one decal tone among the vinyl set (section 06's tone, the C# stack decal).
 - **Ink Secondary** / **Ink Secondary Night**: secondary text (stack label, pit-limiter dates and descriptions) on the day and night grounds respectively.
-- **Placement guide**: the side elevation of an AE86 hatchback, traced in Inkscape (`public/ae86.svg`, only its paths ship), filled in ink at 20% opacity on the intro sheet, the way a decal kit prints where its decals go. The front sits in frame on the right and the back runs behind the KEVIN decal (off the left edge on phones). The 23 roundel sits on its door, so the number reads as a race number, never as an age beside the name.
+- **Placement guide**: the side elevation of an AE86 hatchback, traced in Inkscape (`public/ae86.svg`, only its paths ship), filled in ink at 20% opacity on the intro sheet and masked with a fine print grain, so it reads as rough matte ink on the liner and never catches the light, the way a decal kit prints where its decals go. The front sits in frame on the right and the back runs behind the KEVIN decal (off the left edge on phones). The 23 roundel sits on its door, so the number reads as a race number, never as an age beside the name.
 - **Liner and cut tints**: the liner wordmark is ink at 6% (4.5% at night); the dashed cut line is ink at 50% (45% at night). Always derived from the current ink, never a new hue.
 
 ### Named Rules
@@ -202,14 +203,16 @@ Spacing runs on an 8px unit with 4px half-steps for tight pairs: 4, 8, 12, 16, 2
 
 ## Elevation & Depth
 
-Flat vinyl. Decals lie flat on the sheet and carry no shadow; depth appears only on the floating chrome (switches, bubble, fan close) carries a soft two-layer shadow tinted with the navy lift colour. No hard offset shadows; no shadows on panels or text.
+Stuck-down vinyl. Decals lie on the sheet; on stub sheets they carry no shadow at all. On the intro sheet they are stickers a tenth of a millimetre thick, stuck flush: a tight contact shadow cast away from the light, plus a clearcoat (gloss) or foil sheen that follows it. The floating chrome (switches, bubble, fan close) carries a soft two-layer shadow tinted with the navy lift colour. No hard offset shadows; no shadows on panels or text.
 
 ### Shadow Vocabulary
 - **Floating chrome** (`box-shadow: 0 1px 2px rgb(7 18 41 / .14), 0 8px 20px -8px var(--lift)`): display switches; the bubble uses the heavier `0 2px 4px rgb(7 18 41 / .22), 0 14px 30px -10px var(--lift)`.
 - **Fan focus card** (`filter: drop-shadow(0 10px 18px rgb(7 18 41 / .4))`): the current sheet in the open fan.
 
 ### Named Rules
-**The Lift Rule.** A shadow means the thing floats above the sheet. Everything lying on the sheet is flat.
+**The Lift Rule.** A soft shadow means the thing floats above the sheet. A sticker on the sheet only gets its contact shadow, never a floating one.
+
+**The Lamp Rule.** On the intro sheet the cursor is a lamp over the sheet (`src/scripts/stickers.ts`). The whole decal sheet (the plate: stickers, cut lines and car together) tilts toward it as one piece, up to 4 degrees, with the side under the lamp pressing in; stickers never tilt on their own. Each sticker's sheen follows the lamp. On touch, the light hangs above the top right of the screen and slides with scroll, and a press on the sheet holds the lamp there. Reduced motion keeps the sheet flat under the resting light (top left, low). The liner, the cut lines and the car never shine.
 
 ## Shapes
 
@@ -219,7 +222,8 @@ Square die-cut corners everywhere (0 radius); vinyl is cut, not rounded. The onl
 
 ### Decal (signature)
 Die-cut vinyl in its slot, the unit of the whole system.
-- **Structure:** a slot with a dashed cut line and the vinyl decal inside it. Decals are static: no hover, focus or click state of their own; links inside them behave as links.
+- **Structure:** a slot with a dashed cut line and the vinyl decal inside it. Decals have no hover, focus or click state of their own; links inside them behave as links.
+- **Finish** (`finish` prop, intro sheet only): `gloss` vinyl (clearcoat hotspot, a window streak, a lit top edge), `holo` foil (rainbow diffraction and glitter under the ink, brightest where the light falls: pink-gold on red, oil slick on black, pearl on white) or `chrome` foil (brushed silver, primer only). The 23 roundel, the black, the round white and the primer stack decals are foil; the rest are gloss. Ink printed on foil stays flat white or navy.
 - **Tones:** one of the six vinyl tones; white decals carry an inset navy outline (2px, scaling with the sheet).
 
 ### Buttons
@@ -251,7 +255,8 @@ A sheet masked off but not yet painted: a headline decal, a race-number decal, a
 ### Don't:
 - **Don't** use the orange/cobalt values from the pre-build direction doc, or navy with orange; the livery is navy, Castrol red and Castrol green.
 - **Don't** round the corners of vinyl; curves are reserved for true circles (roundel, bubble).
-- **Don't** add shadows to anything lying flat on the sheet; shadow means lifted.
+- **Don't** add soft floating shadows to anything lying on the sheet; stickers get only their contact shadow.
+- **Don't** give the liner, the cut lines or the car any sheen; they are printed matte.
 - **Don't** introduce a second display face or set display lettering in Hanken or mono.
 - **Don't** use mono as a decorative kicker above headings; it is print, not a label system.
 - **Don't** animate anything on load beyond the single per-visit arrival.

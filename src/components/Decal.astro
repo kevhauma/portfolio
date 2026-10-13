@@ -7,9 +7,11 @@ interface Props {
   /** accessible name for decals that are pictures (the roundel) */
   img?: string;
   style?: string;
+  /** a sticker that catches the light: gloss vinyl, holographic foil or chrome foil (src/scripts/stickers.ts) */
+  finish?: 'gloss' | 'holo' | 'chrome';
 }
-const { class: cls, round = false, as: Tag = 'div', img, style } = Astro.props;
+const { class: cls, round = false, as: Tag = 'div', img, style, finish } = Astro.props;
 ---
-<Tag class:list={['slot', cls, { round }]} style={style}>
+<Tag class:list={['slot', cls, { round }]} style={style} data-finish={finish}>
   <div class="decal" role={img ? "img" : undefined} aria-label={img}><slot /></div>
 </Tag>
