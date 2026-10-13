@@ -22,7 +22,6 @@ const tones = ['t-green', 't-black', 't-white', 't-red', 't-navy', 't-primer', '
 <Livery title="Kevin · frontend developer" description="Kevin is a frontend developer with a bachelor in applied computer science and five years of consultancy work. Race number 23." sec="01" arrival>
   <section class="sheet intro" aria-labelledby="name">
     <div class="liner" aria-hidden="true">{liner.map(l => <span>{l}</span>)}</div>
-    <i class="reg tl" aria-hidden="true"></i><i class="reg tr" aria-hidden="true"></i><i class="reg br" aria-hidden="true"></i>
 
     <div class="plate">
       <!-- placement guide: the car's side elevation, front in frame, the back running behind the name -->
@@ -59,10 +58,8 @@ const tones = ['t-green', 't-black', 't-white', 't-red', 't-navy', 't-primer', '
         ))}
       </ul>
 
-      <div class="stripe-decal" aria-hidden="true"><i style="--t:calc(var(--k)*3.2);--c:var(--red)"></i><i style="--t:calc(var(--k)*.6);--c:var(--ink)"></i><i style="--t:calc(var(--k)*1.6);--c:var(--green)"></i></div>
     </div>
 
-    <p class="sheet-print">Sheet 01 of 06 · race number {raceNumber}</p>
   </section>
 
   <Kit current="01" heading="Frontend first.">

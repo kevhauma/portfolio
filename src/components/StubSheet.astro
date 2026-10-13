@@ -17,7 +17,6 @@ const liner = Array.from({ length: 44 }, () =>
 <Livery title={`${s.title} · Kevin`} description={description} sec={sec}>
   <section class="sheet stub" aria-labelledby="sheet-title">
     <div class="liner" aria-hidden="true">{liner.map(l => <span>{l}</span>)}</div>
-    <i class="reg tl" aria-hidden="true"></i><i class="reg tr" aria-hidden="true"></i><i class="reg br" aria-hidden="true"></i>
     <div class="stub-in">
       <Decal class={`st-title t-${s.tone}`} style={`--longest:${Math.max(...s.title.split(' ').map(w => w.length))}`}>
         <h1 id="sheet-title">{s.title}</h1>
@@ -31,7 +30,6 @@ const liner = Array.from({ length: 44 }, () =>
         <ul>{plans.map(p => <li set:html={p} />)}</ul>
       </Decal>
     </div>
-    <p class="sheet-print">Sheet {s.n} of 06 · masked off, in the paint shop</p>
   </section>
   <Kit current={sec} heading="The rest of the kit." />
 </Livery>

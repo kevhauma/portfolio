@@ -2,14 +2,9 @@
    and the kit panel that hands off to the next sheet. */
 
 /* ---------- backing sheet ---------- */
-.sheet { --k: min(1vw, 1.62svh); --wedge: calc(var(--tan) * 100vw); padding-bottom: var(--wedge); position: relative; overflow: hidden; background: var(--ground); transition: background-color .3s; }
+.sheet { --k: min(1vw, 1.62svh); --wedge: var(--drop); padding-bottom: var(--wedge); position: relative; overflow: hidden; background: var(--ground); transition: background-color .3s; }
 .liner { position: absolute; inset: -30%; display: flex; flex-direction: column; gap: calc(var(--k) * 3.2); transform: rotate(calc(var(--rake) * -1)); pointer-events: none; font: 800 italic max(.6875rem, calc(var(--k) * 1.15))/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: var(--liner); white-space: nowrap; user-select: none; }
 .liner span:nth-child(even) { margin-left: -4em; }
-.reg { position: absolute; width: max(14px, calc(var(--k) * 1.8)); height: max(14px, calc(var(--k) * 1.8)); }
-.reg.tl { left: max(12px, calc(var(--k) * 2.2)); top: max(12px, calc(var(--k) * 2.2)); background: var(--ink); }
-.reg.tr { right: max(12px, calc(var(--k) * 2.2)); top: max(68px, calc(var(--k) * 7.6)); border: solid var(--ink); border-width: 3px 3px 0 0; }
-.reg.br { right: max(12px, calc(var(--k) * 2.2)); bottom: calc(var(--wedge) + max(12px, calc(var(--k) * 2.2))); border: solid var(--ink); border-width: 0 3px 3px 0; }
-.sheet-print { position: absolute; right: max(40px, calc(var(--k) * 5.4)); bottom: calc(var(--wedge) + max(12px, calc(var(--k) * 2.2))); margin: 0; font: 600 .6875rem/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); text-align: right; }
 
 /* ---------- a decal in its slot ---------- */
 .slot { position: relative; margin: 0; list-style: none; }
@@ -55,15 +50,12 @@
 .s7 .decal { font: 900 italic 1rem/1 var(--display); }
 /* italic decals give the lean back on the right so the ink, not the advance box, sits centred */
 .stack :is(.s1, .s3, .s4, .s7) .decal { padding-right: calc(var(--lean) * 2); }
-.stripe-decal { position: absolute; display: flex; flex-direction: column; gap: max(4px, calc(var(--k) * .5)); transform-origin: 0 0; transform: rotate(calc(var(--rake) * -1)); pointer-events: none; }
-.stripe-decal i { display: block; height: var(--t); background: var(--c); }
 
 /* phone and narrow tablet: the decals settle into a stacked sheet */
 @media (max-width: 820px) {
-  .intro { min-height: 0; padding: 84px 16px calc(var(--wedge) + 120px); }
+  .intro { min-height: 0; padding: 84px 16px calc(var(--wedge) + 56px); }
   .plate { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-flow: row dense; gap: 16px 14px; align-items: stretch; }
   .d-name h1 { font-size: 22.4vw; }
-  .reg.tr { top: 60px; }
   .d-name { grid-column: 1 / -1; }
   /* the car gets its own row: front in frame, the back running off the left edge, 23 on the door */
   .car, .d-num { grid-column: 1 / -1; grid-row: 2; }
@@ -84,9 +76,6 @@
   .s3 .decal { position: absolute; inset: 0; padding: 0; font-size: .9375rem; }
   .s4 .decal, .s5 .decal { height: 44px; }
   .s6 .decal, .s7 .decal { height: 36px; }
-  .stripe-decal { display: none; }
-  .sheet-print { right: 96px; left: 16px; bottom: calc(var(--wedge) + 28px); text-align: left; }
-  .reg.br { display: none; }
 }
 
 /* desktop: every decal sits at its plotted position, measured in sheet units (k) */
@@ -123,11 +112,10 @@
   .s6 .decal { font-size: calc(var(--k) * 1.6); }
   .s7 { left: calc(var(--k) * 51.6); top: calc(var(--k) * 52.6); width: calc(var(--k) * 8); height: calc(var(--k) * 3.6); }
   .s7 .decal { font-size: calc(var(--k) * 1.7); }
-  .stripe-decal { left: calc(var(--k) * 70); top: calc(var(--k) * 47); width: calc(var(--k) * 40); }
 }
 
 /* ---------- stub sheets: masked off, not painted yet ---------- */
-.stub { padding: clamp(96px, 12vw, 152px) 5vw calc(var(--wedge) + clamp(96px, 10vw, 140px)); }
+.stub { padding: clamp(96px, 12vw, 152px) 5vw calc(var(--wedge) + clamp(48px, 5vw, 72px)); }
 .stub-in { position: relative; max-width: 1312px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(28px, 4vw, 56px) clamp(20px, 3vw, 48px); align-items: start; }
 .st-title { grid-column: 1 / -1; justify-self: start; }
 .st-title .decal { padding: 0; }
@@ -150,16 +138,9 @@
   .kit h2 { font-size: 2.25rem; }
 }
 
-/* ---------- the kit panel: hand-off to the other sheets ---------- */
-.kit { position: relative; overflow: hidden; background: var(--navy); color: var(--white); padding: calc(var(--tan) * 100vw + 72px) 0 128px; clip-path: polygon(0 calc(var(--tan) * 100vw), 100% 0, 100% 100%, 0 100%); margin-top: calc(var(--tan) * -100vw); }
-.kit-stripes { position: absolute; left: 0; top: calc(var(--tan) * 100vw); width: 130vw; transform-origin: 0 0; transform: rotate(calc(var(--rake) * -1)); display: flex; flex-direction: column; gap: 6px; pointer-events: none; }
-.kit-stripes i { display: block; height: var(--t); background: var(--c); }
-@supports (animation-timeline: view()) {
-  .kit-stripes i { animation: sweep linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
-  .kit-stripes i:nth-child(2) { animation-range: entry 4% cover 33%; }
-  .kit-stripes i:nth-child(3) { animation-range: entry 8% cover 36%; }
-}
-@keyframes sweep { from { transform: translateX(-75%); } to { transform: none; } }
+/* ---------- the kit panel: hand-off to the other sheets, under the swoop ---------- */
+.kit { position: relative; overflow: hidden; color: var(--white); padding: calc(var(--drop) + 72px) 0 128px; margin-top: calc(var(--drop) * -1); }
+.kit::before { content: ""; position: absolute; inset: var(--drop) 0 0; background: var(--navy); }
 .kit-in { position: relative; max-width: 1312px; margin: 0 auto; padding: 0 5vw; }
 .kit h2 { margin: 0; font: 900 italic clamp(2.75rem, 5.5vw, 5.5rem)/.86 var(--display); letter-spacing: -.03em; text-transform: uppercase; text-wrap: balance; }
 .kit-copy { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 32px clamp(32px, 6vw, 96px); align-items: end; }
@@ -188,3 +169,24 @@
   .kit-t { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
 @media (max-width: 420px) { .kit-list a { gap: 12px; } .kit-arrow { display: none; } }
+
+/* ---------- the sunset swoop: one ribbon and a setting disc frame every sheet ---------- */
+.swoop { position: absolute; left: 0; top: 0; width: 100%; height: var(--drop); pointer-events: none; overflow: visible; }
+.swoop path { transition: fill .3s; }
+.swoop-sun { fill: var(--red); }
+.swoop-cut { fill: var(--navy); }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .kit { view-timeline: --kit; }
+    .swoop-band { animation: paint-on linear both; animation-timeline: --kit; animation-range: entry calc(var(--i) * 4%) cover calc(30% + var(--i) * 3%); }
+  }
+}
+@keyframes paint-on { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+/* the swoop is a background: a sheet's decals always lie on top of the kit panel and its swoop */
+:is(.plate, .stub-in) { z-index: 1; }
+/* desktop landing: the swoop closes the first screen (or comes up under the plate on a tall one), running behind
+   the lowest decals; it is there from the start, so it does not paint on */
+@media (min-width: 821px) {
+  .intro { min-height: 0; height: min(100svh, calc(var(--k) * 60 + var(--drop) * .8)); padding-bottom: 0; }
+  .intro + .kit .swoop-band { animation: none; }
+}

@@ -1,0 +1,26 @@
+---
+/* The sunset swoop, after the Castrol Celica GT-Four and the GT86 swoop poster: the livery's red, white and green
+   as one constant-width ribbon bent into an S, with a big red disc setting behind it and a gap of sheet between.
+   It is the top edge of the navy kit panel on every sheet: 1000 units wide and the 15vw drop tall, so it scales
+   uniformly with the page width. On the desktop landing it closes the first screen and may cut over the decals. */
+import { band, side, ring, type Pt } from '../lib/swoop';
+
+const H = 150;
+// an S: low on the left, high on the right
+const spine: Pt[] = [[-10, 112], [380, 112], [560, 12], [1010, 12]];
+const cut = side(spine, H + 8);
+// the sun sets behind the S on the left, a gap of sheet between it and the ribbon
+const sun = { d: ring(215, 120, 0, 100), clip: side(spine, -600, 6) };
+// the ribbon runs down from the cut into the navy: red, white, green
+const bands = [
+  { c: 'var(--red)', d: band(spine, { from: 0, to: -20 }) },
+  { c: 'var(--white)', d: band(spine, { from: -24.5, to: -28.5 }) },
+  { c: 'var(--green)', d: band(spine, { from: -33, to: -43 }) }
+];
+---
+<svg class="swoop" viewBox={`0 0 1000 ${H}`} preserveAspectRatio="none" aria-hidden="true">
+  <clipPath id="sun-clip"><path d={sun.clip} /></clipPath>
+  <path class="swoop-sun" d={sun.d} clip-path="url(#sun-clip)" />
+  <path class="swoop-cut" d={cut} />
+  {bands.map((b, i) => <path class="swoop-band" d={b.d} style={`fill:${b.c};--i:${i}`} />)}
+</svg>

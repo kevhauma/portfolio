@@ -125,15 +125,15 @@ components:
 
 Every page is a sheet in a race-livery decal kit. The ground is a white backing liner printed with a faint wordmark raked at 14 degrees; the content sits on it as die-cut vinyl decals in navy, Castrol red, Castrol green, white and carbon black, each inside a dashed plotter cut line. The system is proof by construction: the craft is in how precisely the kit is cut, set and printed.
 
-Lettering is all Sakana, a single-weight racing face slanted onto the rake, the way race numbers and sponsor names are cut. Body copy is Hanken Grotesk, set plainly; JetBrains Mono is reserved for what a plotter or a compiler would print (sheet print, labels, spec terms). Density is poster-scale on the intro sheet and editorial on stub and kit panels. One geometric law governs everything: the rake. Stripes, LEDs, the page wipe, the masking tape and the kit ladder all lean at 14 degrees (tan 0.2493).
+Lettering is all Sakana, a single-weight racing face slanted onto the rake, the way race numbers and sponsor names are cut. Body copy is Hanken Grotesk, set plainly; JetBrains Mono is reserved for what a plotter or a compiler would print (labels, spec terms, the kit footer). Density is poster-scale on the intro sheet and editorial on stub and kit panels. Two geometric laws: the rake and the swoop. Lettering, LEDs, the page wipe, the masking tape and the kit ladder lean at 14 degrees (tan 0.2493); the livery stripes do not rule straight but swoop, as one constant-width ribbon bent into an S with a big red disc setting behind it (the sunset swoop, after the Castrol Celica GT-Four and the GT86 swoop poster).
 
 Motion is earned and visitor-owned: one arrival per visit (raw HTML, masking tape snaps at the rake, paint fills), then only visitor-triggered motion. Page switches pass through a raked paint wipe under 600ms. Reduced motion makes all of it instant. A recruiter mode (the pit limiter) replaces the livery with one plain, complete page.
 
 **Key Characteristics:**
-- White backing sheet, raked liner wordmark, dashed cut lines and registration marks.
+- White backing sheet, raked liner wordmark and dashed cut lines, framed by the sunset swoop.
 - Flat vinyl colour fields with square die-cut corners; the only round shapes are the roundel and the number bubble.
 - Sakana, slanted to the rake, for every piece of lettering; Hanken Grotesk for reading; mono only for print.
-- Everything leans at 14 degrees.
+- Everything leans at 14 degrees, except the stripes, which swoop.
 - Night race theme: the same livery under floodlights on deep navy.
 
 ## Colors
@@ -144,8 +144,8 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 - **Livery Navy**: the big panels. The name decal, the kit panel that closes every sheet, the number bubble, text ink on the day sheet, and the outline on white decals.
 
 ### Secondary
-- **Castrol Red**: the signal. The race-number roundel, the leading stripe in every stripe decal and the page wipe, the active switch LED, the lap-counter ring on the bubble, text selection.
-- **Castrol Green**: the second stripe. Note decals, the trailing stripe in wipes and kit stripes, and the focus ring on the day sheet.
+- **Castrol Red**: the signal. The race-number roundel, the leading stripe of the swoop ribbon and the page wipe, the setting disc behind the swoop, the active switch LED, the lap-counter ring on the bubble, text selection.
+- **Castrol Green**: the second stripe. Note decals, the trailing stripe of the swoop ribbon and the wipe, and the focus ring on the day sheet.
 
 ### Tertiary
 - **Masking Tape**: arrival only. The tape strips that snap across the raw page at the rake before the paint goes on. Never used as a surface after arrival.
@@ -155,12 +155,14 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 - **Night Deep**: the night-race ground, and the darkened navy tone for navy links inside the navy kit panel.
 - **Primer Grey**: what is under the paint. Primer-tone decals, inactive switch LEDs, disabled actions and placeholder chips.
 - **Carbon Black**: one decal tone among the vinyl set (section 06's tone, the C# stack decal).
-- **Ink Secondary** / **Ink Secondary Night**: secondary text (sheet print, stack label, pit-limiter dates and descriptions) on the day and night grounds respectively.
+- **Ink Secondary** / **Ink Secondary Night**: secondary text (stack label, pit-limiter dates and descriptions) on the day and night grounds respectively.
 - **Placement guide**: the side elevation of an AE86 hatchback, traced in Inkscape (`public/ae86.svg`, only its paths ship), filled in ink at 20% opacity on the intro sheet, the way a decal kit prints where its decals go. The front sits in frame on the right and the back runs behind the KEVIN decal (off the left edge on phones). The 23 roundel sits on its door, so the number reads as a race number, never as an age beside the name.
 - **Liner and cut tints**: the liner wordmark is ink at 6% (4.5% at night); the dashed cut line is ink at 50% (45% at night). Always derived from the current ink, never a new hue.
 
 ### Named Rules
 **The Livery Roles Rule.** Navy carries the panels, red is the signal, green is the second stripe. Stripe sets run red, thin navy or white, green, in that order.
+
+**The Sunset Rule.** The swoop ribbon is constant width (red, a thin white stripe, green, with navy gaps between) and runs from the cut down into the navy. The red disc always sits behind the ribbon on the sheet side, cut off by it with a gap of sheet. The swoop is a background: where it reaches the content (the lowest decals on the landing), the decals lie on top of it.
 
 **The Six Tones Rule.** Vinyl comes in exactly six tones (navy, red, green, white, primer, black), each with fixed text colour: white on navy, red, green and black; navy on white and primer. A new decal picks one of these; it never invents a tint.
 
@@ -181,20 +183,20 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 - **Title** (italic, clamp(1.125rem, 2vw, 1.75rem), line-height 1.05, uppercase): kit ladder and fan entries, with a Hanken 500 sub-line in sentence case.
 - **Body** (Hanken 400, 1.0625rem, line-height 1.55): reading copy; ledes 500 at up to 1.25rem/1.45. Measure 46-68ch.
 - **Label** (Sakana italic, 0.75rem, letter-spacing 0.07em, uppercase): the display switches.
-- **Mono** (JetBrains 600, 0.6875rem, letter-spacing 0.03-0.04em, uppercase for print): sheet print, stack label, kit footer, spec terms.
+- **Mono** (JetBrains 600, 0.6875rem, letter-spacing 0.03-0.04em, uppercase for print): stack label, kit footer, spec terms.
 
 ### Named Rules
 **The One Family Rule.** All lettering (names, numbers, titles, switches, stack decals) is Sakana; variety comes from size, colour and case, never from a second display face.
 
-**The Print Rule.** Mono appears only where a machine would print: component names, dimensions, sheet print and plate footers. It is never a decorative label above a heading.
+**The Print Rule.** Mono appears only where a machine would print: component names, dimensions and plate footers. It is never a decorative label above a heading.
 
 **The Plain Pit Rule.** The pit limiter page uses Hanken only (800 for its h1, 750 for h2), no italic display lettering: recruiter mode reads like a document, not a livery.
 
 ## Layout
 
-The intro sheet is a plotted plate measured in a sheet unit, k = min(1vw, 1.62svh). On desktop (821px and up) the plate is 100k by 60k, centred, with every decal absolutely positioned at plotted coordinates in k so the whole composition scales as one sheet. At 820px and below the plate becomes a six-column stacked grid (gaps 16px by 14px): name full width, number and note sharing a row, spec full width, stack decals wrapping in a flex row; the raked stripe decal and one registration mark are dropped.
+The intro sheet is a plotted plate measured in a sheet unit, k = min(1vw, 1.62svh). On desktop (821px and up) the plate is 100k by 60k, centred, with every decal absolutely positioned at plotted coordinates in k so the whole composition scales as one sheet. The intro is one screen tall (or the plate plus most of the drop on a tall window), so the kit panel's sunset swoop closes the first screen as a background: the lowest decals lie on top of the ribbon and the disc, and it does not paint on there. At 820px and below the plate becomes a six-column stacked grid (gaps 16px by 14px): name full width, number and note sharing a row, spec full width, stack decals wrapping in a flex row, with the kit panel's swoop under them as on every other page.
 
-Every sheet ends with a raked wedge: sheets pad their bottom by tan(14deg) x 100vw, and the navy kit panel overlaps that wedge with a matching diagonal clip, so each page closes on a 14-degree cut. Content containers cap at 1312px with 5vw gutters (16px on phones); the pit limiter caps at 46rem.
+Every sheet ends on the sunset swoop: sheets pad their bottom by the drop (`--drop`, 15vw), and the navy kit panel overlaps that band with an SVG top edge in a 1000 by 150 viewBox (uniform scale, since the drop is a share of the width): an S that runs low on the left and high on the right, the ribbon under it and the disc setting behind it on the left. Stub sheets add only 48-72px below their content, so the swoop sits close under it. Content containers cap at 1312px with 5vw gutters (16px on phones); the pit limiter caps at 46rem.
 
 Spacing runs on an 8px unit with 4px half-steps for tight pairs: 4, 8, 12, 16, 24, 40 and 64px are the reused steps; large section gaps are fluid clamps (72-128px). Fixed chrome sits 16px from the viewport edges (12px for switches on phones). Breakpoints: 420, 640, 760 (bubble moves bottom-right), 820/821 (plate vs stacked).
 
@@ -211,7 +213,7 @@ Flat vinyl. Decals lie flat on the sheet and carry no shadow; depth appears only
 
 ## Shapes
 
-Square die-cut corners everywhere (0 radius); vinyl is cut, not rounded. The only curves are true circles: the race-number roundel, one round stack decal, the number bubble and the fan close button. Action buttons in the plain pit page take a barely-there 2px corner. Slanted forms are made by skewing or clipping at the rake: switches are skewed parallelograms, kit ladder links are parallelogram clips offset step by step along the rake, the LED and lap marks are skewed bars. Cut lines are 1.5px dashed strokes inset just outside each decal. Registration marks (a filled square and two open corner brackets, 3px) sit at the sheet corners.
+Square die-cut corners everywhere (0 radius); vinyl is cut, not rounded. The only curves are true circles: the race-number roundel, one round stack decal, the number bubble and the fan close button. Action buttons in the plain pit page take a barely-there 2px corner. Slanted forms are made by skewing or clipping at the rake: switches are skewed parallelograms, kit ladder links are parallelogram clips offset step by step along the rake, the LED and lap marks are skewed bars. Cut lines are 1.5px dashed strokes inset just outside each decal. The swoop's curves are built, not drawn: `src/lib/swoop.ts` offsets bands from a Bézier spine, so the ribbon keeps its width round every bend.
 
 ## Components
 
@@ -239,7 +241,7 @@ A sheet masked off but not yet painted: a headline decal, a race-number decal, a
 ## Do's and Don'ts
 
 ### Do:
-- **Do** lean every stripe, bar, wipe and slanted edge at the 14-degree rake (tan 0.2493); derive offsets from it rather than eyeballing.
+- **Do** lean every bar, wipe and slanted edge at the 14-degree rake (tan 0.2493); derive offsets from it rather than eyeballing. Stripe sets swoop instead, built with `src/lib/swoop.ts`.
 - **Do** build new content as decals: one of the six vinyl tones, square corners, a dashed cut line, and a primer underside naming the component that renders it.
 - **Do** set all lettering in Sakana italic and vary size, colour and case; never fake a bold.
 - **Do** keep night race to a ground and ink swap; vinyl colours stay the same.

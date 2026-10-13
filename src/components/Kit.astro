@@ -1,13 +1,14 @@
 ---
-/* The navy panel that closes every sheet: stripes cross in at the rake, then the other sheets
+/* The navy panel that closes every sheet: its top edge is the sunset swoop, then the other sheets
    in the kit as a raked ladder of links. */
 import { sections, github, raceNumber } from '../data/site';
+import Swoop from './Swoop.astro';
 interface Props { current: string; heading: string }
 const { current, heading } = Astro.props;
 const others = sections.filter(s => s.n !== current);
 ---
 <section class="kit" aria-labelledby="kit-title">
-  <div class="kit-stripes" aria-hidden="true"><i style="--t:26px;--c:var(--red)"></i><i style="--t:5px;--c:var(--white)"></i><i style="--t:12px;--c:var(--green)"></i></div>
+  <Swoop />
   <div class="kit-in">
     <div class="kit-copy">
       <h2 id="kit-title">{heading}</h2>
