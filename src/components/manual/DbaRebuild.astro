@@ -1,0 +1,250 @@
+---
+/* Figs. 4.1–4.3 for the ArCom DBA tool. 4.1 is a projection drawing: the C++ application, ghosted, sits
+   above the web tool, and its screens are traced straight down onto the new one, since there was no
+   source to read. The old one found its screens through a plain nested menu; the tabs are new. Under the web tool runs the rest of the stack, down to the database the
+   C++ application ran on, which was kept; its old lead is ghosted and broken. 4.2 is the pattern every
+   form page is cut from, and 4.3 the documentation, which the old one never had. The parts light with the wiring key. */
+interface Props { n: string }
+const { n } = Astro.props;
+
+/* both windows share one drawing grid, so the trace lines drop straight from one to the other */
+const tabs = [0, 1, 2].map(i => 6 + i * 58);
+/* the old one's only navigation: a nested menu, open two levels deep over the screen */
+const menu = [34, 44, 54, 64, 74];
+const sub = [54, 64, 74, 84];
+const rows = [54, 72, 90, 108];
+const fieldsL = { label: 14, x: 48, w: 82 };
+const fieldsR = { label: 146, x: 180, w: 86 };
+const traces = [34, 89, 150, 223, 249];
+/* what the new tool's fields hold: value widths per row, left and right */
+const vals = [[46, 30], [58, 52], [34, 40], [50, 62]];
+
+/* the pattern's form rows, and a front page cut from it */
+const slotRows = [60, 82, 104];
+---
+<figure class="dba" aria-labelledby="dba-t">
+  <figcaption id="dba-t" class="fig fig-t">Fig. {n}.1 · Same database, new tool</figcaption>
+  <p class="sr">A projection drawing. At the top, the old C++ desktop application, ghosted: a window with a plain nested menu, open two levels deep, over a form. There was no source code, so lines are traced straight down from its fields and buttons to the same fields and buttons in the new web tool below it. The web tool is new in one way: its screens open as tabs, simulated inside the page; one background tab is marked with unsaved changes, because each tab keeps its own form state. Under the web tool, a line runs to the new .NET back end and on to the MSSQL database. A bracket marks the web tool and the back end as built new, full stack, and the database as kept: it is the same database the C++ application ran on, whose old, broken lead runs down the left side.</p>
+
+  <div class="dba-grid">
+    <span class="dba-was fig-part" data-feeds="cpp sql" aria-hidden="true"><span class="dba-brk"></span></span>
+
+    <svg class="dba-win dba-old fig-part" data-feeds="cpp" viewBox="0 0 280 150" aria-hidden="true">
+      <rect class="ghost-s paper dash" x="1" y="1" width="278" height="148" />
+      <path class="ghost-s thin" d="M1 17H279M1 28H279" />
+      <rect class="ghost-f" x="7" y="5" width="8" height="8" />
+      <rect class="ghost-f" x="21" y="7.5" width="54" height="3" />
+      {[244, 256, 268].map(x => <rect class="ghost-s thin" x={x - 4} y="4.5" width="9" height="8" />)}
+      {[8, 32, 56].map(x => <rect class="ghost-f" x={x} y="21" width="16" height="2.5" />)}
+      <rect class="ghost-s thin" x="6" y="32" width="268" height="112" />
+      <rect class="ghost-f" x="14" y="38" width="58" height="3" />
+      {rows.map(y => <>
+        <rect class="ghost-f" x={fieldsL.label} y={y + 3.5} width="26" height="2.5" />
+        <rect class="ghost-s thin" x={fieldsL.x} y={y} width={fieldsL.w} height="10" />
+        <path class="ghost-s hair" d={`M${fieldsL.x + 1.5} ${y + 8.5}V${y + 1.5}H${fieldsL.x + fieldsL.w - 1.5}`} />
+        <rect class="ghost-f" x={fieldsR.label} y={y + 3.5} width="26" height="2.5" />
+        <rect class="ghost-s thin" x={fieldsR.x} y={y} width={fieldsR.w} height="10" />
+        <path class="ghost-s hair" d={`M${fieldsR.x + 1.5} ${y + 8.5}V${y + 1.5}H${fieldsR.x + fieldsR.w - 1.5}`} />
+      </>)}
+      <rect class="ghost-s thin" x="188" y="125" width="36" height="12" />
+      <rect class="ghost-s thin" x="230" y="125" width="38" height="12" />
+      <rect class="ghost-s thin" x="29" y="18.5" width="22" height="9" />
+      <rect class="ghost-s paper" x="30" y="28" width="64" height="54" />
+      <rect class="ghost-f" x="31" y="49.5" width="62" height="9" opacity=".3" />
+      {menu.map((y, i) => <rect class="ghost-f" x="36" y={y - 1} width={[34, 28, 40, 30, 26][i]} height="2.5" />)}
+      <path class="ghost-f" d="M86 51.5L90 54L86 56.5Z" />
+      <rect class="ghost-s paper" x="94" y="48" width="62" height="44" />
+      <rect class="ghost-f" x="95" y="59.5" width="60" height="9" opacity=".3" />
+      {sub.map((y, i) => <rect class="ghost-f" x="100" y={y - 1} width={[30, 38, 26, 34][i]} height="2.5" />)}
+      <path class="ghost-f" d="M148 71.5L152 74L148 76.5Z" />
+    </svg>
+    <p class="dba-l dba-oldl fig-part" data-feeds="cpp">
+      <b class="dba-n ghost">C++ desktop application</b>
+      <span class="dba-x">No source code: its screens, fields and rules were read from the running application. A plain nested menu was its only navigation</span>
+    </p>
+
+    <div class="dba-tr fig-part" data-feeds="cpp react" aria-hidden="true">
+      <svg viewBox="0 0 280 34">
+        {traces.map(x => <>
+          <circle class="spot-f" cx={x} cy="2.5" r="1.8" />
+          <path class="spot-s dash-s" d={`M${x} 4V25`} />
+          <path class="spot-f" d={`M${x - 3} 25L${x} 32L${x + 3} 25Z`} />
+        </>)}
+      </svg>
+      <span class="dba-tag">Traced from the outside</span>
+    </div>
+
+    <svg class="dba-win dba-new fig-part" data-feeds="react rhf" viewBox="0 0 280 150" aria-hidden="true">
+      <rect class="ink-s paper" x="1" y="1" width="278" height="148" rx="4" />
+      <path class="ink-s thin" d="M1 17H279" />
+      {[9, 16, 23].map(x => <circle class="ink-s hair" cx={x} cy="9" r="2.2" />)}
+      <rect class="ink-s hair" x="34" y="5" width="150" height="8" rx="4" />
+      <rect class="ink-f" x="40" y="8" width="44" height="2" opacity=".6" />
+      <rect class="head" x="1" y="17" width="278" height="11" />
+      <path class="ink-s thin" d="M1 28H279" />
+      <rect class="ink-f" x="8" y="21" width="30" height="3" />
+      {tabs.map((x, i) => <>
+        <path class:list={['ink-s', 'thin', { paper: !i, head: !!i }]} d={i ? `M${x} 44V32H${x + 56}V44Z` : `M${x} 44V31H${x + 56}V44`} />
+        <rect class="ink-f" x={x + 7} y="36" width={[30, 24, 34][i]} height="2.5" />
+        {i === 1
+          ? <circle class="spot-f" cx={x + 49} cy="37.3" r="2.4" />
+          : <path class="ink-s hair" d={`M${x + 47} 35.3l4 4m0 -4l-4 4`} />}
+      </>)}
+      <path class="ink-s hair" d="M182 34.5V41M178.8 37.7H185.2" />
+      <path class="ink-s thin" d={`M${tabs[0] + 56} 44H274V144H6V44`} />
+      {rows.map((y, r) => [fieldsL, fieldsR].map((f, c) => <>
+        <rect class="ink-s thin" x={f.x - 34} y={y} width={f.w + 34} height="10" rx="2" />
+        <rect class="paper" x={f.x - 31} y={y - 1.5} width="26" height="3" />
+        <rect class="ink-f" x={f.x - 30} y={y - 1} width="22" height="2" />
+        <rect class="ink-f" x={f.x - 29} y={y + 4} width={vals[r][c]} height="2.5" opacity=".75" />
+      </>))}
+      <rect class="ink-s thin" x="188" y="125" width="36" height="12" rx="2" />
+      <rect class="ink-f" x="196" y="130" width="20" height="2.4" />
+      <rect class="spot-f" x="230" y="125" width="38" height="12" rx="2" />
+      <rect class="paper" x="239" y="130" width="20" height="2.4" />
+    </svg>
+    <p class="dba-l dba-newl fig-part" data-feeds="react rhf">
+      <b class="dba-n">Web tool</b>
+      <span class="dba-x">New: screens open as tabs, simulated inside the page. Each tab keeps its own form state; the red dot is a tab with unsaved changes</span>
+    </p>
+
+    <span class="dba-ln dba-s1 fig-part" data-feeds="react query net" aria-hidden="true"></span>
+    <svg class="dba-api fig-part" data-feeds="net query" viewBox="0 0 96 40" aria-hidden="true">
+      <rect class="ink-s paper" x="1.5" y="1.5" width="93" height="37" />
+      <rect class="head" x="9" y="9" width="44" height="8" />
+      <rect class="ink-s thin" x="9" y="9" width="44" height="8" />
+      <rect class="head" x="9" y="23" width="44" height="8" />
+      <rect class="ink-s thin" x="9" y="23" width="44" height="8" />
+      <path class="ink-s hair" d="M62 12H74M62 16H74M62 20H74M62 24H74M62 28H74" />
+      <circle class="spot-f" cx="84" cy="13" r="2.6" />
+      <circle class="ink-s thin" cx="84" cy="25" r="2.6" />
+    </svg>
+    <p class="dba-l dba-apil fig-part" data-feeds="net query">
+      <b class="dba-n">.NET back end</b>
+      <span class="dba-x">Between the tool and the database</span>
+    </p>
+
+    <span class="dba-ln dba-s2 fig-part" data-feeds="net sql" aria-hidden="true"></span>
+    <svg class="dba-db fig-part" data-feeds="sql" viewBox="0 0 60 66" aria-hidden="true">
+      <path class="ink-s paper" d="M4 10V56A26 7 0 0 0 56 56V10Z" />
+      <path class="ink-s thin" d="M4 26A26 7 0 0 0 56 26M4 41A26 7 0 0 0 56 41" />
+      <ellipse class="ink-s head" cx="30" cy="10" rx="26" ry="7" />
+    </svg>
+    <p class="dba-l dba-dbl fig-part" data-feeds="sql">
+      <b class="dba-n">The same database</b>
+      <span class="dba-x">The MSSQL database the C++ application ran on, kept: the new tool runs on it</span>
+    </p>
+
+    <span class="dba-bk dba-built fig-part" data-feeds="react net" aria-hidden="true"><span>Full stack, built new</span></span>
+    <span class="dba-bk dba-kept fig-part" data-feeds="sql" aria-hidden="true"><span>Kept</span></span>
+  </div>
+
+  <figure class="dba-pat">
+    <figcaption class="fig">Fig. {n}.2 · One pattern, every form page</figcaption>
+    <p class="sr">The pattern every form page in the tool is cut from, drawn as a dashed outline with three slots: the record at the top, the fields in the middle and the actions at the foot. Beside it, a stack of form pages built from it, each with its own fields in the same three slots.</p>
+    <div class="dba-pat-grid" aria-hidden="true">
+      <svg class="dba-pattern" viewBox="0 0 206 214">
+        <rect class="spot-s dash" x="4" y="4" width="178" height="206" />
+        <g class="fig-part" data-feeds="query">
+          <rect class="ink-s thin dash" x="14" y="14" width="158" height="28" />
+          <rect class="head" x="22" y="22" width="62" height="6" />
+          <rect class="head" x="22" y="32" width="36" height="3" />
+          <rect class="spot-f" x="140" y="22" width="24" height="6" opacity=".55" />
+          <path class="ink-s hair" d="M172 28H185.5" />
+          <circle class="ink-s paper" cx="194" cy="28" r="8.5" /><text class="dba-bn" x="194" y="28">1</text>
+        </g>
+        <g class="fig-part" data-feeds="rhf">
+          <rect class="ink-s thin dash" x="14" y="50" width="158" height="112" />
+          {slotRows.map(y => [22, 100].map(x => <>
+            <rect class="head" x={x} y={y} width="22" height="2.5" />
+            <rect class="ink-s hair dash" x={x} y={y + 5} width="64" height="11" />
+          </>))}
+          <rect class="head" x="22" y="126" width="22" height="2.5" />
+          <rect class="ink-s hair dash" x="22" y="131" width="142" height="23" />
+          <path class="ink-s hair" d="M172 106H185.5" />
+          <circle class="ink-s paper" cx="194" cy="106" r="8.5" /><text class="dba-bn" x="194" y="106">2</text>
+        </g>
+        <g class="fig-part" data-feeds="react">
+          <rect class="ink-s thin dash" x="14" y="170" width="158" height="30" />
+          <rect class="ink-s hair dash" x="102" y="178" width="30" height="14" />
+          <rect class="ink-s hair dash" x="136" y="178" width="28" height="14" />
+          <path class="ink-s hair" d="M172 185H185.5" />
+          <circle class="ink-s paper" cx="194" cy="185" r="8.5" /><text class="dba-bn" x="194" y="185">3</text>
+        </g>
+      </svg>
+      <span class="dba-arr"></span>
+      <svg class="dba-pages fig-part" data-feeds="react rhf query" viewBox="0 0 150 176">
+        {[[36, 4], [21, 22]].map(([x, y]) => <>
+          <rect class="ink-s paper" x={x} y={y} width="112" height="130" />
+          <rect class="head" x={x} y={y} width="112" height="18" />
+          <path class="ink-s thin" d={`M${x} ${y + 18}H${x + 112}`} />
+          <rect class="ink-f" x={x + 5} y={y + 7} width="34" height="4" />
+          <rect class="spot-f" x={x + 89} y={y + 7} width="18" height="4" />
+        </>)}
+        <rect class="ink-s paper" x="6" y="40" width="112" height="130" />
+        <rect class="head" x="6" y="40" width="112" height="18" />
+        <path class="ink-s thin" d="M6 58H118" />
+        <rect class="ink-f" x="11" y="47" width="42" height="4" />
+        <rect class="spot-f" x="95" y="47" width="18" height="4" />
+        {[64, 78].map(y => [[11, 46], [63, 50]].map(([x, w]) => <>
+          <rect class="ink-s hair" x={x} y={y} width={w} height="8" rx="1.5" />
+          <rect class="paper" x={x + 2} y={y - 1} width="14" height="2" />
+          <rect class="ink-f" x={x + 2.5} y={y - .6} width="12" height="1.4" />
+          <rect class="ink-f" x={x + 3} y={y + 3.2} width={w * .55} height="1.8" opacity=".7" />
+        </>))}
+        <rect class="ink-s hair" x="11" y="92" width="102" height="8" rx="1.5" />
+        <rect class="ink-f" x="14" y="95.2" width="40" height="1.8" opacity=".7" />
+        <path class="ink-s hair" d="M104 94.6l2.5 2.5l2.5 -2.5" />
+        <rect class="ink-s hair" x="11" y="105" width="6" height="6" />
+        <path class="ink-s thin" d="M12.2 108l1.7 1.7l2.8 -3.4" />
+        <rect class="ink-f" x="21" y="107.2" width="34" height="1.8" opacity=".7" />
+        <rect class="ink-s hair" x="11" y="116" width="102" height="20" rx="1.5" />
+        {[120.5, 124.5, 128.5].map((y, i) => <rect class="ink-f" x="14" y={y} width={[88, 80, 52][i]} height="1.6" opacity=".55" />)}
+        <path class="ink-s hair" d="M6 144H118" />
+        <rect class="ink-s hair" x="70" y="151" width="22" height="10" rx="1.5" />
+        <rect class="spot-f" x="96" y="151" width="18" height="10" rx="1.5" />
+      </svg>
+    </div>
+    <div class="dba-pat-cap">
+      <ol class="dba-legend">
+        <li class="fig-part" data-feeds="query"><b>1</b><span><strong>Record.</strong> Loaded and saved through TanStack Query</span></li>
+        <li class="fig-part" data-feeds="rhf"><b>2</b><span><strong>Fields.</strong> Values, checks and unsaved changes in React Hook Form</span></li>
+        <li class="fig-part" data-feeds="react"><b>3</b><span><strong>Actions.</strong> The same bar on every page</span></li>
+      </ol>
+      <p class="dba-x dba-stack-x fig-part" data-feeds="react rhf query">Every complex form page in the tool is cut from the one pattern; only its fields change</p>
+    </div>
+  </figure>
+
+  <figure class="dba-doc">
+    <figcaption class="fig">Fig. {n}.3 · Documentation, from none</figcaption>
+    <svg viewBox="0 0 330 112" role="img" aria-label="Where the old application had no documentation at all, an empty dashed frame, there is now a Docusaurus site: a sidebar of pages, an article with headings and code, and a link to the next page.">
+      <g class="fig-part" data-feeds="docs cpp">
+        <rect class="ghost-s dash" x="14" y="12" width="60" height="72" />
+        <text class="dba-sm ghost" x="44" y="104" text-anchor="middle">No docs before</text>
+      </g>
+      <path class="ink-s" d="M86 48H102" />
+      <path class="ink-f" d="M100 42L110 48L100 54Z" />
+      <g class="fig-part" data-feeds="docs">
+        <rect class="ink-s paper" x="118" y="4" width="208" height="86" rx="3" />
+        <rect class="head" x="118" y="4" width="208" height="12" />
+        <path class="ink-s thin" d="M118 16H326" />
+        <rect class="spot-f" x="123" y="7" width="6" height="6" rx="1" />
+        <rect class="ink-f" x="133" y="8.8" width="26" height="2.6" />
+        <rect class="ink-f" x="166" y="8.8" width="16" height="2.4" opacity=".6" />
+        <rect class="ink-s hair paper" x="282" y="7" width="38" height="6" rx="3" />
+        <path class="ink-s hair" d="M164 16V90" />
+        {[23, 31, 39, 47, 55, 63].map((y, i) => i === 2
+          ? <><rect class="head" x="121" y={y - 2.5} width="40" height="7" /><rect class="spot-f" x="121" y={y - 2.5} width="2" height="7" /><rect class="ink-f" x="126" y={y} width="28" height="2.4" /></>
+          : <rect class="ink-f" x="126" y={y} width={[24, 30, 0, 26, 22, 28][i]} height="2.2" opacity=".6" />)}
+        <rect class="ink-f" x="172" y="23" width="72" height="6" />
+        {[35, 40, 45].map((y, i) => <rect class="ink-f" x="172" y={y} width={[140, 128, 96][i]} height="2" opacity=".55" />)}
+        <rect class="head" x="172" y="52" width="140" height="20" />
+        {[57, 62, 67].map((y, i) => <rect class="ink-f" x="177" y={y} width={[52, 74, 40][i]} height="2" opacity=".75" />)}
+        <rect class="ink-s hair" x="256" y="77" width="56" height="9" />
+        <rect class="ink-f" x="262" y="80.6" width="30" height="2" />
+        <path class="ink-s hair" d="M302 79.5l2.5 2l-2.5 2" />
+        <text class="dba-sm" x="222" y="104" text-anchor="middle">Docusaurus site</text>
+      </g>
+    </svg>
+  </figure>
+</figure>

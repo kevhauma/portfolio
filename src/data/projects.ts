@@ -156,25 +156,26 @@ export const projects: Project[] = [
     title: 'DBA tool', client: 'ArCom', start: '2023-07', end: '2024-07', role: 'Full-stack developer', team: '1–3',
     line: 'A legacy C++ application rebuilt for the web, without its source code',
     summary: [
-      'A web-based DBA tool replacing a legacy C++ application. There was no source code: the old application was reverse-engineered from the outside.',
-      'Largely solo, Kevin built it as a tabbed interface on shared page abstractions, with a lot of state to keep straight.'
+      'A web-based DBA tool replacing a legacy C++ application, on the same database. There was no source code: the old application was reverse-engineered from the outside.',
+      'Largely solo and full stack, Kevin replaced its nested menu with a tab interface simulated inside the page, built every complex form page on one shared abstraction, and wrote the documentation the old application never had.'
     ],
-    figure: 'Old application, new tool',
+    figure: 'Same database, new tool',
     keys: [
       { id: 'cpp', code: 'S', label: 'C++ desktop application, no source', legacy: true },
       { id: 'react', code: 'U', label: 'React · TypeScript · MUI' },
       { id: 'query', code: 'R', label: 'TanStack Query' },
       { id: 'rhf', code: 'Y', label: 'React Hook Form' },
-      { id: 'net', code: 'B', label: '.NET · MSSQL' },
+      { id: 'net', code: 'B', label: '.NET' },
+      { id: 'sql', code: 'N', label: 'MSSQL, the existing database' },
       { id: 'docs', code: 'G', label: 'Docusaurus' }
     ],
     parts: [
       { id: 'old', title: 'Legacy application', text: 'Its behaviour, read from the outside', feeds: ['cpp'], legacy: true },
-      { id: 'tabs', title: 'Tabbed workspace', text: 'A tabbed interface holding a lot of state', feeds: ['react'] },
-      { id: 'pages', title: 'Shared page abstractions', text: 'One way to build a page, reused across the tool', feeds: ['react', 'rhf'] },
-      { id: 'state', title: 'Server state', text: 'Caching and refetching against the back end', feeds: ['query'] },
-      { id: 'api', title: 'Back end', text: '.NET and MSSQL', feeds: ['net'] },
-      { id: 'docs', title: 'Documentation', text: 'A Docusaurus site for the tool', feeds: ['docs'] }
+      { id: 'tabs', title: 'Simulated tabs', text: 'Screens open as tabs inside the page, each holding its own state; the old application had only a nested menu', feeds: ['react'] },
+      { id: 'pages', title: 'Form page abstraction', text: 'One way to build a complex form page, reused across the tool', feeds: ['react', 'rhf', 'query'] },
+      { id: 'api', title: 'Back end', text: '.NET', feeds: ['net'] },
+      { id: 'db', title: 'Database', text: 'The same MSSQL database, kept', feeds: ['sql'] },
+      { id: 'docs', title: 'Documentation', text: 'A Docusaurus site, where the old application had none', feeds: ['docs'] }
     ],
     notes: ['As a Zinderlabs consultant at Rekencentra, on a project for ArCom.']
   },

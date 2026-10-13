@@ -329,17 +329,17 @@ body:has(.desk) { background: #3A2314; }
 .cut { container: fig / inline-size; position: relative; z-index: 2; margin: 0; padding-bottom: 40px; }
 .cut .fig-t { margin-bottom: 8px; }
 .cut svg { display: block; overflow: visible; }
-:is(.cut, .yard, .km) .ink-s { fill: none; stroke: var(--pi); stroke-width: 1.6; }
-:is(.cut, .yard, .km) .thin { stroke-width: 1.1; }
-:is(.cut, .yard, .km) .hair { stroke-width: .7; }
-:is(.cut, .yard, .km) .faint { stroke-width: .6; opacity: .34; }
-:is(.cut, .yard, .km) .ink-f { fill: var(--pi); }
-:is(.cut, .yard, .km) .spot-f { fill: var(--spot); }
-:is(.cut, .yard, .km) .spot-s { fill: none; stroke: var(--spot); stroke-width: 1.7; }
-:is(.cut, .yard, .km) .head { fill: rgb(19 37 79 / .16); }
-:is(.cut, .yard, .km) .lid { fill: rgb(19 37 79 / .1); }
-:is(.cut, .yard, .km) .paper { fill: var(--paper); }
-:is(.cut, .yard, .km) .paper-s { fill: none; stroke: var(--paper); stroke-width: 2.2; }
+:is(.cut, .yard, .km, .dba) .ink-s { fill: none; stroke: var(--pi); stroke-width: 1.6; }
+:is(.cut, .yard, .km, .dba) .thin { stroke-width: 1.1; }
+:is(.cut, .yard, .km, .dba) .hair { stroke-width: .7; }
+:is(.cut, .yard, .km, .dba) .faint { stroke-width: .6; opacity: .34; }
+:is(.cut, .yard, .km, .dba) .ink-f { fill: var(--pi); }
+:is(.cut, .yard, .km, .dba) .spot-f { fill: var(--spot); }
+:is(.cut, .yard, .km, .dba) .spot-s { fill: none; stroke: var(--spot); stroke-width: 1.7; }
+:is(.cut, .yard, .km, .dba) .head { fill: rgb(19 37 79 / .16); }
+:is(.cut, .yard, .km, .dba) .lid { fill: rgb(19 37 79 / .1); }
+:is(.cut, .yard, .km, .dba) .paper { fill: var(--paper); }
+:is(.cut, .yard, .km, .dba) .paper-s { fill: none; stroke: var(--paper); stroke-width: 2.2; }
 .cut .node { fill: var(--paper); stroke: var(--pi); stroke-width: 1.5; }
 .cut .node.dropped { stroke: var(--ghost); stroke-dasharray: 2.4 2; }
 .cut .node.win { fill: var(--spot); }
@@ -671,6 +671,131 @@ body:has(.desk) { background: #3A2314; }
 }
 @media (prefers-reduced-motion: reduce) {
   .km *, .km *::before { transition: none !important; }
+}
+
+/* ---------- a drawn figure: the DBA tool, traced off the C++ application onto the same database (DbaRebuild.astro) ---------- */
+.dba {
+  --arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 12'%3E%3Cpath d='M2 6H16' stroke='black' stroke-width='2'/%3E%3Cpath d='M14 1 23 6 14 11Z'/%3E%3C/svg%3E");
+  container: dba / inline-size; position: relative; z-index: 2; margin: 0;
+}
+.dba .fig-t { margin-bottom: 0; }
+.dba .fig-part { transition: opacity .16s var(--ease); }
+.dba .dash { stroke-dasharray: 5 4; }
+.dba .dash-s { stroke-width: 1.2; stroke-dasharray: 3 2.5; }
+.dba .ghost-s { fill: none; stroke: var(--ghost); stroke-width: 1.6; }
+.dba .ghost-s.thin { stroke-width: 1.1; }
+.dba .ghost-s.hair { stroke-width: .7; }
+.dba .ghost-s.paper { fill: var(--paper); }
+.dba .ghost-f { fill: var(--ghost); }
+
+/* Fig. 4.1, a projection drawing: the old window over the new one, the stack under it, the labels down the right */
+.dba-grid {
+  --gap: 22px; --gut: 16px;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--gut) minmax(0, 1fr) 30px minmax(0, 10.5rem);
+  grid-template-rows: auto auto auto var(--gap) auto var(--gap) auto;
+  grid-template-areas:
+    ". old . oldl"
+    ". tr  . newl"
+    ". new b1 newl"
+    ". s1  b1 ."
+    ". api b1 apil"
+    ". s2  .  ."
+    ". db  b2 dbl";
+  margin-top: 22px;
+}
+.dba-win { display: block; width: 100%; height: auto; overflow: visible; align-self: start; }
+.dba-old { grid-area: old; }
+.dba-new { grid-area: new; position: relative; z-index: 1; }
+.dba-l { display: flex; flex-direction: column; gap: 4px; margin: 0; align-self: center; }
+.dba-oldl { grid-area: oldl; }
+.dba-newl { grid-area: newl; }
+.dba-apil { grid-area: apil; }
+.dba-dbl { grid-area: dbl; align-self: start; padding-top: 8px; }
+.dba-n { font: 800 1rem/1 var(--m-head); font-stretch: 74%; letter-spacing: .01em; text-transform: uppercase; }
+.dba-n.ghost { color: #5B636D; }
+.dba-x { font-size: .8125rem; line-height: 1.35; color: var(--pi-2); text-wrap: pretty; }
+
+/* the trace: every feature dropped straight from the old window onto the new one */
+.dba-tr { grid-area: tr; position: relative; }
+.dba-tr svg { display: block; width: 100%; height: auto; overflow: visible; }
+.dba-tag { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%); padding: 3px 7px 2px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--spot); color: var(--spot-ink); font: 800 .6875rem/1 var(--m-head); font-stretch: 80%; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+
+/* the rest of the stack, on one lead down the middle */
+.dba-api, .dba-db { display: block; height: auto; overflow: visible; justify-self: center; }
+.dba-api { grid-area: api; width: 96px; }
+.dba-db { grid-area: db; width: 60px; align-self: start; }
+.dba-ln { justify-self: center; width: 3px; background: var(--pi); }
+.dba-s1 { grid-area: s1; }
+.dba-s2 { grid-area: s2; }
+
+/* the C++ application's old lead to the database: ghosted, and broken. It leaves the old window halfway
+   down (its height is 150/280 of its width, so half of that as a share of the width) and lands halfway
+   down the drum */
+.dba-was { grid-column: old; grid-row: old-start / db-start; justify-self: start; position: relative; width: calc(50% - 16px); margin: 26.79% 0 -33px -10px; border: 0 dashed var(--ghost); border-width: 0 0 1.6px 1.6px; pointer-events: none; }
+.dba-was::before { content: ""; position: absolute; left: 0; top: -.8px; width: 10px; border-top: 1.6px dashed var(--ghost); }
+.dba-brk { position: absolute; left: -7px; top: 50%; width: 12.6px; height: 12px; background: var(--paper); }
+.dba-brk::before, .dba-brk::after { content: ""; position: absolute; left: -2px; right: -2px; height: 1.6px; background: var(--ghost); transform: rotate(-24deg); }
+.dba-brk::before { top: 1px; }
+.dba-brk::after { bottom: 1px; }
+
+/* the brackets: built new, full stack; and kept */
+.dba-bk { position: relative; justify-self: start; width: 9px; margin-left: 8px; border: 2px solid var(--pi); border-left: 0; }
+.dba-built { grid-area: b1; }
+.dba-kept { grid-area: b2; height: 66px; align-self: start; }
+.dba-bk span { position: absolute; left: 100%; top: 50%; margin-left: -1px; padding: 6px 2px; transform: translate(-50%, -50%) rotate(180deg); writing-mode: vertical-rl; background: var(--paper); font: 800 .6875rem/1 var(--m-head); font-stretch: 80%; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+
+/* Fig. 4.2: the pattern every form page is cut from */
+.dba-pat, .dba-doc { margin: 34px 0 0; }
+.dba-pat-grid, .dba-pat-cap { display: grid; grid-template-columns: minmax(0, 1.2fr) 34px minmax(0, .88fr); }
+.dba-pat-grid { align-items: center; margin-top: 16px; }
+.dba-pattern, .dba-pages { display: block; width: 100%; height: auto; overflow: visible; }
+.dba-arr { height: 12px; margin: 0 6px; background: var(--pi); mask: var(--arrow) center / 100% 100% no-repeat; }
+.dba-bn { font: 700 10px/1 var(--mono); text-anchor: middle; dominant-baseline: central; fill: var(--pi); }
+.dba-pat-cap { margin-top: 14px; }
+.dba-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.dba-legend li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: start; font-size: .8125rem; line-height: 1.35; color: var(--pi-2); }
+.dba-legend b { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1.2px var(--pi); font: 700 .625rem/1 var(--mono); color: var(--pi); }
+.dba-legend strong { font-weight: 650; color: var(--pi); }
+.dba-stack-x { grid-column: 3; margin: 0; }
+
+/* Fig. 4.3: the documentation */
+.dba-doc svg { display: block; width: 100%; max-width: 440px; height: auto; margin-top: 12px; overflow: visible; }
+.dba-sm { font: 600 10px/1 var(--mono); letter-spacing: .05em; text-transform: uppercase; fill: var(--pi-2); }
+.dba-sm.ghost { fill: #5B636D; }
+
+/* a narrow figure: the labels go under the windows and beside the back end and the drum, and the lead runs down the left */
+@container dba (max-width: 440px) {
+  .dba-grid {
+    grid-template-columns: var(--gut) auto minmax(0, 1fr) 30px;
+    grid-template-rows: auto auto auto auto auto var(--gap) auto var(--gap) auto;
+    grid-template-areas:
+      ". oldl oldl ."
+      ". old  old  ."
+      ". tr   tr   ."
+      ". new  new  b1"
+      ". newl newl b1"
+      ". s1   s1   b1"
+      ". api  apil b1"
+      ". s2   s2   ."
+      ". db   dbl  b2";
+  }
+  .dba-oldl { margin-bottom: 12px; }
+  .dba-newl { margin-top: 12px; padding-left: 30px; }
+  .dba-apil, .dba-dbl { padding-left: 14px; }
+  .dba-api, .dba-db, .dba-ln { justify-self: start; }
+  .dba-ln { margin-left: 13px; }
+  .dba-s1 { grid-row: newl-start / s1-end; }
+  .dba-was { width: 14px; }
+  .dba-pat-cap { grid-template-columns: 1fr; row-gap: 10px; }
+  /* the balloons stay readable on a small drawing */
+  .dba-pattern circle { r: 11px; }
+  .dba-bn { font-size: 13px; }
+  .dba-stack-x { grid-column: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dba .fig-part { transition: none; }
 }
 
 @media (max-width: 1099px) {
