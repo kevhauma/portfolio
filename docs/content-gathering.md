@@ -92,3 +92,7 @@ Everything else is typed into `content-intake.yaml`.
 - **Domain**: none yet. The alias email, deploy target and launch wait on it.
 - **CV**: after launch.
 - **Prints**: later.
+- **Projects desk and pens**: the walnut desk and the pens on the Projects page are drawn in code (procedural texture, vector pens) and read as imitation. Either allow a sourced CC0 walnut photo and pen cut-outs, or keep them as they are.
+- **CommonGround or CommonGrounds**: the page uses "CommonGround" (the repo and GitHub org name); the intake key and the Projects brief say "CommonGrounds". Pick one and every source gets aligned.
+- **Quackbot years**: the page shows 2017–2020 from the intake, but the public repo was created in 2021. Confirm the years.
+- **DESIGN.md for Projects**: once the two Projects items above are settled, DESIGN.md gets the Projects page's own look (paper, desk, Archivo) alongside the livery.
