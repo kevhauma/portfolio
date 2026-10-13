@@ -1,10 +1,7 @@
 ---
-import '@fontsource-variable/anybody/standard.css';
-import '@fontsource-variable/anybody/standard-italic.css';
 import '@fontsource-variable/hanken-grotesk/wght.css';
 import '@fontsource-variable/jetbrains-mono/wght.css';
 import '../styles/livery.css';
-import anybodyItalic from '@fontsource-variable/anybody/files/anybody-latin-standard-italic.woff2?url';
 import Fan from '../components/Fan.astro';
 import Pit from '../components/Pit.astro';
 import { sections } from '../data/site';
@@ -30,7 +27,7 @@ const current = sections.find(s => s.n === sec)!;
 <meta name="theme-color" content="#F7F8FA" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#071229" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preload" href={anybodyItalic} as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sakana.woff" as="font" type="font/woff" crossorigin>
 <script is:inline define:vars={{ arrival }}>
 (() => {
   const root = document.documentElement;

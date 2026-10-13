@@ -34,7 +34,7 @@ if (!root.classList.contains('raw')) {
 
   const fontsReady = Promise.race([
     Promise.all([
-      document.fonts.load('900 italic 100px "Anybody Variable"', 'KEVIN'),
+      document.fonts.load('italic 100px Sakana', 'KEVIN'),
       document.fonts.load('500 16px "Hanken Grotesk Variable"')
     ]),
     wait(900)

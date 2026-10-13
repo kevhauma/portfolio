@@ -14,26 +14,26 @@ colors:
   ink-secondary-night: "#B8C3DA"
 typography:
   display:
-    fontFamily: "'Anybody Variable', 'Arial Narrow', sans-serif"
-    fontSize: "calc(min(1vw, 1.62svh) * 12.4)"
-    fontWeight: 900
+    fontFamily: "'Sakana', 'Hanken Grotesk Variable', sans-serif"
+    fontSize: "calc(min(1vw, 1.62svh) * 16)"
+    fontWeight: 400
+    fontStyle: italic
     lineHeight: 0.8
     letterSpacing: "-0.035em"
-    fontVariation: "'wdth' 150"
   headline:
-    fontFamily: "'Anybody Variable', 'Arial Narrow', sans-serif"
+    fontFamily: "'Sakana', 'Hanken Grotesk Variable', sans-serif"
     fontSize: "clamp(2.75rem, 5.5vw, 5.5rem)"
-    fontWeight: 900
+    fontWeight: 400
+    fontStyle: italic
     lineHeight: 0.86
     letterSpacing: "-0.03em"
-    fontVariation: "'wdth' 135"
   title:
-    fontFamily: "'Anybody Variable', 'Arial Narrow', sans-serif"
+    fontFamily: "'Sakana', 'Hanken Grotesk Variable', sans-serif"
     fontSize: "clamp(1.125rem, 2vw, 1.75rem)"
-    fontWeight: 800
+    fontWeight: 400
+    fontStyle: italic
     lineHeight: 1.05
     letterSpacing: "0.02em"
-    fontVariation: "'wdth' 115"
   body:
     fontFamily: "'Hanken Grotesk Variable', system-ui, sans-serif"
     fontSize: "1.0625rem"
@@ -41,12 +41,12 @@ typography:
     lineHeight: 1.55
     letterSpacing: "normal"
   label:
-    fontFamily: "'Anybody Variable', 'Arial Narrow', sans-serif"
+    fontFamily: "'Sakana', 'Hanken Grotesk Variable', sans-serif"
     fontSize: "0.75rem"
-    fontWeight: 800
+    fontWeight: 400
+    fontStyle: italic
     lineHeight: 1
     letterSpacing: "0.07em"
-    fontVariation: "'wdth' 118"
   mono:
     fontFamily: "'JetBrains Mono Variable', ui-monospace, monospace"
     fontSize: "0.6875rem"
@@ -125,14 +125,14 @@ components:
 
 Every page is a sheet in a race-livery decal kit. The ground is a white backing liner printed with a faint wordmark raked at 14 degrees; the content sits on it as die-cut vinyl decals in navy, Castrol red, Castrol green, white and carbon black, each inside a dashed plotter cut line. The system is proof by construction: the craft is in how precisely the kit is cut, set and printed.
 
-Lettering is all Anybody, black italic and wide, the way race numbers and sponsor names are cut. Body copy is Hanken Grotesk, set plainly; JetBrains Mono is reserved for what a plotter or a compiler would print (sheet print, labels, spec terms). Density is poster-scale on the intro sheet and editorial on stub and kit panels. One geometric law governs everything: the rake. Stripes, LEDs, the page wipe, the masking tape and the kit ladder all lean at 14 degrees (tan 0.2493).
+Lettering is all Sakana, a single-weight racing face slanted onto the rake, the way race numbers and sponsor names are cut. Body copy is Hanken Grotesk, set plainly; JetBrains Mono is reserved for what a plotter or a compiler would print (sheet print, labels, spec terms). Density is poster-scale on the intro sheet and editorial on stub and kit panels. One geometric law governs everything: the rake. Stripes, LEDs, the page wipe, the masking tape and the kit ladder all lean at 14 degrees (tan 0.2493).
 
 Motion is earned and visitor-owned: one arrival per visit (raw HTML, masking tape snaps at the rake, paint fills), then only visitor-triggered motion. Page switches pass through a raked paint wipe under 600ms. Reduced motion makes all of it instant. A recruiter mode (the pit limiter) replaces the livery with one plain, complete page.
 
 **Key Characteristics:**
 - White backing sheet, raked liner wordmark, dashed cut lines and registration marks.
 - Flat vinyl colour fields with square die-cut corners; the only round shapes are the roundel and the number bubble.
-- Anybody black italic at extreme widths for every piece of lettering; Hanken Grotesk for reading; mono only for print.
+- Sakana, slanted to the rake, for every piece of lettering; Hanken Grotesk for reading; mono only for print.
 - Everything leans at 14 degrees.
 - Night race theme: the same livery under floodlights on deep navy.
 
@@ -168,23 +168,23 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 
 ## Typography
 
-**Display Font:** Anybody Variable (with Arial Narrow fallback)
+**Display Font:** Sakana, self-hosted from `public/fonts/sakana.woff` (Hanken Grotesk fallback, which also supplies the middle dot Sakana lacks). 1001fonts personal-use licence.
 **Body Font:** Hanken Grotesk Variable (with system-ui)
 **Label/Mono Font:** JetBrains Mono Variable (with ui-monospace)
 
-**Character:** Anybody's width axis is the livery's cutting knife: the same family runs from condensed (60%) to ultra-wide (150%), black italic, so a sheet of decals reads as one sponsor set with different cuts. Hanken Grotesk is the quiet reading face beside it.
+**Character:** Sakana is one cut, one weight, with its own 8-degree lean. Display rules ask for italic and the browser adds a 14-degree oblique on top (`font-synthesis: style` on the root), so lettering sits on the rake; weight is never synthesised (no `weight` in `font-synthesis`), so 800/900 in the CSS render Sakana's true weight. A sheet of decals reads as one sponsor set; variety comes from size and colour. Hanken Grotesk is the quiet reading face beside it.
 
 ### Hierarchy
-- **Display** (900 italic, width 150%, 12.4 sheet units on desktop / 17.4-19.5vw on phones, line-height 0.8, uppercase): the name decal only.
-- **Race number** (900 italic, width 125%, letter-spacing -0.04 to -0.05em, tabular): the roundel, the stub-sheet number, the bubble.
-- **Headline** (900 italic, width 130-135%, clamp(2.75rem, 5.5vw, 5.5rem), line-height 0.86, uppercase): stub-sheet titles (up to 8.5rem) and the kit panel heading.
-- **Title** (800 italic, width 112-115%, clamp(1.125rem, 2vw, 1.75rem), line-height 1.05, uppercase): kit ladder and fan entries, with a Hanken 500 sub-line in sentence case.
+- **Display** (italic, 16 sheet units on desktop / 22.4vw on phones, line-height 0.8, uppercase): the name decal only.
+- **Race number** (italic, letter-spacing -0.04 to -0.05em, tabular): the roundel, the stub-sheet number, the bubble.
+- **Headline** (italic, clamp(2.75rem, 5.5vw, 5.5rem), line-height 0.86, uppercase): stub-sheet titles (up to 8.5rem) and the kit panel heading.
+- **Title** (italic, clamp(1.125rem, 2vw, 1.75rem), line-height 1.05, uppercase): kit ladder and fan entries, with a Hanken 500 sub-line in sentence case.
 - **Body** (Hanken 400, 1.0625rem, line-height 1.55): reading copy; ledes 500 at up to 1.25rem/1.45. Measure 46-68ch.
-- **Label** (Anybody 800, width 118%, 0.75rem, letter-spacing 0.07em, uppercase): the display switches.
+- **Label** (Sakana italic, 0.75rem, letter-spacing 0.07em, uppercase): the display switches.
 - **Mono** (JetBrains 600, 0.6875rem, letter-spacing 0.03-0.04em, uppercase for print): sheet print, stack label, kit footer, spec terms.
 
 ### Named Rules
-**The One Family Rule.** All lettering (names, numbers, titles, switches, stack decals) is Anybody; variety comes from width, weight and italic, never from a second display face.
+**The One Family Rule.** All lettering (names, numbers, titles, switches, stack decals) is Sakana; variety comes from size, colour and case, never from a second display face.
 
 **The Print Rule.** Mono appears only where a machine would print: component names, dimensions, sheet print and plate footers. It is never a decorative label above a heading.
 
@@ -221,7 +221,7 @@ Die-cut vinyl in its slot, the unit of the whole system.
 - **Tones:** one of the six vinyl tones; white decals carry an inset navy outline (2px, scaling with the sheet).
 
 ### Buttons
-- **Display switch:** Anybody label in a skewed ground-coloured parallelogram with floating-chrome shadow, 44px tall, a skewed 20 by 8px LED (primer off, red with an ink hairline when pressed). Hover lifts 2px; active presses 1px.
+- **Display switch:** Sakana label in a skewed ground-coloured parallelogram with floating-chrome shadow, 44px tall, a skewed 20 by 8px LED (primer off, red with an ink hairline when pressed). Hover lifts 2px; active presses 1px.
 - **Number bubble:** 72px navy circle (64px on phones), race number in black italic, with a 6px conic ring that fills red as sheets are visited (striped red/primer in pit-limiter mode). Inverts to white on navy at night. Scales to 1.06 on hover.
 - **Pit button:** ink on ground, 2px corner, 44px tall, 700 weight. Disabled is primer grey with navy text.
 
@@ -241,7 +241,7 @@ A sheet masked off but not yet painted: a headline decal, a race-number decal, a
 ### Do:
 - **Do** lean every stripe, bar, wipe and slanted edge at the 14-degree rake (tan 0.2493); derive offsets from it rather than eyeballing.
 - **Do** build new content as decals: one of the six vinyl tones, square corners, a dashed cut line, and a primer underside naming the component that renders it.
-- **Do** set all lettering in Anybody and vary only width (60-150%), weight (800-900) and italic.
+- **Do** set all lettering in Sakana italic and vary size, colour and case; never fake a bold.
 - **Do** keep night race to a ground and ink swap; vinyl colours stay the same.
 - **Do** give every hover interaction a tap and keyboard equivalent, and make every motion instant under reduced motion.
 - **Do** keep the pit limiter a plain Hanken document with the complete facts.
