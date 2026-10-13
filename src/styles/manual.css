@@ -313,7 +313,9 @@ body:has(.desk) { background: #3A2314; }
 .flow li:not(:last-child)::after { content: ""; position: absolute; right: 7px; top: 50%; width: 12px; height: 2px; background: var(--pi); }
 .flow li:not(:last-child)::before { content: ""; position: absolute; right: 3px; top: calc(50% - 4px); width: 7px; height: 10px; background: var(--pi); clip-path: polygon(0 0, 100% 50%, 0 100%); }
 
-.notes { margin-top: 30px; }
+/* the notes sit at the foot of the right page, just above the page turn */
+.notes { margin-top: auto; padding-top: 30px; }
+.notes + .turn { margin-top: 0; }
 .notes ul { list-style: none; margin: 10px 0 0; padding: 0; border-top: 1.5px solid var(--pi); }
 .notes li { padding: 8px 0 8px 18px; border-bottom: 1px solid var(--rule); font-size: .875rem; position: relative; }
 .notes li::before { content: ""; position: absolute; left: 2px; top: 15px; width: 7px; height: 7px; background: var(--pi); }
