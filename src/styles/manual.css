@@ -108,6 +108,7 @@ body:has(.desk) { background: #3A2314; }
 .wiring { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: visible; }
 .wiring path { fill: none; stroke-linejoin: miter; stroke-linecap: square; }
 .wiring g.w { transition: opacity .16s var(--ease); }
+.wiring .loom-head { fill: var(--paper); stroke: var(--pi); stroke-width: 2; }
 .wiring .sleeve { fill: rgb(19 37 79 / .16); stroke: var(--pi); stroke-width: 1.5; stroke-dasharray: 5 4; }
 .spread[data-hot] .wiring g.w:not(.hot) { opacity: .14; }
 
@@ -142,6 +143,7 @@ body:has(.desk) { background: #3A2314; }
 .ct-intro { grid-area: in; margin: 18px 10px 16px; }
 .ct-intro .mh { font-size: clamp(3rem, 5.4vw, 4.75rem); font-stretch: 66%; }
 .ct-intro p { margin: 10px 0 0; max-width: 62ch; font-size: .9375rem; }
+.fig-m { display: none; }
 .ct-legend { grid-area: lg; align-self: end; margin: 18px 10px 16px; max-width: 40ch; font-size: .875rem; color: var(--pi-2); }
 .contents .foot-l { grid-area: fl; margin: 18px 10px 0; }
 .contents .foot-r { grid-area: fr; margin: 18px 10px 0; text-align: right; }
@@ -284,6 +286,11 @@ body:has(.desk) { background: #3A2314; }
   .ct-legend { margin: 0 10px 8px; align-self: start; }
   .loom-tag { display: none; }
   .con, .fuses { margin: 0 0 0 4px; align-self: stretch; }
+  .loom-src { display: none; }
+  .fig-m { display: block; margin-bottom: 6px; }
+  .fuse-list a { column-gap: 12px; }
+  .fz-c { display: block; white-space: normal; }
+  .fz-c .warn { display: inline-block; vertical-align: -2px; margin-right: 4px; }
   .lead .con-t { font-size: 1.875rem; white-space: nowrap; }
   .con .pin, .fuses .pin { display: none; }
   .fuse-list { grid-template-columns: 1fr; }
@@ -303,10 +310,9 @@ body:has(.desk) { background: #3A2314; }
   .fig-t { margin-top: 10px; }
 
   .thumbs { top: 0; bottom: auto; left: 22px; right: 22px; }
-  .thumbs a { padding-right: 0; flex-direction: column-reverse; justify-content: flex-start; gap: 6px; }
   .thumbs ol { flex-direction: row; height: auto; gap: 4px; }
   .thumbs li { flex: 1; max-height: none; max-width: 52px; }
-  .thumbs a { width: 100%; height: 44px; align-items: flex-end; padding: 0 0 7px; font-size: 1.125rem; }
+  .thumbs a { width: 100%; height: 44px; padding: 0 0 6px; flex-direction: column; justify-content: flex-end; align-items: center; gap: 5px; font-size: 1.125rem; }
 }
 @media (max-width: 520px) {
   .ch-head { flex-direction: column; align-items: flex-start; gap: 8px; }

@@ -98,12 +98,20 @@ function harness(spread: HTMLElement) {
       /* phone: the loom runs down the left edge; the wire that leaves first sits on the right */
       const lanes = [...ends].sort((a, b) => b.box.y - a.box.y);
       const left = L.x + L.w / 2 - ((lanes.length - 1) * GAP) / 2;
-      const y0 = L.y + 4;
+      const y0 = L.y + 14;
+      /* the loom's head: a terminal block the wires leave from */
+      const head = document.createElementNS(SVG, 'rect');
+      head.setAttribute('x', String(left - 7));
+      head.setAttribute('y', String(L.y));
+      head.setAttribute('width', String((lanes.length - 1) * GAP + 14));
+      head.setAttribute('height', '14');
+      head.setAttribute('class', 'loom-head');
       lanes.forEach((e, i) => {
         const x = left + i * GAP;
         const y = e.box.y + 26;
         wire(svg, `M${x} ${y0} V${y} H${e.box.x}`, e.colour, { key: e.id, width: 3.5 });
       });
+      svg.append(head);
     }
     hot(current);
   }
