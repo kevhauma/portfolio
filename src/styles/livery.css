@@ -154,6 +154,7 @@ img, svg { display: block; }
 .pit-lede { font-size: 1.25rem; line-height: 1.45; margin: 0 0 8px; max-width: 42ch; }
 .pit h2 { font: 750 1.25rem/1.2 var(--body); letter-spacing: -.01em; margin: 64px 0 16px; scroll-margin-top: 96px; }
 .pit p { margin: 0 0 12px; max-width: 68ch; }
+.pit-sub { font: 700 1rem/1.3 var(--body); margin: 32px 0 4px; color: var(--ink-2); }
 .pit ul, .pit ol { list-style: none; padding: 0; margin: 0; }
 .pit-rows li { display: grid; grid-template-columns: 8.5rem 1fr; gap: 2px 24px; padding: 12px 0; }
 .pit-rows .when { font-variant-numeric: tabular-nums; color: var(--ink-2); }

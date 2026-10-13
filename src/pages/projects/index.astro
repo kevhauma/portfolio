@@ -1,0 +1,80 @@
+---
+/* 02 Projects: the workshop manual's contents spread. Fig. 0.1 wires the six chapters to one loom
+   (own builds above it, customer work below); Fig. 0.2 is the fuse box of the other work. */
+import Livery from '../../layouts/Livery.astro';
+import Desk from '../../components/manual/Desk.astro';
+import { chapters, supplement, projectHref, period, duration, wires } from '../../data/projects';
+
+const byN = Object.fromEntries(chapters.map(c => [c.n, c]));
+/* placement on the spread: area name, and whether the connector hangs above or below the loom */
+const slots: { n: string; area: string; side: 'up' | 'down'; lead?: boolean }[] = [
+  { n: '1', area: 'c1', side: 'up', lead: true },
+  { n: '5', area: 'c5', side: 'up' },
+  { n: '6', area: 'c6', side: 'up' },
+  { n: '2', area: 'c2', side: 'down' },
+  { n: '3', area: 'c3', side: 'down' },
+  { n: '4', area: 'c4', side: 'down' }
+];
+const light = (code: string) => ['W', 'Y', 'S'].includes(code);
+const blade = ['#E2001A', '#2557A7', '#E0A800', '#00843D', '#F4F4F0', '#7E8794', '#16181D'];
+---
+<Livery title="Projects · Kevin" description="Kevin's projects as a workshop manual: six chapters wired to one loom, and a fuse box of the other work." sec="02">
+  <Desk>
+    <div class="spread contents" data-harness>
+      <span class="pg pg-l" aria-hidden="true"></span><span class="pg pg-r" aria-hidden="true"></span>
+
+      <p class="rh rh-l"><span>Contents</span><span>0•1</span></p>
+      <p class="rh rh-r"><span>Fig. 0.1 · Main harness &nbsp;·&nbsp; Fig. 0.2 · Fuse box</span><span>0•2</span></p>
+
+      <header class="ct-intro">
+        <h1 class="mh">Projects</h1>
+        <p>Six builds, one chapter each, and seven smaller jobs in the fuse box. Every page opens on the wiring diagram of how it was built. Pick a connector or a fuse to turn to it.</p>
+      </header>
+      <p class="ct-legend">Own builds hang above the loom, client work below it. Every client job was done as a consultant at Zinderlabs.</p>
+
+      <h2 class="sr">Chapters</h2>
+      {slots.map(s => {
+        const c = byN[s.n];
+        return (
+          <a class:list={['con', `con-${s.side}`, { lead: s.lead }]} style={`grid-area:${s.area};--w:${wires[c.wire!].hex}`} href={projectHref(c)} data-circuit={c.n} data-side={s.side}>
+            <span class:list={['con-strip', { ink: light(c.wire!) }]}><span>Ch {c.n}{c.status === 'Retired' ? ' · retired' : ''}</span><span>{c.n}•1 →</span></span>
+            <span class="con-t">{c.title}</span>
+            <span class="con-m">{c.own ? period(c) : `${c.client} · ${period(c)} · ${duration(c)}`}</span>
+            <span class="con-l">{c.placeholder ?? c.line}</span>
+            <span class="pin" aria-hidden="true"></span>
+          </a>
+        );
+      })}
+
+      <div class="loom"><p class="loom-src"><b>Fig. 0.1</b><span>Main harness</span></p></div>
+
+      <section class="fuses" aria-labelledby="fuse-title" data-circuit="F" style={`--w:${wires.Y.hex}`}>
+        <span class="pin" aria-hidden="true"></span>
+        <h2 id="fuse-title" class="fig">Fig. 0.2 · Fuse box</h2>
+        <p class="fuse-sub">Other work at Zinderlabs</p>
+        <ol class="fuse-list">
+          {supplement.map((f, i) => (
+            <li>
+              <a href={projectHref(f)} data-thumb-target="F">
+                <svg class="blade" viewBox="0 0 16 24" aria-hidden="true"><rect x=".75" y=".75" width="14.5" height="15" rx="1.5" fill={blade[i]} stroke="#13254F" stroke-width="1.5" /><rect x="3" y="15.5" width="3" height="8" fill="#9AA0A8" /><rect x="10" y="15.5" width="3" height="8" fill="#9AA0A8" /></svg>
+                <span class="fz-n">{f.n}</span>
+                <span class="fz-c">{f.nda && <svg class="warn" viewBox="0 0 16 15" role="img" aria-label="Warning: under NDA"><path d="M8 1.2 15 13.8H1Z" fill="#fff" stroke="#E2001A" stroke-width="2" stroke-linejoin="round" /><path d="M8 5.6v3.8M8 11.3v.3" stroke="#13254F" stroke-width="1.8" stroke-linecap="round" /></svg>}{f.nda ? 'Construction (NDA)' : f.client}</span>
+                <span class="fz-d">{duration(f)}</span>
+                <span class="fz-p">{f.line}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <p class="foot foot-l"><span>Kevin's workshop manual</span></p>
+      <p class="foot foot-r"><a href={projectHref(chapters[0])}>Turn to chapter 1 · {chapters[0].title} <span aria-hidden="true">→</span></a></p>
+
+      <svg class="wiring" aria-hidden="true"></svg>
+    </div>
+  </Desk>
+</Livery>
+
+<script>
+  import '../../scripts/wiring';
+</script>

@@ -1,8 +1,0 @@
----
-import StubSheet from '../components/StubSheet.astro';
-import { projects } from '../data/site';
-const plans = projects.map(p => `<a href="${p.href}">${p.name}</a>, ${p.lang}: ${p.d}`);
----
-<StubSheet sec="02" description="Kevin's projects, each shown doing what it does."
-  lede="Six builds, and each one will get its own small interaction here instead of a card. Until then, the plain list:"
-  plans={plans} />

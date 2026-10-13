@@ -180,8 +180,7 @@ work_highlights:
     figures: ~
 
 personal_projects:
-  money_mosaic_v2:
-    demo_url:                  # public demo instance with mock data; to be set up
+  money_mosaic_v2: {}          # no demo (decided 2026-10-13): explained by its wiring diagram
   quackbot:
     still_running: no          # retired (ran 2017–2020), still showcased in Projects
     servers: 1                 # one community of ~2,000 members

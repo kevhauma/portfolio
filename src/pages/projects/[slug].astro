@@ -1,0 +1,117 @@
+---
+/* One page of the manual per project: chapters 1–6 and supplement F1–F7. The left page is the
+   summary and the wiring key (the stack, one wire each); the right page is the figure, with the
+   wires drawn across the gutter into what was built. */
+import Livery from '../../layouts/Livery.astro';
+import Desk from '../../components/manual/Desk.astro';
+import { projects, projectHref, period, duration, wires, type Project } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((p, i) => ({ params: { slug: p.slug }, props: { p, i } }));
+}
+interface Props { p: Project; i: number }
+const { p, i } = Astro.props;
+
+const next = projects[i + 1];
+const prev = projects[i - 1];
+const isCh = p.kind === 'chapter';
+const label = (x: Project) => (x.kind === 'chapter' ? `chapter ${x.n}` : `supplement ${x.n}`);
+const client = p.nda ? 'Construction tech client' : p.client;
+const keyById = Object.fromEntries(p.keys.map(k => [k.id, k]));
+const pageNo = `${p.n}•1`;
+const facts: [string, string][] = [
+  [p.own ? 'Entrant' : 'Client', p.own ? 'Kevin, own build' : client],
+  ...(p.role ? [['Role', p.role] as [string, string]] : []),
+  ['Period', p.own ? period(p) : `${period(p)} · ${duration(p)}`],
+  ...(p.team ? [['Team', p.team] as [string, string]] : []),
+  ...(p.status ? [['Status', p.status] as [string, string]] : [])
+];
+const legacyKeys = p.keys.some(k => k.legacy);
+---
+<Livery title={`${p.nda ? 'Building installation planner' : p.title} · Projects · Kevin`} description={`${p.title}: ${p.line}. A page from Kevin's workshop manual.`} sec="02">
+  <Desk current={p.n}>
+    <article class="spread chapter" data-diagram style={`--lanes:${p.keys.length}`}>
+      <div class="page page-l">
+        <p class="rh"><span>{isCh ? `Chapter ${p.n}` : `Supplement ${p.n}`} · {p.own ? 'Own build' : client}</span><span>{pageNo}</span></p>
+        <header class="ch-head">
+          <p class="ch-n" aria-hidden="true">{p.n}</p>
+          <h1 class="mh">{p.title}</h1>
+        </header>
+        {p.summary.map(s => <p class="ch-sum">{s}</p>)}
+
+        {p.nda && (
+          <aside class="warning" aria-label="Warning">
+            <svg viewBox="0 0 16 15" aria-hidden="true"><path d="M8 1.2 15 13.8H1Z" fill="#fff" stroke="#E2001A" stroke-width="2" stroke-linejoin="round" /><path d="M8 5.6v3.8M8 11.3v.3" stroke="#13254F" stroke-width="1.8" stroke-linecap="round" /></svg>
+            <p><strong>Warning:</strong> client under NDA. The client's name, screens and figures are withheld; the figure shows only the outline of the work.</p>
+          </aside>
+        )}
+
+        <dl class="facts">
+          {facts.map(([k, v]) => <><dt>{k}</dt><dd>{v}</dd></>)}
+        </dl>
+
+        <h2 class="fig">Wiring key</h2>
+        <ul class="key" aria-label="Wiring key: the stack, one wire each. Select a wire to trace its circuit.">
+          {p.keys.map(k => (
+            <li>
+              <button type="button" class:list={['key-row', { legacy: k.legacy }]} data-key={k.id} style={`--w:${wires[k.code].hex}`} aria-pressed="false">
+                <span class="key-code">{k.code}</span>
+                <span class="key-sw" aria-hidden="true"></span>
+                <span class="key-l">{k.label}{k.legacy && <span class="tag">replaced</span>}</span>
+                <span class="key-term" aria-hidden="true"></span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        {legacyKeys && <p class="key-note"><span class="key-sw ghost" aria-hidden="true"></span> Grey dashed: the part that was replaced.</p>}
+      </div>
+
+      <div class="page page-r">
+        <p class="rh"><span>{p.title}</span><span>{p.n}•2</span></p>
+        <h2 class="fig fig-t">Fig. {p.n}.1 · {p.figure}</h2>
+        <ol class="parts">
+          {p.parts.map((pt, j) => (
+            <li class:list={['part', { legacy: pt.legacy }]} data-feeds={pt.feeds.join(' ')} tabindex="0" style={`grid-row:${j + 1};grid-column:${(j % 2) + 1}`}>
+              <span class="part-pins" aria-hidden="true">{pt.feeds.map(f => <i style={`--w:${wires[keyById[f].code].hex}`} data-pin={f}></i>)}</span>
+              <span class:list={['part-t', { cmd: pt.title.startsWith('d!') }]}>{pt.title}</span>
+              <span class="part-x">{pt.text}</span>
+              <span class="sr">Fed by: {pt.feeds.map(f => keyById[f].label).join(', ')}.</span>
+              {pt.href && <a class="part-src" href={pt.href}>Source: {pt.hrefLabel}</a>}
+              {pt.legacy && <span class="tag">replaced</span>}
+            </li>
+          ))}
+        </ol>
+
+        {p.flow && (
+          <figure class="flow">
+            <figcaption class="fig">Fig. {p.n}.2 · {p.flow.title}</figcaption>
+            <ol>{p.flow.steps.map((s, j) => <li><b>{j + 1}</b>{s}</li>)}</ol>
+          </figure>
+        )}
+
+        {(p.notes || p.placeholder || p.source) && (
+          <div class="notes">
+            <h2 class="fig">Notes</h2>
+            <ul>
+              {p.notes?.map(n => <li>{n}</li>)}
+              {p.placeholder && <li><span class="ph">{p.placeholder}</span></li>}
+              {p.source && <li>Source: <a href={p.source.href}>{p.source.label}</a></li>}
+            </ul>
+          </div>
+        )}
+
+        <nav class="turn" aria-label="Turn the page">
+          {prev ? <a href={projectHref(prev)} rel="prev"><span aria-hidden="true">←</span> {label(prev)}</a> : <a href="/projects/" rel="prev"><span aria-hidden="true">←</span> Contents</a>}
+          {prev && next && <a href="/projects/">Contents</a>}
+          {next ? <a href={projectHref(next)} rel="next">Turn to {label(next)} · {next.nda ? 'Construction tech (NDA)' : next.title} <span aria-hidden="true">→</span></a> : <a href="/projects/" rel="next">Back to contents <span aria-hidden="true">→</span></a>}
+        </nav>
+      </div>
+
+      <svg class="wiring" aria-hidden="true"></svg>
+    </article>
+  </Desk>
+</Livery>
+
+<script>
+  import '../../scripts/wiring';
+</script>

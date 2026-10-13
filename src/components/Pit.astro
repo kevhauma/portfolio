@@ -1,5 +1,6 @@
 ---
-import { github, projects, stack } from '../data/site';
+import { github, stack } from '../data/site';
+import { chapters, supplement, projectHref, period, duration } from '../data/projects';
 ---
 <main id="pit" class="pit" aria-labelledby="pit-title">
   <p class="pit-flag">Pit limiter is on: the livery is off and this is the whole site in one plain column. Switch it off at the top right for the full version.</p>
@@ -20,8 +21,14 @@ import { github, projects, stack } from '../data/site';
 
   <h2 id="pit-projects">Projects</h2>
   <ol class="pit-rows">
-    {projects.map(p => (
-      <li><span class="when">{p.lang}</span><b><a href={p.href}>{p.name}</a></b><span class="d">{p.d}</span></li>
+    {chapters.map(p => (
+      <li><span class="when">{period(p)}</span><b><a href={projectHref(p)}>{p.title}</a>{p.own ? ' · own build' : ` · ${p.client}`}</b><span class="d">{p.line}</span></li>
+    ))}
+  </ol>
+  <h3 class="pit-sub">Other work</h3>
+  <ol class="pit-rows">
+    {supplement.map(p => (
+      <li><span class="when">{period(p)} · {duration(p)}</span><b><a href={projectHref(p)}>{p.nda ? 'Building installation planner' : p.title}</a> · {p.nda ? 'construction tech client, under NDA' : p.client}</b><span class="d">{p.summary[0]}</span></li>
     ))}
   </ol>
 

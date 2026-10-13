@@ -31,14 +31,14 @@ The site can launch on the **essentials**: intro, experience, projects, contact 
 - **Years of experience**: the HTML carries the raw start date, and a client-side script turns it into **whole years** (floored). No redeploy needed when a year ticks over.
 
 ### Projects (02)
-- Projects are **professional work highlights** (2–4 of them) plus **large personal projects**.
-- Personal projects there: **money-mosaic-v2**, **Quackbot** and **CommonGrounds**. Quackbot no longer runs but is showcased anyway, as a retired project.
-- Work project visuals: real screenshots of **public** pages only. Where there's no public page, the interaction recreates the problem in neutral styling, with no client UI.
-- Outcome figures are allowed only when they can be sourced and published. No estimates.
-- **money-mosaic-v2**: a public demo instance with **mock data, just enough for the graphs**. The app's own dev seed is a starting point.
-- **CommonGrounds**: no demo; shown with screenshots (to follow).
-- **Quackbot**: a small Discord frame. The visitor picks one of the three commands (`d!explain`, `d!urban`, `d!wotd`), and the reply explains **how that command works in the code** (APIs, parsing, DM routing), with a link to the source file. No live API calls.
+- The page is a **workshop manual on a desk** (decided 2026-10-13; surface brief `.impeccable/surfaces/src-pages-projects-index-astro.md`). `/projects/` is the contents spread; every project has its own page with a wiring diagram drawn from `src/data/projects.ts`.
+- **Chapters 1–6**: money-mosaic-v2, Aurubis scrap yard, Aurubis kiosk, ArCom DBA tool, Quackbot (retired), CommonGround.
+- **Supplement F1–F7, the fuse box**: the other work-experience projects (Clearmedia, publiq, Jumperke, VG Computers, Platform Blog, Platform Planner upgrade, the NDA construction client). Personal side projects are not in the fuse box; they stay on the Workbench shelf.
+- **No demos.** No live apps, no demo instance; each project is explained by its wiring diagram.
+- **NDA**: the construction client is listed anonymised, with a warning triangle and a Warning box on its page; never a chapter.
+- Work project visuals: no client UI. Outcome figures only when they can be sourced and published. No estimates.
 - **No GitHub contribution graph.**
+- Still to collect: two or three more facts each for Platform Blog, Jumperke and VG Computers (main parts, what talked to what, what Kevin built); CommonGround screenshots and a one-line description.
 
 ### The map (04)
 - Source of truth: **`Documents/TripMap/trips.gpkg`**. The other GPX folders are not used.

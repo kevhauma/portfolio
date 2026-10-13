@@ -1,0 +1,19 @@
+---
+/* The thumb index printed on the fore-edge: one mark per chapter, plus F for the supplement. */
+import { chapters, supplement, projectHref, wires } from '../../data/projects';
+
+interface Props { current?: string }
+const { current } = Astro.props;
+const marks = [
+  ...chapters.map(c => ({ n: c.n, label: `Chapter ${c.n}: ${c.title}`, href: projectHref(c), w: wires[c.wire!].hex })),
+  { n: 'F', label: 'Supplement: other work', href: projectHref(supplement[0]), w: wires.Y.hex }
+];
+const isCurrent = (n: string) => current === n || (n === 'F' && current?.startsWith('F'));
+---
+<nav class="thumbs" aria-label="Thumb index">
+  <ol>
+    {marks.map(m => (
+      <li><a href={m.href} data-thumb={m.n} style={`--w:${m.w}`} aria-current={isCurrent(m.n) ? 'page' : undefined} aria-label={m.label}><span aria-hidden="true">{m.n}</span><i aria-hidden="true"></i></a></li>
+    ))}
+  </ol>
+</nav>
