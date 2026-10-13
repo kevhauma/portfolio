@@ -1,0 +1,154 @@
+---
+/* Fig. 2.1 for the Aurubis scrap yard: one delivery going round the yard, and the program in the middle of it.
+   Six steps ring one harness, the yard management program, and every step is plugged into it: the program
+   plans the delivery before the truck arrives and sends the invoice after it has gone. Red, the spot ink,
+   marks what the program holds at each step. Fig. 2.2 is the back end that harness runs to, cut over from
+   .NET Framework to .NET 6. The harness's wires and the back ends light with the wiring key. */
+import YardTruck from './YardTruck.astro';
+import { wires } from '../../data/projects';
+interface Props { n: string }
+const { n } = Astro.props;
+
+const ui = 'react mui rff';
+const steps = [
+  { id: 'plan', t: 'Plan', x: 'Planned in the program before the truck sets off' },
+  { id: 'check', t: 'Check in', x: 'The driver checks in on arrival' },
+  { id: 'weigh', t: 'Weigh', x: 'The weight goes on the delivery' },
+  { id: 'drop', t: 'Drop off', x: 'The copper is tipped off in the yard' },
+  { id: 'sample', t: 'Sample', x: 'Sampled and inspected; the results go on the delivery' },
+  { id: 'invoice', t: 'Invoice', x: 'Made up from the delivery and sent' }
+];
+/* the harness carries the stack, one wire each, in the key's order */
+const harness = [
+  { id: 'react', code: 'U' }, { id: 'mui', code: 'G' }, { id: 'rff', code: 'Y' },
+  { id: 'netfx', code: 'S', legacy: true }, { id: 'net6', code: 'R' }, { id: 'sql', code: 'B' }
+] as const;
+const w = (c: keyof typeof wires) => wires[c].hex;
+
+/* the planning board: five days, three rows, other bookings faint and this delivery in red */
+const cols = [0, 1, 2, 3, 4].map(i => 6 + i * 25.6);
+const booked = [[0, 0], [3, 0], [1, 2], [2, 1], [4, 2], [4, 1]];
+---
+<figure class="yard" aria-labelledby="yd-t">
+  <figcaption id="yd-t" class="fig fig-t">Fig. {n}.1 · One delivery, one program</figcaption>
+  <p class="sr">One delivery going round the scrap yard in six steps, all of them in the same yard management program: the delivery is planned, the driver checks in, the truck is weighed, the copper is dropped off, then sampled and inspected, and the invoice is sent. Checking in, weighing, dropping off and sampling happen on the yard; planning and invoicing happen only in the program.</p>
+
+  <div class="yd-grid">
+    <div class="yd-fence" aria-hidden="true"><span>Yard</span></div>
+
+    <ol class="yd-steps" role="list">
+      {steps.map((s, i) => (
+        <li class:list={['yd-st', `yd-${s.id}`, 'fig-part']} data-feeds={ui}>
+          <svg class="yd-art" viewBox="0 0 140 80" aria-hidden="true">
+            {s.id === 'plan' && <>
+              <rect class="ink-s paper" x="6" y="6" width="128" height="66" />
+              <rect class="head" x="6" y="6" width="128" height="12" />
+              <path class="ink-s thin" d="M6 18H134" />
+              <path class="ink-s hair" d={cols.slice(1).map(x => `M${x} 6V72`).join('') + 'M6 36H134M6 54H134'} />
+              {cols.map(x => <rect class="ink-f" x={x + 7} y="10.5" width="11" height="3" />)}
+              {booked.map(([c, r]) => <rect class="ink-f" x={cols[c] + 4} y={24 + r * 18} width="15" height="4" opacity=".3" />)}
+              <rect class="spot-f" x={cols[2] + 3} y="21" width="19.6" height="12" />
+              <path class="paper-s" d={`M${cols[2] + 8} 27H${cols[2] + 18}`} />
+            </>}
+            {s.id === 'check' && <>
+              <path class="ink-s thin" d="M0 72H140" />
+              <YardTruck x={2} y={37.6} scale={0.8} load />
+              <circle class="ink-s paper" cx="93" cy="40" r="4" />
+              <path class="ink-s round" d="M93 44V58M93 48L102 44M93 58L89 71M93 58L97 71" />
+              <rect class="ink-f" x="101" y="24" width="38" height="5" />
+              <rect class="ink-s paper" x="105" y="29" width="30" height="43" />
+              <rect class="ink-s thin head" x="109" y="36" width="15" height="11" />
+              <rect class="spot-f" x="112" y="39" width="9" height="5" />
+            </>}
+            {s.id === 'weigh' && <>
+              <path class="ink-s thin" d="M0 66H4M108 66H140M4 66V76H108V66" />
+              <rect class="ink-s paper" x="4" y="66" width="104" height="5" />
+              {[18, 56, 94].map(x => <path class="ink-f" d={`M${x - 3.5} 76L${x} 71L${x + 3.5} 76Z`} />)}
+              <YardTruck x={8} y={23} load />
+              <path class="ink-s thin" d="M108 69H125V44" />
+              <rect class="ink-f" x="112" y="22" width="26" height="22" />
+              <rect class="spot-f" x="115.5" y="26" width="19" height="8" />
+              
+            </>}
+            {s.id === 'drop' && <>
+              <path class="ink-s thin" d="M0 72H140" />
+              <rect class="ink-s head" x="1" y="38" width="8" height="34" />
+              <rect class="spot-f" x="0" y="31" width="10" height="6" />
+              <path class="cu ink-s thin" d="M9 72C15 56 23 51 32 53C40 55 46 62 52 72Z" />
+              {[[38, 46, 4], [44, 52, 3], [34, 44, 3]].map(([x, y, r]) => <path class="cu ink-s hair" d={`M${x - r} ${y}L${x} ${y - r}L${x + r} ${y + 1}L${x} ${y + r}Z`} />)}
+              <YardTruck x={44} y={29} tip={26} />
+            </>}
+            {s.id === 'sample' && <>
+              <path class="ink-s thin" d="M0 72H140" />
+              <path class="cu ink-s thin" d="M2 72C14 46 32 32 54 35C72 38 86 52 96 72Z" />
+              <path class="ink-s thick round" d="M66 7L53 52M58 5L74 9" />
+              <path class="ink-s thin dash" d="M70 26C88 14 104 18 116 33" />
+              <path class="ink-f" d="M112 30L119 37L119.5 28Z" />
+              <rect class="ink-f" x="106" y="40" width="28" height="5" />
+              <path class="ink-s paper" d="M108 45H132L130 72H110Z" />
+              <rect class="spot-f" x="112" y="52" width="16" height="10" />
+            </>}
+            {s.id === 'invoice' && <>
+              <path class="ink-s paper" d="M24 6H76L90 20V74H24Z" />
+              <path class="ink-s thin" d="M76 6V20H90" />
+              <rect class="ink-f" x="32" y="14" width="22" height="4" />
+              {[28, 36, 44].map((y, j) => <><rect class="ink-f" x="32" y={y} width={[30, 22, 26][j]} height="3" opacity=".8" /><rect class="ink-f" x="70" y={y} width="12" height="3" opacity=".8" /></>)}
+              <path class="ink-s hair" d="M32 53H82" />
+              <rect class="spot-f" x="56" y="59" width="26" height="7" />
+              <path class="ink-s" d="M96 40H128" />
+              <path class="ink-f" d="M126 34L137 40L126 46Z" />
+              <path class="ink-s thin" d="M100 31H114M104 49H118" />
+            </>}
+          </svg>
+          <span class="yd-h"><b>{i + 1}</b><span class="yd-n">{s.t}</span></span>
+          <span class="yd-x">{s.x}</span>
+          <span class="yd-tap" aria-hidden="true"></span>
+        </li>
+      ))}
+    </ol>
+
+    <div class="yd-bus" aria-hidden="true">
+      <span class="yd-wires">
+        {harness.map(h => <i class:list={['fig-part', { legacy: 'legacy' in h }]} data-feeds={h.id} style={`--w:${w(h.code)}`}></i>)}
+      </span>
+      <span class="yd-tag"><b>Yard management program</b><small>Back end: Fig. {n}.2</small></span>
+    </div>
+  </div>
+
+  <figure class="yd-cut">
+    <figcaption class="fig">Fig. {n}.2 · Back end, cut over</figcaption>
+    <svg viewBox="0 0 330 124" role="img" aria-label={`The harness from Fig. ${n}.1 runs into a changeover switch. The switch is thrown to the new .NET 6 back end; the old .NET Framework back end beside it is disconnected and ghosted. Both sit on MSSQL.`}>
+      <rect class="sleeve" x="-2" y="52" width="48" height="24" rx="8" />
+      {harness.map((h, j) => <path class:list={['yd-lead', { legacy: 'legacy' in h }]} d={`M2 ${55 + j * 3.6}H44`} style={`stroke:${'legacy' in h ? '#8D939C' : w(h.code)}`} />)}
+      <text class="yd-sm" x="0" y="110">From Fig. {n}.1</text>
+      <path class="ink-s" d="M46 64H58.5" />
+      <circle class="ink-s paper" cx="62" cy="64" r="3.5" />
+
+      <path class="ink-s thick round" d="M64.5 61.5L93 36.5" />
+      <circle class="ink-s paper" cx="96" cy="34" r="3.5" />
+      <circle class="ghost-s paper" cx="96" cy="94" r="3.5" />
+      <path class="ink-s thin" d="M84 86A34 34 0 0 0 86 48" />
+      <path class="ink-f" d="M82 50L87 43L90 51Z" />
+
+      <g class="fig-part" data-feeds="net6" style={`--w:${w('R')}`}>
+        <path class="yd-live" d="M99.5 34H120" />
+        <rect class="ink-s paper wall" x="120" y="16" width="124" height="36" />
+        <rect class="spot-f" x="129" y="30" width="12" height="8" />
+        <text class="yd-unit" x="148" y="40">.NET 6</text>
+      </g>
+      <g class="fig-part" data-feeds="netfx">
+        <path class="ghost-s dash" d="M99.5 94H120" />
+        <rect class="ghost-s paper dash" x="120" y="76" width="124" height="36" />
+        <text class="yd-unit ghost" x="129" y="100">.NET Framework</text>
+      </g>
+      <g class="fig-part" data-feeds="sql">
+        <path class="ink-s" d="M244 34H258V58H272" />
+        <path class="ghost-s dash" d="M244 94H258V70H272" />
+        <path class="ink-s paper" d="M274 44V88A20 6 0 0 0 314 88V44Z" />
+        <path class="ink-s thin" d="M274 58A20 6 0 0 0 314 58M274 72A20 6 0 0 0 314 72" />
+        <ellipse class="ink-s head" cx="294" cy="44" rx="20" ry="6" />
+        <text class="yd-sm" x="294" y="110" text-anchor="middle">MSSQL</text>
+      </g>
+    </svg>
+  </figure>
+</figure>

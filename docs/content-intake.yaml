@@ -155,7 +155,7 @@ work_highlights:
   - client: Aurubis
     project: Scrap yard management
     team_size: 3–5
-    contribution: Full-stack work on the yard flow from planning to invoicing for a multilingual client. Introduced new technology at the client and led the migration from .NET Framework to .NET 6.
+    contribution: Full-stack work on the yard flow from planning to invoicing for a multilingual client. Introduced new technology at the client. The migration from .NET Framework to .NET 6 was a team effort, not led by Kevin (corrected 2026-10-13): built side by side, then cut over.
     shipped: Yard management for a multi-plant copper scrapyard (delivery planning, weighing, payload inspection, invoicing)
     stack: [React, MUI, Telerik, React Final Form, .NET Framework, .NET 6, MSSQL]
     public_url: ~

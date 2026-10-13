@@ -37,8 +37,6 @@ export type Project = {
   figure: string;
   keys: Key[];
   parts: Part[];
-  /** an ordered process strip, only where the intake names the steps */
-  flow?: { title: string; steps: string[] };
   notes?: string[];
   nda?: boolean;
   placeholder?: string;
@@ -101,10 +99,10 @@ export const projects: Project[] = [
     title: 'Scrap yard management', client: 'Aurubis', start: '2021-09', end: '2023-03', role: 'Full-stack developer', team: '3–5',
     line: 'Planning to invoicing for a multi-plant copper scrapyard',
     summary: [
-      'Yard management for a multi-plant copper scrapyard: delivery planning, weighing, payload inspection and invoicing, for a multilingual client.',
-      'Kevin worked full-stack on the yard flow, introduced new technology at the client, and led the migration of the back end from .NET Framework to .NET 6.'
+      'Yard management for a multi-plant copper scrapyard, in the client\'s languages: one program that carries a delivery from planning, through check-in, weighing, drop-off and sampling, to the invoice.',
+      'Kevin worked full-stack on the yard flow and introduced new technology at the client. With the team, he moved the back end from .NET Framework to .NET 6.'
     ],
-    figure: 'System layout',
+    figure: 'One delivery, one program',
     keys: [
       { id: 'react', code: 'U', label: 'React' },
       { id: 'mui', code: 'G', label: 'MUI · Telerik' },
@@ -117,11 +115,13 @@ export const projects: Project[] = [
       { id: 'ui', title: 'Yard screens', text: 'Planning, weighing, inspection and invoicing, in the client\'s languages', feeds: ['react', 'mui'] },
       { id: 'forms', title: 'Forms', text: 'The data entry along every step of the flow', feeds: ['rff'] },
       { id: 'old', title: 'Old back end', text: '.NET Framework, migrated away', feeds: ['netfx'], legacy: true },
-      { id: 'api', title: 'Back end', text: 'Migrated to .NET 6, led by Kevin', feeds: ['net6'] },
+      { id: 'api', title: 'Back end', text: '.NET 6, cut over from the old back end', feeds: ['net6'] },
       { id: 'db', title: 'Database', text: 'MSSQL', feeds: ['sql'] }
     ],
-    flow: { title: 'The yard flow', steps: ['Delivery planning', 'Weighing', 'Payload inspection', 'Invoicing'] },
-    notes: ['As a Zinderlabs consultant at Rekencentra, on a project for Aurubis.']
+    notes: [
+      'The back end moved from .NET Framework to .NET 6 as a team effort: the new back end was built side by side with the old one, then the yard cut over to it.',
+      'As a Zinderlabs consultant at Rekencentra, on a project for Aurubis.'
+    ]
   },
   {
     slug: 'aurubis-kiosk', n: '3', kind: 'chapter', wire: 'U',

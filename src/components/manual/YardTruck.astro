@@ -1,0 +1,23 @@
+---
+/* A tipper truck in side elevation, facing right, for the scrap yard's figure. 96 by 43 units, wheels on y = 43.
+   `tip` raises the body about its rear hinge, `load` puts copper in it. */
+interface Props { x: number; y: number; scale?: number; tip?: number; load?: boolean }
+const { x, y, scale = 1, tip = 0, load = false } = Astro.props;
+---
+<g transform={`translate(${x} ${y}) scale(${scale})`}>
+  <g transform={tip ? `rotate(${-tip} 2 32)` : undefined}>
+    {load && <path class="cu ink-s thin" d="M4 10C8 4 13 6 17 4C22 1 27 5 32 3C38 1 44 5 49 3C54 2 58 6 60 10Z" />}
+    <path class="ink-s paper" d="M2 10H62V32H2Z" />
+    <path class="ink-s thin" d="M17 10V32M32 10V32M47 10V32" />
+  </g>
+  <rect class="ink-f" x="0" y="32" width="96" height="4" />
+  <path class="ink-s paper" d="M66 32V9H82L94 20V32Z" />
+  <path class="ink-s thin head" d="M70 12H81L89 20H70Z" />
+  <rect class="ink-f" x="93" y="26" width="3" height="6" />
+  {[14, 28, 84].map(cx => (
+    <>
+      <circle class="ink-s paper" cx={cx} cy="37" r="6" />
+      <circle class="ink-f" cx={cx} cy="37" r="2" />
+    </>
+  ))}
+</g>
