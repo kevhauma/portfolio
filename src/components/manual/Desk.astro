@@ -1,6 +1,7 @@
 ---
-/* The scene every Projects page sits in: a walnut desk, the manual open on it in its navy cloth
-   hardcover, ribbons out of the gutter and pens beside it. The spread goes in the slot. */
+/* The scene every Projects page sits in: a walnut desk, the manual on it in its navy cloth
+   hardcover, ribbons out of the gutter and pens beside it. The spread goes in the slot.
+   The book arrives shut and opens itself (book.ts); its cover is drawn here. */
 import ThumbIndex from './ThumbIndex.astro';
 import '@fontsource-variable/archivo/wdth.css';
 import '../../styles/manual.css';
@@ -18,6 +19,20 @@ const { current } = Astro.props;
       <span class="light" aria-hidden="true"></span>
       <span class="ribbon r1" aria-hidden="true"></span>
       <span class="ribbon r2" aria-hidden="true"></span>
+    </div>
+    <div class="cover-rig" aria-hidden="true">
+      <span class="cast"></span>
+      <div class="cover">
+        <div class="cv-face cv-front">
+          <p class="cv-kind">Workshop manual</p>
+          <p class="cv-title">Projects</p>
+          <p class="cv-sub">Six chapters<br />and the fuse box</p>
+          <span class="cv-stripes"><i></i><i></i></span>
+          <p class="cv-foot"><span class="cv-num">23</span>Kevin</p>
+          <span class="shade"></span>
+        </div>
+        <div class="cv-face cv-back"><div class="cv-in"></div><span class="shade"></span></div>
+      </div>
     </div>
     <div class="pens" aria-hidden="true">
       <svg class="pen pen-ball" viewBox="0 0 20 320" width="20" height="320">
@@ -61,3 +76,7 @@ const { current } = Astro.props;
     </div>
   </div>
 </section>
+
+<script>
+  import '../../scripts/book';
+</script>

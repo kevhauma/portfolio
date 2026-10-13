@@ -363,3 +363,5 @@ export const projects: Project[] = [
 export const chapters = projects.filter(p => p.kind === 'chapter');
 export const supplement = projects.filter(p => p.kind === 'supplement');
 export const projectHref = (p: Project) => `/projects/${p.slug}/`;
+/** the fuse blades' colours, in fuse order: on the contents fuse box and on the supplement's thumb index */
+export const blades = ['#E2001A', '#2557A7', '#E0A800', '#00843D', '#F4F4F0', '#7E8794', '#16181D'];

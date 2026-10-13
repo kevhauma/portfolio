@@ -13,8 +13,10 @@ interface Props {
   sec: string;
   /** play the raw-HTML-to-livery arrival (intro only, once per visit) */
   arrival?: boolean;
+  /** the page is the Projects manual: it arrives by opening the book, not through the wipe */
+  book?: boolean;
 }
-const { title, description, sec, arrival = false } = Astro.props;
+const { title, description, sec, arrival = false, book = false } = Astro.props;
 const current = sections.find(s => s.n === sec)!;
 ---
 <!doctype html>
@@ -28,7 +30,7 @@ const current = sections.find(s => s.n === sec)!;
 <meta name="theme-color" content="#071229" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/sakana.woff" as="font" type="font/woff" crossorigin>
-<script is:inline define:vars={{ arrival }}>
+<script is:inline define:vars={{ arrival, book }}>
 (() => {
   const root = document.documentElement;
   let theme = null, limiter = false, arrived = false;
@@ -42,10 +44,15 @@ const current = sections.find(s => s.n === sec)!;
     /* if the arrival script never runs, the livery still goes on */
     setTimeout(() => { if (!window.khArrival) root.classList.remove('raw', 'arriving'); }, 3500);
   }
+  if (book && !limiter && !still) {
+    /* the manual lies shut until its script opens it; without the script it is simply open */
+    root.classList.add('book-shut');
+    setTimeout(() => { if (!window.khBook) root.classList.remove('book-shut'); }, 3000);
+  }
   /* every sheet switch arrives through the raked paint wipe */
   addEventListener('pagereveal', e => {
     if (!e.viewTransition) return;
-    if (root.classList.contains('raw')) { e.viewTransition.skipTransition(); return; }
+    if (root.classList.contains('raw') || root.classList.contains('book-shut')) { e.viewTransition.ready.catch(() => {}); e.viewTransition.skipTransition(); return; }
     root.classList.add('vt-in');
     e.viewTransition.finished.finally(() => root.classList.remove('vt-in'));
   });

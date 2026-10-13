@@ -1,6 +1,7 @@
 // Draws the manual's wires from the page's own layout, and lights up a circuit on hover, focus or tap.
 // Contents spread: one loom, a branch per connector. Project page: each key row wired across the gutter
 // into the parts it feeds. Without this script the page still reads: swatches and pin chips carry the colours.
+// book.ts mounts it on the spread on the desk.
 
 const SVG = 'http://www.w3.org/2000/svg';
 type Box = { x: number; y: number; w: number; h: number };
@@ -54,7 +55,6 @@ function harness(spread: HTMLElement) {
   const svg = spread.querySelector<SVGSVGElement>('svg.wiring')!;
   const loom = spread.querySelector<HTMLElement>('.loom')!;
   const circuits = [...spread.querySelectorAll<HTMLElement>('[data-circuit]')];
-  const thumbs = [...document.querySelectorAll<HTMLElement>('[data-thumb]')];
 
   function draw() {
     sizeSvg(svg, spread);
@@ -122,7 +122,8 @@ function harness(spread: HTMLElement) {
     spread.toggleAttribute('data-hot', !!id);
     svg.querySelectorAll<SVGGElement>('g.w').forEach(g => g.classList.toggle('hot', g.dataset.key === id));
     circuits.forEach(c => c.classList.toggle('hot', c.dataset.circuit === id));
-    thumbs.forEach(t => t.classList.toggle('hot', t.dataset.thumb === id));
+    /* the thumb index is swapped when a page turns, so look it up each time */
+    document.querySelectorAll<HTMLElement>('[data-thumb]').forEach(t => t.classList.toggle('hot', t.dataset.thumb === id));
   }
   circuits.forEach(c => {
     const id = c.dataset.circuit!;
@@ -206,16 +207,16 @@ function diagram(spread: HTMLElement) {
   return draw;
 }
 
-function boot() {
-  const h = document.querySelector<HTMLElement>('[data-harness]');
-  const d = document.querySelector<HTMLElement>('[data-diagram]');
-  const host = h ?? d;
-  if (!host) return;
-  const draw = h ? harness(h) : diagram(d!);
+export type Wiring = { draw: () => void; destroy: () => void };
+
+/** wires one spread and keeps it wired through resizes; book.ts mounts it again on every turned page */
+export function mountWiring(spread: HTMLElement): Wiring {
+  const draw = spread.hasAttribute('data-harness') ? harness(spread) : diagram(spread);
   let raf = 0;
   const redraw = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); };
-  redraw();
-  new ResizeObserver(redraw).observe(host);
+  draw();
+  const ro = new ResizeObserver(redraw);
+  ro.observe(spread);
   document.fonts?.ready.then(redraw);
+  return { draw, destroy: () => { cancelAnimationFrame(raf); ro.disconnect(); } };
 }
-boot();

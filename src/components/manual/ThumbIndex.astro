@@ -1,13 +1,21 @@
 ---
-/* The thumb index printed on the fore-edge: one mark per chapter, plus F for the supplement. */
-import { chapters, supplement, projectHref, wires } from '../../data/projects';
+/* The thumb index printed on the fore-edge. In the chapters: one mark per chapter, plus F for the
+   supplement. In the supplement: one mark per fuse, plus CH back to the chapters. */
+import { chapters, supplement, projectHref, wires, blades } from '../../data/projects';
 
 interface Props { current?: string }
 const { current } = Astro.props;
-const marks = [
-  ...chapters.map(c => ({ n: c.n, label: `Chapter ${c.n}: ${c.title}`, href: projectHref(c), w: wires[c.wire!].hex })),
-  { n: 'F', label: 'Supplement: other work', href: projectHref(supplement[0]), w: wires.Y.hex }
-];
+/* the CH chip is the loom itself: the six chapter wires side by side */
+const loom = `linear-gradient(90deg, ${chapters.map((c, i) => `${wires[c.wire!].hex} ${(i * 100) / chapters.length}% ${((i + 1) * 100) / chapters.length}%`).join(', ')})`;
+const marks = current?.startsWith('F')
+  ? [
+      { n: 'CH', label: 'Chapters', href: projectHref(chapters[0]), w: loom },
+      ...supplement.map((f, i) => ({ n: f.n, label: `Supplement ${f.n}: ${f.nda ? 'Construction tech (NDA)' : f.title}`, href: projectHref(f), w: blades[i] }))
+    ]
+  : [
+      ...chapters.map(c => ({ n: c.n, label: `Chapter ${c.n}: ${c.title}`, href: projectHref(c), w: wires[c.wire!].hex })),
+      { n: 'F', label: 'Supplement: other work', href: projectHref(supplement[0]), w: wires.Y.hex }
+    ];
 const isCurrent = (n: string) => current === n || (n === 'F' && current?.startsWith('F'));
 ---
 <nav class="thumbs" aria-label="Thumb index">

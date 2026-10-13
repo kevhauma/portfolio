@@ -28,9 +28,9 @@ const facts: [string, string][] = [
 ];
 const legacyKeys = p.keys.some(k => k.legacy);
 ---
-<Livery title={`${p.nda ? 'Building installation planner' : p.title} · Projects · Kevin`} description={`${p.title}: ${p.line}. A page from Kevin's workshop manual.`} sec="02">
+<Livery title={`${p.nda ? 'Building installation planner' : p.title} · Projects · Kevin`} description={`${p.title}: ${p.line}. A page from Kevin's workshop manual.`} sec="02" book>
   <Desk current={p.n}>
-    <article class="spread chapter" data-diagram style={`--lanes:${p.keys.length}`}>
+    <article class="spread chapter" data-diagram data-page={i + 1} style={`--lanes:${p.keys.length}`}>
       <div class="page page-l">
         <p class="rh"><span>{isCh ? `Chapter ${p.n}` : `Supplement ${p.n}`} · {p.own ? 'Own build' : client}</span><span>{pageNo}</span></p>
         <header class="ch-head">
@@ -57,7 +57,7 @@ const legacyKeys = p.keys.some(k => k.legacy);
               <button type="button" class:list={['key-row', { legacy: k.legacy }]} data-key={k.id} style={`--w:${wires[k.code].hex}`} aria-pressed="false">
                 <span class="key-code">{k.code}</span>
                 <span class="key-sw" aria-hidden="true"></span>
-                <span class="key-l">{k.label}{k.legacy && <span class="tag">replaced</span>}</span>
+                <span class="key-l">{k.label}{k.legacy && <span class="sr"> (replaced)</span>}</span>
                 <span class="key-term" aria-hidden="true"></span>
               </button>
             </li>
@@ -75,9 +75,8 @@ const legacyKeys = p.keys.some(k => k.legacy);
               <span class="part-pins" aria-hidden="true">{pt.feeds.map(f => <i style={`--w:${wires[keyById[f].code].hex}`} data-pin={f}></i>)}</span>
               <span class:list={['part-t', { cmd: pt.title.startsWith('d!') }]}>{pt.title}</span>
               <span class="part-x">{pt.text}</span>
-              <span class="sr">Fed by: {pt.feeds.map(f => keyById[f].label).join(', ')}.</span>
+              <span class="sr">{pt.legacy && 'Replaced. '}Fed by: {pt.feeds.map(f => keyById[f].label).join(', ')}.</span>
               {pt.href && <a class="part-src" href={pt.href}>Source: {pt.hrefLabel}</a>}
-              {pt.legacy && <span class="tag">replaced</span>}
             </li>
           ))}
         </ol>
@@ -112,6 +111,3 @@ const legacyKeys = p.keys.some(k => k.legacy);
   </Desk>
 </Livery>
 
-<script>
-  import '../../scripts/wiring';
-</script>
