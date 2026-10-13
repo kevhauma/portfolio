@@ -1,11 +1,11 @@
 ---
 /* 02 Experience: the pit wall. A CRT timing monitor plots the race history. The bachelor is qualifying, the years are laps, every client project is a sector. */
 import Livery from '../layouts/Livery.astro';
-import Kit from '../components/Kit.astro';
 import '@fontsource-variable/archivo/wdth.css';
 import '../styles/sheet.css';
 import '../styles/experience.css';
 import { projects } from '../data/projects';
+import { github, raceNumber } from '../data/site';
 import { team, since, qualifying, sectors, gaps, now, short, span, laps, onTheJob, projectHref } from '../data/experience';
 
 /** "YYYY-MM" moved on by k months */
@@ -90,5 +90,14 @@ const papers: Paper[] = [
       </ol>
     </div>
   </section>
-  <Kit current="02" heading="The rest of the kit." />
+
+  {/* the pit lane behind the wall: the fast lane, the painted markings and the limit, then the footer at the garage line */}
+  <footer class="pl">
+    <div class="pl-paint" aria-hidden="true">
+      <span class="pl-word">Pit lane</span>
+      <span class="pl-limit"><span>60</span></span>
+      <svg class="pl-arrows" viewBox="0 0 132 40"><path d="M0 0h16l20 20-20 20H0l20-20zM48 0h16l20 20-20 20H48l20-20zM96 0h16l20 20-20 20H96l20-20z" /></svg>
+    </div>
+    <p class="pl-foot"><span>Kevin · race number {raceNumber}</span><a href={github.href}>{github.label}</a><span>Built with Astro · set in Sakana and Hanken Grotesk</span></p>
+  </footer>
 </Livery>
