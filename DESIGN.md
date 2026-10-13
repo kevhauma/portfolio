@@ -156,6 +156,7 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 - **Primer Grey**: what is under the paint. Primer-tone decals, inactive switch LEDs, disabled actions and placeholder chips.
 - **Carbon Black**: one decal tone among the vinyl set (section 06's tone, the C# stack decal).
 - **Ink Secondary** / **Ink Secondary Night**: secondary text (sheet print, stack label, pit-limiter dates and descriptions) on the day and night grounds respectively.
+- **Placement guide**: the side elevation of an AE86 hatchback, traced in Inkscape (`public/ae86.svg`, only its paths ship), filled in ink at 20% opacity on the intro sheet, the way a decal kit prints where its decals go. The front sits in frame on the right and the back runs behind the KEVIN decal (off the left edge on phones). The 23 roundel sits on its door, so the number reads as a race number, never as an age beside the name.
 - **Liner and cut tints**: the liner wordmark is ink at 6% (4.5% at night); the dashed cut line is ink at 50% (45% at night). Always derived from the current ink, never a new hue.
 
 ### Named Rules

@@ -181,7 +181,7 @@ html.raw :is(.controls, .bubble, #livery)::before,
 html.raw :is(.controls, .bubble, #livery)::after,
 html.raw :is(.controls, .bubble, #livery) *::before,
 html.raw :is(.controls, .bubble, #livery) *::after { all: revert; }
-html.raw :is(.liner, .reg, .stripe-decal, .handoff, .sw-led, .sheet-print, .kit-stripes) { display: none !important; }
+html.raw :is(.liner, .reg, .car, .stripe-decal, .handoff, .sw-led, .sheet-print, .kit-stripes) { display: none !important; }
 html.raw { background: #fff; color-scheme: light; }
 html.raw .bubble { position: fixed !important; right: 8px; bottom: 8px; }
 html.raw .controls { display: flex !important; gap: 4px; justify-content: flex-end; margin: 8px; }

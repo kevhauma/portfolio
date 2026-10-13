@@ -4,6 +4,15 @@ import Decal from '../components/Decal.astro';
 import Kit from '../components/Kit.astro';
 import { github, raceNumber, stack } from '../data/site';
 import '../styles/sheet.css';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+// The car outline is traced in Inkscape (public/ae86.svg). Only its paths ship; the hidden reference photo stays in the source file.
+const carSource = readFileSync(resolve(process.cwd(), 'public/ae86.svg'), 'utf8');
+const car = {
+  viewBox: carSource.match(/viewBox="([^"]+)"/)![1],
+  paths: [...carSource.matchAll(/<path[^>]*?\sd="([^"]+)"/g)].map(m => m[1])
+};
 
 const liner = Array.from({ length: 44 }, () =>
   Array.from({ length: 4 }, () => `kevhauma livery kit · sheet 01 · race number ${raceNumber}`).join(' · ')
@@ -16,6 +25,9 @@ const tones = ['t-green', 't-black', 't-white', 't-red', 't-navy', 't-primer', '
     <i class="reg tl" aria-hidden="true"></i><i class="reg tr" aria-hidden="true"></i><i class="reg br" aria-hidden="true"></i>
 
     <div class="plate">
+      <!-- placement guide: the car's side elevation, front in frame, the back running behind the name -->
+      <svg class="car" viewBox={car.viewBox} aria-hidden="true">{car.paths.map(d => <path d={d} />)}</svg>
+
       <Decal class="d-name t-navy">
         <h1 id="name">Kevin</h1>
       </Decal>
