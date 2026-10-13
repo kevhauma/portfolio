@@ -288,6 +288,8 @@ body:has(.desk) { background: #3A2314; }
 .key-row.legacy .key-l { color: #5B636D; }
 .key-term { width: 12px; height: 12px; background: var(--pi); }
 .key-row[aria-pressed="true"] .key-term { background: var(--spot); box-shadow: 0 0 0 2px var(--pi); }
+/* a drawn figure takes no wires, so its key has no terminals */
+.drawn .key-term { visibility: hidden; }
 .key-note { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font-size: .8125rem; color: var(--pi-2); }
 .key-note .key-sw { width: 36px; }
 

@@ -28,14 +28,13 @@ const facts: [string, string][] = [
   ...(p.status ? [['Status', p.status] as [string, string]] : [])
 ];
 const legacyKeys = p.keys.some(k => k.legacy);
-/* a project with its own drawn figure gets it as Fig. n.1, ahead of the wiring */
+/* a project with its own drawn figure shows that instead of the wired parts; the key lights its stations */
 const cutaways: Record<string, typeof MoneyMosaicCutaway> = { 'money-mosaic': MoneyMosaicCutaway };
 const Cutaway = cutaways[p.slug];
-const fig = Cutaway ? 2 : 1;
 ---
 <Livery title={`${p.nda ? 'Building installation planner' : p.title} · Projects · Kevin`} description={`${p.title}: ${p.line}. A page from Kevin's workshop manual.`} sec="02" book>
   <Desk current={p.n}>
-    <article class="spread chapter" data-diagram data-page={i + 1} style={`--lanes:${p.keys.length}`}>
+    <article class:list={['spread chapter', { drawn: Cutaway }]} data-diagram data-page={i + 1} style={`--lanes:${Cutaway ? 0 : p.keys.length}`}>
       <div class="page page-l">
         <p class="rh"><span>{isCh ? `Chapter ${p.n}` : `Supplement ${p.n}`} · {p.own ? 'Own build' : client}</span><span>{pageNo}</span></p>
         <header class="ch-head">
@@ -73,8 +72,8 @@ const fig = Cutaway ? 2 : 1;
 
       <div class="page page-r">
         <p class="rh"><span>{p.title}</span><span>{p.n}•2</span></p>
-        {Cutaway && <Cutaway n={p.n} />}
-        <h2 class="fig fig-t">Fig. {p.n}.{fig} · {p.figure}</h2>
+        {Cutaway ? <Cutaway n={p.n} /> : <>
+        <h2 class="fig fig-t">Fig. {p.n}.1 · {p.figure}</h2>
         <ol class="parts">
           {p.parts.map((pt, j) => (
             <li class:list={['part', { legacy: pt.legacy }]} data-feeds={pt.feeds.join(' ')} tabindex="0" style={`grid-row:${j + 1};grid-column:${(j % 2) + 1}`}>
@@ -86,10 +85,11 @@ const fig = Cutaway ? 2 : 1;
             </li>
           ))}
         </ol>
+        </>}
 
         {p.flow && (
           <figure class="flow">
-            <figcaption class="fig">Fig. {p.n}.{fig + 1} · {p.flow.title}</figcaption>
+            <figcaption class="fig">Fig. {p.n}.2 · {p.flow.title}</figcaption>
             <ol>{p.flow.steps.map((s, j) => <li><b>{j + 1}</b>{s}</li>)}</ol>
           </figure>
         )}
