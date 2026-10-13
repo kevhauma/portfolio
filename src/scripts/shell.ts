@@ -145,7 +145,7 @@ fan.addEventListener('keydown', e => {
   if (n !== null) { e.preventDefault(); links[n].focus(); }
 });
 
-const pitAnchor: Record<string, string> = { '01': 'pit-title', '02': 'pit-projects', '03': 'pit-experience', '06': 'pit-contact' };
+const pitAnchor: Record<string, string> = { '01': 'pit-title', '02': 'pit-experience', '03': 'pit-projects', '06': 'pit-contact' };
 links.forEach(a => a.addEventListener('click', e => {
   if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
   const target = a.dataset.sec!;

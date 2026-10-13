@@ -12,8 +12,8 @@ export type Section = {
 
 export const sections: Section[] = [
   { n: '01', slug: 'intro', href: '/', title: 'Intro', sub: 'Frontend first', tone: 'navy' },
-  { n: '02', slug: 'projects', href: '/projects/', title: 'Projects', sub: 'The workshop manual', tone: 'red' },
-  { n: '03', slug: 'experience', href: '/experience/', title: 'Experience', sub: 'The timing screen', tone: 'green' },
+  { n: '02', slug: 'experience', href: '/experience/', title: 'Experience', sub: 'The timing screen', tone: 'red' },
+  { n: '03', slug: 'projects', href: '/projects/', title: 'Projects', sub: 'The workshop manual', tone: 'green' },
   { n: '04', slug: 'map', href: '/map/', title: 'The map', sub: 'Travel, photos, motorsport', tone: 'white' },
   { n: '05', slug: 'music', href: '/music/', title: 'Music', sub: 'The tour poster', tone: 'primer' },
   { n: '06', slug: 'workbench', href: '/workbench/', title: 'Workbench', sub: 'WLED, prints and side projects', tone: 'black' }

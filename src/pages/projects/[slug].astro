@@ -35,7 +35,7 @@ const legacyKeys = p.keys.some(k => k.legacy);
 const cutaways: Record<string, typeof MoneyMosaicCutaway> = { 'money-mosaic': MoneyMosaicCutaway, 'aurubis-scrap-yard': ScrapYardFlow, 'aurubis-kiosk': KioskMachine, 'arcom-dba-tool': DbaRebuild };
 const Cutaway = cutaways[p.slug];
 ---
-<Livery title={`${p.nda ? 'Building installation planner' : p.title} · Projects · Kevin`} description={`${p.title}: ${p.line}. A page from Kevin's workshop manual.`} sec="02" book>
+<Livery title={`${p.nda ? 'Building installation planner' : p.title} · Projects · Kevin`} description={`${p.title}: ${p.line}. A page from Kevin's workshop manual.`} sec="03" book>
   <Desk current={p.n}>
     <article class:list={['spread chapter', { drawn: Cutaway }]} data-diagram data-page={i + 1} style={`--lanes:${Cutaway ? 0 : p.keys.length}`}>
       <div class="page page-l">

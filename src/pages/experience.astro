@@ -1,5 +1,5 @@
 ---
-/* 03 Experience: the pit wall. A CRT timing monitor plots the race history. The bachelor is qualifying, the years are laps, every client project is a sector. */
+/* 02 Experience: the pit wall. A CRT timing monitor plots the race history. The bachelor is qualifying, the years are laps, every client project is a sector. */
 import Livery from '../layouts/Livery.astro';
 import Kit from '../components/Kit.astro';
 import '@fontsource-variable/archivo/wdth.css';
@@ -29,7 +29,7 @@ const papers: Paper[] = [
   ...gaps.map(g => ({ tag: '', head: 'Yellow flag', desc: 'Time between engagements', about: '', tone: 'yf' as const, start: g.start }))
 ].sort((a, b) => a.start.localeCompare(b.start));
 ---
-<Livery title="Experience · Kevin" description="Kevin's experience on the pit wall: a timing monitor plotting every client project as a sector and every year as a lap." sec="03">
+<Livery title="Experience · Kevin" description="Kevin's experience on the pit wall: a timing monitor plotting every client project as a sector and every year as a lap." sec="02">
   <section class="sheet pw" aria-labelledby="pw-title">
     <div class="pw-stage">
       <div class="pw-unit">
@@ -90,5 +90,5 @@ const papers: Paper[] = [
       </ol>
     </div>
   </section>
-  <Kit current="03" heading="The rest of the kit." />
+  <Kit current="02" heading="The rest of the kit." />
 </Livery>

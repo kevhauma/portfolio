@@ -1,5 +1,5 @@
 ---
-/* 02 Projects: the workshop manual's contents spread. Fig. 0.1 wires the six chapters to one loom
+/* 03 Projects: the workshop manual's contents spread. Fig. 0.1 wires the six chapters to one loom
    (own builds above it, customer work below); Fig. 0.2 is the fuse box of the other work. */
 import Livery from '../../layouts/Livery.astro';
 import Desk from '../../components/manual/Desk.astro';
@@ -17,7 +17,7 @@ const slots: { n: string; area: string; side: 'up' | 'down'; lead?: boolean }[] 
 ];
 const light = (code: string) => ['W', 'Y', 'S'].includes(code);
 ---
-<Livery title="Projects · Kevin" description="Kevin's projects as a workshop manual: six chapters wired to one loom, and a fuse box of the other work." sec="02" book>
+<Livery title="Projects · Kevin" description="Kevin's projects as a workshop manual: six chapters wired to one loom, and a fuse box of the other work." sec="03" book>
   <Desk>
     <div class="spread contents" data-harness data-page="0">
       <span class="pg pg-l" aria-hidden="true"></span><span class="pg pg-r" aria-hidden="true"></span>

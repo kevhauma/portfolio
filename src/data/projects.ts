@@ -1,4 +1,4 @@
-// The workshop manual (section 02). Every fact comes from docs/content-intake.yaml or the project's own repo.
+// The workshop manual (section 03). Every fact comes from docs/content-intake.yaml or the project's own repo.
 // A project's wiring diagram is built from `keys` (the stack, one wire each) and `parts` (what was built);
 // a part lists the keys that feed it, and the page draws those wires.
 

@@ -1,4 +1,4 @@
-// The timing screen (section 03). Every fact comes from docs/content-intake.yaml.
+// The timing screen (section 02). Every fact comes from docs/content-intake.yaml.
 // The bachelor is qualifying, the years are laps, every client project is a sector.
 
 export const team = 'Zinderlabs';
