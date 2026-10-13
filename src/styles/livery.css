@@ -4,8 +4,9 @@
 @property --p { syntax: '<number>'; inherits: true; initial-value: 0; }
 
 /* Sakana has one weight and its own 8° lean. Italic lettering gets the browser's 14° oblique on top (the rake);
-   it is never faux-bolded. */
-@font-face { font-family: 'Sakana'; src: url('/fonts/sakana.woff') format('woff'); font-display: swap; }
+   it is never faux-bolded. Its stock metrics (ascent .75, descent .25) sit the caps .11em above centre; the overrides
+   split the em around its .72 cap height, so uppercase lettering centres in any line box. */
+@font-face { font-family: 'Sakana'; src: url('/fonts/sakana.woff') format('woff'); font-display: swap; ascent-override: 86%; descent-override: 14%; line-gap-override: 0%; }
 
 :root {
   --rake: 14deg;
@@ -36,6 +37,9 @@
 
   --ease: cubic-bezier(.16, 1, .3, 1);
   --u: 8px;
+  /* italic Sakana's ink leans right of its advance box (the oblique overhang at cap height);
+     centred lettering moves back by this much, in its own em */
+  --lean: .15em;
   font-synthesis: style;
   color-scheme: light;
 }
@@ -100,7 +104,7 @@ img, svg { display: block; }
 .bubble:active { transform: scale(.97); }
 /* the ring is a lap counter: it fills as sheets get visited this session */
 .bubble::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--red) calc(var(--p) * 1turn), rgb(185 190 198 / .38) 0); -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 6px), #000 calc(100% - 5.5px)); mask: radial-gradient(farthest-side, #0000 calc(100% - 6px), #000 calc(100% - 5.5px)); }
-.bubble-num { font: 900 italic 1.625rem/1 var(--display); letter-spacing: -.02em; margin-left: -2px; font-variant-numeric: tabular-nums; }
+.bubble-num { font: 900 italic 1.625rem/1 var(--display); letter-spacing: -.02em; translate: calc(var(--lean) * -1) 0; font-variant-numeric: tabular-nums; }
 .limiter .bubble-num { font-size: 1.125rem; letter-spacing: .02em; }
 .limiter .bubble::before { background: repeating-conic-gradient(var(--red) 0 18deg, var(--primer) 0 36deg); }
 :root[data-theme="night"] .bubble { background: var(--white); color: var(--navy); }
@@ -127,7 +131,7 @@ img, svg { display: block; }
 .fan-list a.tone-primer { background: var(--primer); color: var(--navy); }
 .fan-list a.tone-black { background: var(--black); color: var(--white); }
 .fan-label { position: absolute; left: 0; top: 0; transform-origin: 0 50%; display: flex; align-items: center; gap: .5em; white-space: nowrap; }
-.fan-n { font: 900 italic clamp(2.25rem, 5.4vw, 5rem)/.8 var(--display); letter-spacing: -.02em; }
+.fan-n { font: 900 italic clamp(2.25rem, 5.4vw, 5rem)/.8 var(--display); letter-spacing: -.02em; margin-right: calc(var(--lean) * 2); }
 .fan-t { display: flex; flex-direction: column; gap: 4px; font: 800 italic clamp(.95rem, 1.6vw, 1.375rem)/1 var(--display); text-transform: uppercase; letter-spacing: .02em; }
 .fan-t small { font: 500 normal .8125rem/1.2 var(--body); letter-spacing: 0; text-transform: none; }
 .lap { display: none; width: 22px; height: 6px; background: currentColor; transform: skewX(calc(var(--rake) * -1)); margin-top: 2px; }

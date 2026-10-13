@@ -172,7 +172,7 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 **Body Font:** Hanken Grotesk Variable (with system-ui)
 **Label/Mono Font:** JetBrains Mono Variable (with ui-monospace)
 
-**Character:** Sakana is one cut, one weight, with its own 8-degree lean. Display rules ask for italic and the browser adds a 14-degree oblique on top (`font-synthesis: style` on the root), so lettering sits on the rake; weight is never synthesised (no `weight` in `font-synthesis`), so 800/900 in the CSS render Sakana's true weight. A sheet of decals reads as one sponsor set; variety comes from size and colour. Hanken Grotesk is the quiet reading face beside it.
+**Character:** Sakana is one cut, one weight, with its own 8-degree lean. Display rules ask for italic and the browser adds a 14-degree oblique on top (`font-synthesis: style` on the root), so lettering sits on the rake; weight is never synthesised (no `weight` in `font-synthesis`), so 800/900 in the CSS render Sakana's true weight. The `@font-face` overrides Sakana's vertical metrics (ascent 86%, descent 14%) so uppercase lettering centres in any line box without padding hacks, and centred italic lettering is moved back by `--lean` (.15em, the oblique's overhang) so the ink, not the advance box, sits centred. A sheet of decals reads as one sponsor set; variety comes from size and colour. Hanken Grotesk is the quiet reading face beside it.
 
 ### Hierarchy
 - **Display** (italic, 16 sheet units on desktop / 22.4vw on phones, line-height 0.8, uppercase): the name decal only.

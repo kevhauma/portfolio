@@ -30,8 +30,8 @@
 .intro { min-height: 100svh; }
 .plate { position: relative; }
 .plate ul { margin: 0; padding: 0; }
-.d-name h1 { margin: 0; font: 900 italic 19.5vw/.8 var(--display); letter-spacing: -.035em; text-transform: uppercase; padding: .08em 0 .02em; }
-.d-num .decal span { font: 900 italic 9vw/1 var(--display); letter-spacing: -.05em; margin-left: -.06em; }
+.d-name h1 { margin: 0; font: 900 italic 19.5vw/.8 var(--display); letter-spacing: -.035em; text-transform: uppercase; padding: .14em 0; translate: calc(var(--lean) * -1) 0; }
+.d-num .decal span { font: 900 italic 9vw/1 var(--display); letter-spacing: -.05em; translate: calc(var(--lean) * -1) 0; }
 /* the placement guide: a faint side elevation of the car printed on the liner, 23 on its door, so the number reads as a race number */
 .car { fill: var(--ink); opacity: .2; overflow: visible; pointer-events: none; transition: fill .3s; }
 .d-spec .decal { place-items: stretch; align-content: start; text-align: left; padding: 18px 20px; }
@@ -53,6 +53,8 @@
 .s5 .decal { font: 900 1.375rem/1 var(--display); letter-spacing: .08em; }
 .s6 .decal { font: 800 1.125rem/1 var(--display); letter-spacing: .03em; }
 .s7 .decal { font: 900 italic 1rem/1 var(--display); }
+/* italic decals give the lean back on the right so the ink, not the advance box, sits centred */
+.stack :is(.s1, .s3, .s4, .s7) .decal { padding-right: calc(var(--lean) * 2); }
 .stripe-decal { position: absolute; display: flex; flex-direction: column; gap: max(4px, calc(var(--k) * .5)); transform-origin: 0 0; transform: rotate(calc(var(--rake) * -1)); pointer-events: none; }
 .stripe-decal i { display: block; height: var(--t); background: var(--c); }
 
@@ -75,6 +77,7 @@
   .stack-label { grid-column: 1 / -1; margin-top: 8px; }
   .stack { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 14px 14px; align-items: center; }
   .stack .decal { padding: 0 16px; }
+  .stack :is(.s1, .s4, .s7) .decal { padding: 0 calc(16px + var(--lean)) 0 calc(16px - var(--lean)); }
   .s1 .decal { height: 64px; font-size: clamp(1.75rem, 8vw, 2.75rem); }
   .s2 .decal { height: 64px; font-size: clamp(2rem, 9vw, 3rem); padding: 0 22px; }
   .s3 { width: 76px; height: 76px; }
@@ -94,7 +97,7 @@
   .plate .decal { position: absolute; inset: 0; }
   .plate ul { position: static; }
   .d-name { left: calc(var(--k) * 5); top: calc(var(--k) * 7.4); width: calc(var(--k) * 64); height: calc(var(--k) * 16); }
-  .d-name h1 { font-size: calc(var(--k) * 16); padding: .06em 0 0; }
+  .d-name h1 { font-size: calc(var(--k) * 16); padding: 0; }
   /* the car sits in the name's band; its back runs behind the KEVIN decal */
   .car { position: absolute; left: calc(var(--k) * 48.3); top: calc(var(--k) * 8.09); width: calc(var(--k) * 51); height: calc(var(--k) * 15.31); }
   .d-num { left: calc(var(--k) * 73.3); top: calc(var(--k) * 14.22); width: calc(var(--k) * 6.6); height: calc(var(--k) * 6.6); }
@@ -127,11 +130,11 @@
 .stub { padding: clamp(96px, 12vw, 152px) 5vw calc(var(--wedge) + clamp(96px, 10vw, 140px)); }
 .stub-in { position: relative; max-width: 1312px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(28px, 4vw, 56px) clamp(20px, 3vw, 48px); align-items: start; }
 .st-title { grid-column: 1 / -1; justify-self: start; }
-.st-title .decal { padding: .1em .26em .06em; }
-.st-title h1 { margin: 0; font: 900 italic min(8.6vw, 8.5rem)/.86 var(--display); letter-spacing: -.03em; text-transform: uppercase; }
+.st-title .decal { padding: 0; }
+.st-title h1 { margin: 0; font: 900 italic min(8.6vw, 8.5rem)/.86 var(--display); letter-spacing: -.03em; text-transform: uppercase; padding: .14em calc(.24em + var(--lean)) .14em calc(.24em - var(--lean)); }
 .st-num { width: clamp(88px, 13vw, 200px); aspect-ratio: 1; }
 .st-num .decal { position: absolute; inset: 0; }
-.st-num .decal span { font: 900 italic clamp(2.5rem, 6.6vw, 6.25rem)/1 var(--display); letter-spacing: -.04em; }
+.st-num .decal span { font: 900 italic clamp(2.5rem, 6.6vw, 6.25rem)/1 var(--display); letter-spacing: -.04em; translate: calc(var(--lean) * -1) 0; }
 .paint-shop { grid-column: 1; max-width: 46rem; }
 .paint-shop .decal { place-items: stretch; text-align: left; padding: clamp(20px, 2.4vw, 32px); }
 .paint-shop .ps-lede { margin: 12px 0 16px; font: 500 clamp(1.0625rem, 1.4vw, 1.25rem)/1.45 var(--body); max-width: 52ch; }
@@ -142,7 +145,7 @@
 @media (min-width: 641px) { .st-num { grid-column: 2; grid-row: 2; } .paint-shop { grid-row: 2; } }
 @media (max-width: 640px) {
   .stub-in { grid-template-columns: 1fr; }
-  .st-title h1 { font-size: min(17vw, calc((100vw - 72px) / (var(--longest) * .78))); line-height: .9; }
+  .st-title h1 { font-size: min(17vw, calc((100vw - 72px) / (var(--longest) * .66 + .5))); line-height: .9; }
   .st-num { grid-row: 2; justify-self: end; width: 88px; }
   .kit h2 { font-size: 2.25rem; }
 }
