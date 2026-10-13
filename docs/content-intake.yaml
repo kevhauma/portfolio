@@ -1,0 +1,174 @@
+# Content intake form. Fill in, leave blank what you don't know yet.
+# See content-gathering.md for why each part exists. Later this file is split into the
+# Astro content collections; keep the field names as they are.
+#
+# Conventions
+#   month:  "2023-04"        day: "2023-04-17"
+#   ~ or empty = unknown / not applicable
+#   Copy a list entry (the block starting with "-") to add more.
+
+# ─── Site-wide ────────────────────────────────────────────────────────────────
+
+identity:
+  first_name: Kevin
+  surname:                     # full name shows in recruiter mode, <title> and meta
+  linkedin:                    # full URL
+  email:                       # alias on your own domain, once the domain exists
+  domain:                      # not bought yet
+
+# Exactly 7 (the intro layout has 7 decal slots), biggest use first.
+# use: 0–1, set by you.
+stack:
+  - { name: , use: }
+  - { name: , use: }
+  - { name: , use: }
+  - { name: , use: }
+  - { name: , use: }
+  - { name: , use: }
+  - { name: , use: }
+
+# ─── Experience: the timing screen (03) ──────────────────────────────────────
+
+experience:
+  team:                        # employer / consultancy name
+  start: ""                    # month you started consulting; years are calculated from this in the browser
+
+  # Qualifying
+  education:
+    degree: Bachelor, applied computer science
+    school:
+    start: ""                  # month
+    end: ""                    # month
+    internship:                # where + one line, or ~
+    thesis:                    # title + one line, or ~
+
+  # One row per project. A client with two projects = two rows.
+  sectors:
+    - client:
+      project:                 # project name at that client
+      start: ""                # month
+      end: ""                  # month, or ~ if ongoing
+      role:
+      stack: []                # e.g. [Angular, TypeScript, Nx]
+      shipped:                 # one line: what went live
+
+  # Yellow flags, part 1: gaps between engagements, written by hand
+  gaps:
+    - start: ""                # month
+      end: ""                  # month
+      label:                   # optional, e.g. "travel"; shown only if filled
+
+  # Yellow flags, part 2: talks you gave and meetups you organised (not ones you only attended)
+  events:
+    - date: ""                 # day
+      kind:                    # talk | meetup
+      title:                   # talk title, or meetup topic
+      event:                   # event / meetup name
+      city:
+      link:                    # slides or recording, optional
+
+  # Fastest laps. Expired ones stay (shown greyed and marked expired).
+  certifications:
+    - name:
+      issuer:
+      earned: ""               # month
+      expires: ""              # month, or ~ if it doesn't expire
+      link:                    # credential URL, optional
+
+# ─── Projects (02) ────────────────────────────────────────────────────────────
+
+# 2–4 work highlights. Each should match a sector above (same client + project).
+work_highlights:
+  - client:
+    project:
+    team_size:
+    contribution:              # what you personally did, 1–3 lines
+    shipped:                   # what went live
+    stack: []
+    public_url:                # only if publicly reachable; screenshots are only taken from public pages
+    figures:                   # only sourced figures you may publish, e.g. "LCP 4.1s → 1.6s"; else ~
+      -
+
+personal_projects:
+  money_mosaic_v2:
+    demo_url:                  # public demo instance with mock data; to be set up
+  quackbot:
+    still_running:             # yes | no  (no → it moves to the workbench)
+    servers:                   # rough number of servers it's in, if you know it; else ~
+
+# ─── The map (04) ─────────────────────────────────────────────────────────────
+
+# Source of truth: Documents/TripMap/trips.gpkg. Only larger trips.
+# Tracks are pulled by date range; routes are generalised to ~250 m and the ends trimmed.
+trips:
+  - id:                        # short slug, e.g. eifel-2025
+    name:                      # e.g. "Eifel weekend"
+    start: ""                  # day
+    end: ""                    # day
+    mode:                      # motorcycle | car | bike | walk
+    vehicle:                   # optional, e.g. NC750
+    note:                      # one line
+    photos:                    # placed by hand; files go in data/photos/<id>/
+      - file:
+        lat:
+        lng:
+        caption:               # optional
+
+motorsport:
+  - date: ""                   # day
+    circuit:
+    event:                     # e.g. "Belgian GP", "track day"
+    kind:                      # spectated | drove | rode
+    vehicle:                   # if drove/rode
+    best_lap:                  # m:ss.sss, only if actually timed; else ~
+    trip:                      # trip id above, if it was part of one; else ~
+
+# ─── Music (05) ───────────────────────────────────────────────────────────────
+
+# Tip: ticket PDFs in D:\downloads and D:\library\documents help backfill this list.
+gigs:
+  - date: ""                   # day (month is fine if the day is lost)
+    artist:                    # headliner; for a festival, the festival name
+    festival: false            # true for festivals
+    end: ""                    # last day, festivals only
+    venue:
+    city:
+    acts_seen: []              # optional, festivals only
+
+# Setlist: top tracks of the last 3 months + an all-time encore of 3, from the
+# Last.fm export dropped into data/lastfm/. Nothing to type here.
+
+# ─── Workbench (06) ───────────────────────────────────────────────────────────
+
+# WLED: your own presets, from presets.json in data/wled/. Nothing to type here.
+
+prints:                        # fill in later; the animated printer cycles through these
+  - name:
+    model_file:                # .3mf / .stl in data/prints/
+    gcode_file:                # sliced plate export
+    photo:                     # photo of the real print
+    printer:
+    layer_height:              # mm
+    filament:
+    print_time:                # e.g. "4h 12m"
+    timelapse:                 # optional .mp4
+
+advent_of_code:
+  total_stars:                 # real total from adventofcode.com (repo estimate: ~104)
+
+hashcode_2018:
+  team: JustGoogleIt
+  rank: 113
+  teams: 4852
+  belgium_rank: 4
+  score: 49200184
+  teammates: []                # first names; they agreed to be credited
+
+# Confirm or edit. Each item gets a name, one line and a link.
+shelf:
+  - AdventOfCode
+  - MessengertoStats           # synthetic chat, labelled as such
+  - Google_Hashcode_2018
+  - strava-vue
+  - f1-wled-tracker            # next to the strip
+  - gps-tools                  # gpx-to-kml, gpx-visualizer, routes-drawer, gpx-to-db; links to the map
