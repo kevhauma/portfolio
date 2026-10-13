@@ -1,10 +1,106 @@
 ---
-import StubSheet from '../components/StubSheet.astro';
+/* 03 Experience: the pit wall. A CRT timing monitor plots the race history. The bachelor is qualifying, the years are laps, every client project is a sector. */
+import Livery from '../layouts/Livery.astro';
+import Kit from '../components/Kit.astro';
+import '@fontsource-variable/archivo/wdth.css';
+import '../styles/sheet.css';
+import '../styles/experience.css';
+import { team, since, qualifying, sectors, gaps, now, month, short, span, laps, onTheJob, projectHref } from '../data/experience';
+
+/** "YYYY-MM" moved on by k months */
+const plus = (m: string, k: number) => { const [y, mo] = m.split('-').map(Number); const t = y * 12 + mo - 1 + k; return `${Math.floor(t / 12)}-${String(t % 12 + 1).padStart(2, '0')}`; };
+const endOf = (s: { end: string | null }) => s.end ?? now;
+const q = qualifying.internship;
+/* the longest finished sector gets the purple, as the fastest lap does on a timing screen */
+const longest = Math.max(...sectors.filter(s => s.end).map(s => span(s.start, s.end)));
+
+/* one column per month from the first month of qualifying */
+const M = span(q.start, now);
+const col = (m: string) => Math.min(span(q.start, m) + 1, M + 2);
+const lapBands = Array.from({ length: laps }, (_, i) => ({ L: i + 1, a: col(plus(since, 12 * i)), b: col(plus(since, 12 * (i + 1))), from: plus(since, 12 * i) }));
 ---
-<StubSheet sec="03" description="Kevin's experience as a race timing screen."
-  lede="Experience becomes a race timing screen: the bachelor is qualifying, the years are laps, and every client is a sector."
-  plans={[
-    'Every client named, with dates, role, stack and what shipped.',
-    'Timing-screen type and data density, readable without touching anything.',
-    'The full list is already in recruiter mode: switch on the pit limiter, top right.'
-  ]} />
+<Livery title="Experience · Kevin" description="Kevin's experience on the pit wall: a timing monitor plotting every client project as a sector and every year as a lap." sec="03">
+  <section class="sheet pw" aria-labelledby="pw-title">
+    <div class="pw-stage">
+      <div class="pw-unit">
+        <div class="pw-frame">
+          <span class="pw-bolt b1" aria-hidden="true"></span><span class="pw-bolt b2" aria-hidden="true"></span><span class="pw-bolt b3" aria-hidden="true"></span><span class="pw-bolt b4" aria-hidden="true"></span>
+          <header class="pw-top">
+            <h1 id="pw-title">Experience</h1>
+            <p class="pw-print">Timing monitor KH-23 · Race history</p>
+          </header>
+          <div class="pw-screen">
+            <p class="pw-status"><span>Race history</span><span>Lap <b>{laps}</b></span><span>On track <b>{onTheJob}</b></span><span>Team <b>{team}</b></span></p>
+            <figure class="pw-chart" style={`--m:${M};--rows:${sectors.length + 1}`} aria-label={`Chart of ${sectors.length} sectors across ${laps} laps`}>
+              <div class="pw-band q" style={`--a:2;--b:${col(since)};--n:${col(since) - 2}`}><span><span class="l">Qualifying</span><span class="s">Q</span><small>{short(q.start)}</small></span></div>
+              {lapBands.map(b => (
+                <div class="pw-band" style={`--a:${b.a};--b:${b.b};--n:${b.b - b.a}`}><span><span class="l">Lap {b.L}</span><span class="s">L{b.L}</span><small>{short(b.from)}</small></span></div>
+              ))}
+              {gaps.map(g => (
+                <div class="pw-flag" style={`--a:${col(g.start)};--b:${col(g.end) + 1}`} aria-hidden="true"><span>Yellow</span></div>
+              ))}
+              <span class="pw-hd">Sector</span>
+              <ol class="pw-rows">
+                <li class="pw-row pw-qr" style="grid-row:2">
+                  <a class="pw-a" href="#pw-key-q">
+                    <span class="pw-lb"><span class="pw-n">Q</span><span class="pw-c">Qualifying<span class="pw-p">Bachelor, internship at {q.client}</span></span><span class="pw-mo">{span(q.start, q.end)} mo</span></span>
+                    <span class="pw-bar" style={`--a:${col(q.start)};--b:${col(q.end) + 1}`}></span>
+                  </a>
+                </li>
+                {sectors.map((s, i) => (
+                  <li class:list={['pw-row', { 'pw-run': !s.end, 'pw-best': !!s.end && span(s.start, s.end) === longest }]} style={`grid-row:${i + 3}`}>
+                    <a class="pw-a" href={projectHref(s)}>
+                      <span class="pw-lb"><span class="pw-n">S{s.n}</span><span class="pw-c">{s.client}<span class="pw-p">{s.project}</span></span><span class="pw-mo">{s.end ? `${span(s.start, s.end)} mo` : 'on track'}</span></span>
+                      <span class="pw-bar" style={`--a:${col(s.start)};--b:${col(endOf(s)) + 1}`}></span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </figure>
+            <p class="pw-legend"><span><i></i>Completed</span><span><i class="run"></i>On track</span><span><i class="best"></i>Longest stint</span><span><i class="q"></i>Qualifying</span><span><i class="yf"></i>Yellow flag</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="pw-ledge" aria-hidden="true"></div>
+    </div>
+
+    <div class="pw-wall">
+      <div class="pw-wall-in">
+        <p class="pw-lede">Every client project is a sector, every year on the job a lap, counted from {month(since)}. <b>{onTheJob} on track at {team}, now in lap {laps}.</b> The bachelor was qualifying. Point at a sector on the monitor to isolate it; open it for the full story in the workshop manual.</p>
+        <ol class="pw-key" aria-label="Sectors in detail">
+          <li id="pw-key-q">
+            <span class="k">Q</span>
+            <div>
+              <h3>Qualifying</h3>
+              <p class="m">{qualifying.degree}<span class="ph">School and dates to come</span></p>
+              <p>Internship at {q.client}, {short(q.start)} to {short(q.end)}: {q.project}. {q.shipped}.</p>
+              <p class="st">{q.stack.join(' · ')}</p>
+            </div>
+          </li>
+          {sectors.map(s => (
+            <li>
+              <span class="k">S{s.n}</span>
+              <div>
+                <h3><a href={projectHref(s)}>{s.client}: {s.project}</a></h3>
+                <p class="m">{s.role} · {short(s.start)} to {s.end ? short(s.end) : 'now'} · {s.end ? `${span(s.start, s.end)} mo` : 'on track'}</p>
+                <p>{s.shipped ?? 'Not shipped yet: this sector is still running, under NDA.'}</p>
+                <p class="st">{s.stack.join(' · ')}</p>
+              </div>
+            </li>
+          ))}
+          {gaps.map(g => (
+            <li class="yf">
+              <span class="k" aria-hidden="true"></span>
+              <div>
+                <h3>Yellow flag</h3>
+                <p class="m">{short(g.start)} to {short(g.end)} · {span(g.start, g.end)} mo</p>
+                <p>Time between engagements.</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+  <Kit current="03" heading="The rest of the kit." />
+</Livery>
