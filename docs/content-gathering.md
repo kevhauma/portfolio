@@ -17,24 +17,26 @@ The site can launch on the **essentials**: intro, experience, projects, contact 
 
 ### Identity and contact
 - Full name in recruiter mode, `<title>` and meta; "Kevin" on the livery.
-- Contact: an email alias on Kevin's own domain (the domain doesn't exist yet), plus LinkedIn.
-- CV: handled later. Leaning towards generating it from the same data as recruiter mode.
+- Contact: an email alias on Kevin's own domain (the domain doesn't exist yet), plus LinkedIn. **Launch waits for the domain**; no interim host subdomain.
+- CV: **no CV download at launch**; recruiter mode stands in for it. Later, leaning towards generating it from the same data as recruiter mode.
 
 ### Experience: the timing screen (03)
 - **One row per project**, with dates to the month. The employer (the consultancy) is the team, and each client project is a sector. A client with two projects gets two sectors.
 - **Time columns show real durations only** (e.g. `14 mo`). No invented lap times.
 - **Qualifying** is the bachelor, plus an internship or thesis if there was one.
+- **Clients under NDA** are anonymised (currently the construction planning client) and never a work highlight.
 - **Gaps** between engagements are **written by hand** and shown as **yellow flags**, each with an optional label.
 - **Events** are also yellow flags: talks given and meetups **organised**. Events Kevin only attended are left out.
 - **Certifications** are **fastest laps**. Several per year are allowed. **Expired ones stay**, greyed and marked expired, so record the expiry date.
 - **Years of experience**: the HTML carries the raw start date, and a client-side script turns it into **whole years** (floored). No redeploy needed when a year ticks over.
 
 ### Projects (02)
-- Projects are **professional work highlights** (2–4 of them) plus **large personal projects that run in production**.
-- Personal projects there: **money-mosaic-v2** and **Quackbot**. Quackbot only stays if it still runs. If it doesn't, it moves to the workbench.
+- Projects are **professional work highlights** (2–4 of them) plus **large personal projects**.
+- Personal projects there: **money-mosaic-v2**, **Quackbot** and **CommonGrounds**. Quackbot no longer runs but is showcased anyway, as a retired project.
 - Work project visuals: real screenshots of **public** pages only. Where there's no public page, the interaction recreates the problem in neutral styling, with no client UI.
 - Outcome figures are allowed only when they can be sourced and published. No estimates.
 - **money-mosaic-v2**: a public demo instance with **mock data, just enough for the graphs**. The app's own dev seed is a starting point.
+- **CommonGrounds**: no demo; shown with screenshots (to follow).
 - **Quackbot**: a small Discord frame. The visitor picks one of the three commands (`d!explain`, `d!urban`, `d!wotd`), and the reply explains **how that command works in the code** (APIs, parsing, DM routing), with a link to the source file. No live API calls.
 - **No GitHub contribution graph.**
 
@@ -52,13 +54,13 @@ The site can launch on the **essentials**: intro, experience, projects, contact 
 ### Workbench (06)
 - **WLED**: a simulation running **Kevin's own presets**, from a `presets.json` backup of the real strip.
 - **3D prints**: several prints, cycled by an animated printer. Model, G-code and settings get filled in later.
-- **Shelf** (still to confirm, see open items): Advent of Code, MessengertoStats, Google Hashcode 2018, strava-vue, the F1-lap-data WLED tracker, and the GPS tool chain as one item that links to the map.
+- **Shelf**: Advent of Code, MessengertoStats, Google Hashcode 2018, the F1-lap-data WLED tracker, and the GPS tool chain as one item that links to the map.
 - **Advent of Code**: kept to a minimum, as one line with the **real** star total from adventofcode.com. The repo estimate is about 104 stars (2020: 14, 2021: 7, 2022: 40, 2023: 23, 2024: 20).
 - **MessengertoStats**: a **synthetic chat**, clearly labelled, with just enough data for the visuals. No real messages.
 - **Google Hashcode 2018**: team **JustGoogleIt**, #113 of 4,852 teams (top 3%), 4th of 186 Belgian teams, 49,200,184 points. Confirmed against Google's archived ranking. Teammates agreed to be credited by first name.
 
 ### Intro (01)
-- **Seven stack decals**, because the layout is built for exactly 7. Kevin picks the technologies and sets each weight (0–1) by hand. Note: money-mosaic-v2 is Angular 21, which isn't in the current list.
+- **Seven stack decals**, because the layout is built for exactly 7. They are Kevin's **favourite** technologies, not his most used at work: TypeScript, Node.js, React, Angular, Tailwind, TanStack, ECharts, largest first. Weights step down evenly from 1.0 to 0.4.
 
 ## Already found on disk
 
@@ -86,9 +88,7 @@ Everything else is typed into `content-intake.yaml`.
 
 ## Open items
 
-- **Workbench shelf**: confirm the list above, or edit it.
-- **Stack**: which seven technologies.
-- **Quackbot**: still running? This decides Projects vs workbench.
-- **Domain**: none yet. The alias email and deploy target wait on it.
-- **CV**: later.
+- **Stack label**: the decals are favourites, not most used, so the intro label "Stack, sized by use" needs new wording.
+- **Domain**: none yet. The alias email, deploy target and launch wait on it.
+- **CV**: after launch.
 - **Prints**: later.

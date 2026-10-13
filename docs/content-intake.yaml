@@ -19,19 +19,19 @@ identity:
 # Exactly 7 (the intro layout has 7 decal slots), biggest use first.
 # use: 0–1, set by you.
 stack:
-  - { name: , use: }
-  - { name: , use: }
-  - { name: , use: }
-  - { name: , use: }
-  - { name: , use: }
-  - { name: , use: }
-  - { name: , use: }
+  - { name: TypeScript, use: 1.0 }
+  - { name: Node.js, use: 0.9 }
+  - { name: React, use: 0.8 }
+  - { name: Angular, use: 0.7 }
+  - { name: Tailwind, use: 0.6 }
+  - { name: TanStack, use: 0.5 }
+  - { name: ECharts, use: 0.4 }
 
 # ─── Experience: the timing screen (03) ──────────────────────────────────────
 
 experience:
-  team:                        # employer / consultancy name
-  start: ""                    # month you started consulting; years are calculated from this in the browser
+  team: Zinderlabs             # employer / consultancy name
+  start: "2021-07"             # month you started consulting; years are calculated from this in the browser
 
   # Qualifying
   education:
@@ -39,23 +39,96 @@ experience:
     school:
     start: ""                  # month
     end: ""                    # month
-    internship:                # where + one line, or ~
+    internship: "Zinderlabs: Platform Planner, an internal planner for consultants' projects and workplaces (WFH, office, client), built from scratch in a team of 3 with Vue 2 and Spring Boot (2021-03 to 2021-06)"
     thesis:                    # title + one line, or ~
 
   # One row per project. A client with two projects = two rows.
   sectors:
-    - client:
-      project:                 # project name at that client
-      start: ""                # month
-      end: ""                  # month, or ~ if ongoing
-      role:
-      stack: []                # e.g. [Angular, TypeScript, Nx]
-      shipped:                 # one line: what went live
+    # VG Computers, Jumperke and Platform Blog ran part-time in parallel
+    - client: VG Computers
+      project: Webstore
+      start: "2021-07"
+      end: "2021-08"
+      role: Full-stack developer
+      stack: [Meteor, React]
+      shipped: Webstore and admin back office, with Meteor components moved to React, user reviews and breadcrumbs
+
+    - client: Jumperke
+      project: Route planning and order tool
+      start: "2021-07"
+      end: "2021-09"
+      role: Frontend developer
+      stack: [TypeScript, React, GraphQL]
+      shipped: Admin tools to plan delivery and pickup routes, plus bug fixes in the client-facing order tool
+
+    - client: Zinderlabs (internal)
+      project: Platform Blog
+      start: "2021-08"
+      end: "2021-08"
+      role: Full-stack developer
+      stack: [Blitz.js, TypeScript, Prisma, MUI, React Final Form]
+      shipped: Internal blog for knowledge sharing and meeting notes, with a Markdown editor
+
+    - client: Aurubis              # Zinderlabs consultant at Rekencentra, on a project for Aurubis
+      project: Scrap yard management
+      start: "2021-09"
+      end: "2023-03"
+      role: Full-stack developer
+      stack: [React, MUI, Telerik, React Final Form, .NET Framework, .NET 6, MSSQL]
+      shipped: Yard management for a multi-plant copper scrapyard (delivery planning, weighing, payload inspection, invoicing), migrated from .NET Framework to .NET 6
+
+    - client: Aurubis              # Zinderlabs consultant at Rekencentra, on a project for Aurubis
+      project: Driver check-in kiosk
+      start: "2023-03"
+      end: "2023-07"
+      role: Full-stack developer
+      stack: [React, MUI, XState, React Hook Form, .NET 6, MSSQL]
+      shipped: Multilingual self-service check-in for delivery drivers, with ID scanner, printer, safety videos and a site map guide
+
+    - client: ArCom                # Zinderlabs consultant at Rekencentra, on a project for ArCom
+      project: DBA tool
+      start: "2023-07"
+      end: "2024-07"
+      role: Full-stack developer
+      stack: [React, TypeScript, MUI, TanStack Query, React Hook Form, .NET, MSSQL, Docusaurus]
+      shipped: Web-based DBA tool replacing a legacy C++ application, reverse-engineered without its source code
+
+    - client: publiq
+      project: UiTPAS counter app
+      start: "2024-08"
+      end: "2024-11"
+      role: Frontend developer
+      stack: [AngularJS, Next.js, MUI, TanStack Query]
+      shipped: Counter app for UiTPAS cards and profiles, migrated page by page from AngularJS to React with a seamless fallback
+
+    - client: Clearmedia
+      project: Microsoft services reselling platform
+      start: "2025-05"
+      end: "2026-06"
+      role: Full-stack developer
+      stack: [React, Redux, Formik, Chakra UI, styled-components, Backbone.js, .NET, microservices]
+      shipped: B2B client portal and back office for reselling Microsoft services, including reseller packages and invoicing
+
+    - client: Zinderlabs (internal)
+      project: Platform Planner Vue 3 upgrade
+      start: "2026-06"
+      end: "2026-06"
+      role: Frontend developer
+      stack: [Vue 2, Vue 3, GraphQL]
+      shipped: The internship planner upgraded page by page to Vue 3 with a redesign, falling back to the Vue 2 pages through iframes
+
+    - client: Construction tech client   # anonymised, under NDA
+      project: Building installation planner
+      start: "2026-07"
+      end: ~
+      role: Frontend tech lead, full-stack
+      stack: [React, shadcn/ui, TanStack Query, TanStack Form, Konva, Three.js, Supabase]
+      shipped: ~                 # not shipped yet
 
   # Yellow flags, part 1: gaps between engagements, written by hand
   gaps:
-    - start: ""                # month
-      end: ""                  # month
+    - start: "2024-12"
+      end: "2025-04"
       label:                   # optional, e.g. "travel"; shown only if filled
 
   # Yellow flags, part 2: talks you gave and meetups you organised (not ones you only attended)
@@ -79,22 +152,42 @@ experience:
 
 # 2–4 work highlights. Each should match a sector above (same client + project).
 work_highlights:
-  - client:
-    project:
-    team_size:
-    contribution:              # what you personally did, 1–3 lines
-    shipped:                   # what went live
-    stack: []
-    public_url:                # only if publicly reachable; screenshots are only taken from public pages
-    figures:                   # only sourced figures you may publish, e.g. "LCP 4.1s → 1.6s"; else ~
-      -
+  - client: Aurubis
+    project: Scrap yard management
+    team_size: 3–5
+    contribution: Full-stack work on the yard flow from planning to invoicing for a multilingual client. Introduced new technology at the client and led the migration from .NET Framework to .NET 6.
+    shipped: Yard management for a multi-plant copper scrapyard (delivery planning, weighing, payload inspection, invoicing)
+    stack: [React, MUI, Telerik, React Final Form, .NET Framework, .NET 6, MSSQL]
+    public_url: ~
+    figures: ~
+
+  - client: Aurubis
+    project: Driver check-in kiosk
+    team_size: 2–3
+    contribution: Modelled the guided check-in as an XState state machine, driving the ID scanner, printer and safety videos, while requirements kept shifting.
+    shipped: Multilingual self-service check-in for delivery drivers, with a site map guide creator
+    stack: [React, MUI, XState, React Hook Form, .NET 6, MSSQL]
+    public_url: ~
+    figures: ~
+
+  - client: ArCom
+    project: DBA tool
+    team_size: 1–3
+    contribution: Reverse-engineered a legacy C++ DBA application without its source code and rebuilt it as a web app, largely solo, with a tabbed interface, shared page abstractions and complex state.
+    shipped: Web-based DBA tool replacing the C++ application
+    stack: [React, TypeScript, MUI, TanStack Query, React Hook Form, .NET, MSSQL, Docusaurus]
+    public_url: ~
+    figures: ~
 
 personal_projects:
   money_mosaic_v2:
     demo_url:                  # public demo instance with mock data; to be set up
   quackbot:
-    still_running:             # yes | no  (no → it moves to the workbench)
-    servers:                   # rough number of servers it's in, if you know it; else ~
+    still_running: no          # retired (ran 2017–2020), still showcased in Projects
+    servers: 1                 # one community of ~2,000 members
+  commongrounds:
+    demo_url: ~                # no demo
+    screenshots:               # files go in data/screenshots/commongrounds/; to follow
 
 # ─── The map (04) ─────────────────────────────────────────────────────────────
 
@@ -162,13 +255,12 @@ hashcode_2018:
   teams: 4852
   belgium_rank: 4
   score: 49200184
-  teammates: []                # first names; they agreed to be credited
+  teammates: ["Xander", "Wouter", "Dries"]                # first names; they agreed to be credited
 
 # Confirm or edit. Each item gets a name, one line and a link.
 shelf:
   - AdventOfCode
   - MessengertoStats           # synthetic chat, labelled as such
   - Google_Hashcode_2018
-  - strava-vue
   - f1-wled-tracker            # next to the strip
   - gps-tools                  # gpx-to-kml, gpx-visualizer, routes-drawer, gpx-to-db; links to the map
