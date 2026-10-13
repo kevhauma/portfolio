@@ -146,7 +146,10 @@ export const projects: Project[] = [
       { id: 'map', title: 'Site map guide creator', text: 'Tells a driver where to go on site', feeds: ['react'] },
       { id: 'api', title: 'Back end', text: '.NET 6 and MSSQL', feeds: ['net'] }
     ],
-    notes: ['As a Zinderlabs consultant at Rekencentra, on a project for Aurubis.']
+    notes: [
+      'Fig. 3.1 is simplified: the drop-off spots A to C stand in for the real yard, where each material and plant has its own.',
+      'As a Zinderlabs consultant at Rekencentra, on a project for Aurubis.'
+    ]
   },
   {
     slug: 'arcom-dba-tool', n: '4', kind: 'chapter', wire: 'B',

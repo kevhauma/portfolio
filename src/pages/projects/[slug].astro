@@ -6,6 +6,7 @@ import Livery from '../../layouts/Livery.astro';
 import Desk from '../../components/manual/Desk.astro';
 import MoneyMosaicCutaway from '../../components/manual/MoneyMosaicCutaway.astro';
 import ScrapYardFlow from '../../components/manual/ScrapYardFlow.astro';
+import KioskMachine from '../../components/manual/KioskMachine.astro';
 import { projects, projectHref, period, duration, wires, type Project } from '../../data/projects';
 
 export function getStaticPaths() {
@@ -30,7 +31,7 @@ const facts: [string, string][] = [
 ];
 const legacyKeys = p.keys.some(k => k.legacy);
 /* a project with its own drawn figure shows that instead of the wired parts; the key lights its stations */
-const cutaways: Record<string, typeof MoneyMosaicCutaway> = { 'money-mosaic': MoneyMosaicCutaway, 'aurubis-scrap-yard': ScrapYardFlow };
+const cutaways: Record<string, typeof MoneyMosaicCutaway> = { 'money-mosaic': MoneyMosaicCutaway, 'aurubis-scrap-yard': ScrapYardFlow, 'aurubis-kiosk': KioskMachine };
 const Cutaway = cutaways[p.slug];
 ---
 <Livery title={`${p.nda ? 'Building installation planner' : p.title} · Projects · Kevin`} description={`${p.title}: ${p.line}. A page from Kevin's workshop manual.`} sec="02" book>

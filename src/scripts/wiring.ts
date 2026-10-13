@@ -3,6 +3,8 @@
 // into the parts it feeds. Without this script the page still reads: swatches and pin chips carry the colours.
 // book.ts mounts it on the spread on the desk.
 
+import { mountMachine } from './machine';
+
 const SVG = 'http://www.w3.org/2000/svg';
 type Box = { x: number; y: number; w: number; h: number };
 
@@ -234,6 +236,9 @@ export type Wiring = { draw: () => void; destroy: () => void };
 /** wires one spread and keeps it wired through resizes; book.ts mounts it again on every turned page */
 export function mountWiring(spread: HTMLElement): Wiring {
   const draw = spread.hasAttribute('data-harness') ? harness(spread) : diagram(spread);
+  /* a figure that runs on its own, the kiosk's state machine, draws and listens for itself */
+  const fig = spread.querySelector<HTMLElement>('[data-machine]');
+  const machine = fig ? mountMachine(fig) : null;
   let raf = 0;
   const redraw = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); };
   draw();
@@ -248,6 +253,7 @@ export function mountWiring(spread: HTMLElement): Wiring {
     destroy: () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      machine?.destroy();
       pages.forEach(p => p.removeEventListener('scroll', redraw));
     }
   };

@@ -329,17 +329,17 @@ body:has(.desk) { background: #3A2314; }
 .cut { container: fig / inline-size; position: relative; z-index: 2; margin: 0; padding-bottom: 40px; }
 .cut .fig-t { margin-bottom: 8px; }
 .cut svg { display: block; overflow: visible; }
-:is(.cut, .yard) .ink-s { fill: none; stroke: var(--pi); stroke-width: 1.6; }
-:is(.cut, .yard) .thin { stroke-width: 1.1; }
-:is(.cut, .yard) .hair { stroke-width: .7; }
-:is(.cut, .yard) .faint { stroke-width: .6; opacity: .34; }
-:is(.cut, .yard) .ink-f { fill: var(--pi); }
-:is(.cut, .yard) .spot-f { fill: var(--spot); }
-:is(.cut, .yard) .spot-s { fill: none; stroke: var(--spot); stroke-width: 1.7; }
-:is(.cut, .yard) .head { fill: rgb(19 37 79 / .16); }
-:is(.cut, .yard) .lid { fill: rgb(19 37 79 / .1); }
-:is(.cut, .yard) .paper { fill: var(--paper); }
-:is(.cut, .yard) .paper-s { fill: none; stroke: var(--paper); stroke-width: 2.2; }
+:is(.cut, .yard, .km) .ink-s { fill: none; stroke: var(--pi); stroke-width: 1.6; }
+:is(.cut, .yard, .km) .thin { stroke-width: 1.1; }
+:is(.cut, .yard, .km) .hair { stroke-width: .7; }
+:is(.cut, .yard, .km) .faint { stroke-width: .6; opacity: .34; }
+:is(.cut, .yard, .km) .ink-f { fill: var(--pi); }
+:is(.cut, .yard, .km) .spot-f { fill: var(--spot); }
+:is(.cut, .yard, .km) .spot-s { fill: none; stroke: var(--spot); stroke-width: 1.7; }
+:is(.cut, .yard, .km) .head { fill: rgb(19 37 79 / .16); }
+:is(.cut, .yard, .km) .lid { fill: rgb(19 37 79 / .1); }
+:is(.cut, .yard, .km) .paper { fill: var(--paper); }
+:is(.cut, .yard, .km) .paper-s { fill: none; stroke: var(--paper); stroke-width: 2.2; }
 .cut .node { fill: var(--paper); stroke: var(--pi); stroke-width: 1.5; }
 .cut .node.dropped { stroke: var(--ghost); stroke-dasharray: 2.4 2; }
 .cut .node.win { fill: var(--spot); }
@@ -567,6 +567,112 @@ body:has(.desk) { background: #3A2314; }
   .yd-tag { left: 50%; writing-mode: vertical-rl; transform: translate(-50%, -50%) rotate(180deg); padding: 10px 6px 10px 5px; }
 }
 
+/* ---------- a drawn figure: the kiosk's check-in machine (KioskMachine.astro, machine.ts) ---------- */
+/* states are rounded, as a statechart draws them; the hardware and the yard program stay square */
+.km { container: km / inline-size; position: relative; z-index: 2; margin: 0; }
+.km .fig-t { margin-bottom: 0; }
+.km-grid {
+  --gap: 26px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "start ."
+    "idle  ."
+    "lang  screen"
+    "scan  scanner"
+    "c1    driver"
+    "book  yard"
+    "c2    deliv"
+    "c3    video"
+    "print printer";
+  align-items: center;
+  column-gap: 40px;
+  row-gap: var(--gap);
+  margin-top: 22px;
+  /* the left margin carries the way back to idle */
+  padding: 0 0 4px 22px;
+}
+.km-start { grid-area: start; justify-self: center; position: relative; z-index: 2; width: 12px; height: 12px; border-radius: 50%; background: var(--pi); }
+.km-idle { grid-area: idle; }
+.km-lang { grid-area: lang; }
+.km-scan { grid-area: scan; }
+.km-book { grid-area: book; }
+.km-print { grid-area: print; align-self: start; margin-top: 10px; }
+.km-driver { grid-area: driver; }
+.km-deliv { grid-area: deliv; }
+.km-video { grid-area: video; }
+.km-screen { grid-area: screen; }
+.km-scanner { grid-area: scanner; }
+.km-yard { grid-area: yard; }
+.km-printer { grid-area: printer; align-self: start; }
+.km-ch[data-s="c1"] { grid-area: c1; }
+.km-ch[data-s="c2"] { grid-area: c2; }
+.km-ch[data-s="c3"] { grid-area: c3; }
+
+.km-st { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 4px; padding: 8px 12px 10px; border-radius: 9px; background: var(--paper); box-shadow: inset 0 0 0 2px var(--pi); transition: opacity .16s var(--ease), box-shadow .16s var(--ease); }
+.km-st.hot { box-shadow: inset 0 0 0 3.5px var(--pi); }
+.km-n { font: 800 1rem/1 var(--m-head); font-stretch: 74%; letter-spacing: .01em; text-transform: uppercase; }
+.km-x { font-size: .75rem; line-height: 1.32; color: var(--pi-2); text-wrap: pretty; }
+
+/* a choice: the statechart's diamond */
+.km-ch { position: relative; z-index: 2; justify-self: center; width: 34px; height: 34px; transition: opacity .16s var(--ease); }
+.km-ch::before { content: ""; position: absolute; inset: 5px; transform: rotate(45deg); background: var(--paper); box-shadow: inset 0 0 0 2px var(--pi); }
+
+/* the transitions, drawn by machine.ts; the leads to the devices are dashed */
+.km-edges { position: absolute; left: 0; top: 0; z-index: 1; overflow: visible; pointer-events: none; }
+.km-w { fill: none; stroke: var(--pi); stroke-width: 2; stroke-linejoin: round; }
+.km-h { fill: var(--pi); }
+.km-link .km-w { stroke-width: 1.5; stroke-dasharray: 5 3.5; }
+.km-g { font: 600 10px/1 var(--mono); letter-spacing: .02em; fill: var(--spot-ink); }
+
+/* ---------- the devices the machine drives ---------- */
+.km-dev { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 7px; padding-left: 14px; transition: opacity .16s var(--ease); }
+.km-port { position: absolute; left: 0; top: 50%; width: 7px; height: 12px; margin-top: -6px; background: var(--pi); }
+.km-art { display: block; width: 100%; height: auto; overflow: visible; }
+.km-dn { font: 700 .75rem/1 var(--m-head); font-stretch: 86%; letter-spacing: .07em; text-transform: uppercase; }
+.km-dx { max-width: 22ch; font-size: .75rem; line-height: 1.32; color: var(--pi-2); text-align: center; text-wrap: balance; }
+.km-screen .km-art, .km-scanner .km-art { max-width: 150px; }
+.km-led { fill: var(--paper); stroke: var(--pi); stroke-width: 1.2; }
+
+.km-yard { align-items: flex-start; gap: 5px; padding: 9px 12px 10px 16px; background: var(--paper); box-shadow: inset 0 0 0 2px var(--pi); color: var(--pi); text-decoration: none; }
+.km-yard .km-port { left: -7px; }
+.km-yt { display: flex; align-items: center; gap: 7px; font: 800 1rem/1 var(--m-head); font-stretch: 74%; letter-spacing: .01em; text-transform: uppercase; }
+.km-yt b { display: grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: 50%; background: var(--pi); color: var(--paper); font: 600 .6875rem/1 var(--mono); }
+.km-yx { font-size: .75rem; line-height: 1.32; color: var(--spot-ink); text-decoration: underline; text-underline-offset: 3px; text-wrap: pretty; }
+.km-yard:hover, .km-yard.hot { box-shadow: inset 0 0 0 3px var(--pi); }
+
+.km-vid { display: flex; align-items: center; gap: 10px; }
+.km-vid .km-art { width: 64px; flex: none; }
+.km-play { fill: var(--spot); }
+
+.km-printer { justify-self: center; width: min(100%, 196px); padding-left: 0; }
+.km-printer .km-port { top: 24px; left: -14px; }
+.km-slip-win { display: block; width: 52%; margin-top: -1px; }
+.km-slip { display: block; width: 100%; height: auto; }
+.km-tear { stroke-dasharray: 2 2; }
+.km-rt { fill: none; stroke: var(--spot); stroke-width: 2.4; stroke-linejoin: round; }
+.km-bay { fill: var(--paper); stroke: var(--pi); stroke-width: 1.1; }
+.km-bay.here { fill: var(--spot); stroke: var(--spot); }
+.km-bl { font: 700 6.2px/1 var(--mono); text-anchor: middle; fill: var(--pi); }
+.km-bay.here + .km-bl { fill: #fff; }
+
+/* a narrow figure: the same two columns, set tighter */
+@container km (max-width: 400px) {
+  .km-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); column-gap: 26px; padding-left: 20px; }
+  .km-st { padding: 7px 10px 9px; }
+  .km-n { font-size: .9375rem; }
+  .km-x, .km-dx { font-size: .6875rem; }
+  .km-g { font-size: 9px; }
+  .km-dev { padding-left: 10px; }
+  .km-yard { padding: 8px 10px 9px 12px; }
+  .km-vid { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .km-vid .km-art { width: 58px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .km *, .km *::before { transition: none !important; }
+}
+
 @media (max-width: 1099px) {
   .desk { padding: 76px 12px 46px; }
   .block { display: flow-root; height: max(420px, calc(100svh - 146px)); background-image: none; }
@@ -624,7 +730,7 @@ body:has(.desk) { background: #3A2314; }
   .page-r .rh { display: none; }
   .key-row { width: 100%; margin-right: 0; }
   /* the wires run down the right margin: keep the key and the parts clear of their channels */
-  .key, .key-note, .parts, .cut, .yard { margin-right: calc(var(--lanes, 6) * 9px + 10px); }
+  .key, .key-note, .parts, .cut, .yard, .km { margin-right: calc(var(--lanes, 6) * 9px + 10px); }
   .key-row:hover, .key-row.hot { background: rgb(19 37 79 / .07); }
   .parts { grid-template-columns: 1fr; }
   .parts .part { grid-row: auto !important; grid-column: 1 !important; }

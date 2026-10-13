@@ -1,0 +1,144 @@
+---
+/* Fig. 3.1 for the Aurubis kiosk: the guided check-in as the state machine it was built as. The spine runs
+   every check-in from idle to the printout; three choices read what the kiosk already knows and either skip
+   ahead or take a detour (the driver form, the delivery form, the safety video). The devices the machine
+   drives hang off the states that drive them: the touchscreen, the ID scanner, the yard program from
+   chapter 2 and the printer. src/scripts/machine.ts draws the transitions; the states light with the wiring key. */
+interface Props { n: string }
+const { n } = Astro.props;
+const cls = (s: string) => ['km-st', 'fig-part', `km-${s}`];
+
+/* the printout's site map: the gate at the foot, a drop-off spot per material and plant, this one's in red */
+const bays = { A: [9, 63], B: [26, 55], C: [43, 63] } as const;
+---
+<figure class="km" aria-labelledby="km-t" data-machine>
+  <figcaption id="km-t" class="fig fig-t">Fig. {n}.1 · The check-in machine</figcaption>
+  <p class="sr">The check-in as a state machine. It waits idle for the next driver, who first chooses a language; every screen, video and printout after that is in it. The driver's ID goes on the ID scanner. If the ID is on file, the machine skips ahead; a new driver fills in the driver form. The machine then looks for the delivery in the yard program from chapter 2. If it is booked, the material and plant come from the booking; if not, the driver fills in the delivery form. If the driver has seen the safety video before, it is skipped; if not, it plays. Last, the printer prints the safety guidelines and a map to the drop-off spot for that material and plant, and the machine goes back to idle.</p>
+
+  <div class="km-grid">
+    <svg class="km-edges fig-part" data-feeds="xstate" aria-hidden="true"></svg>
+
+    <div class="km-dev km-screen fig-part" data-dev="lang" data-feeds="react">
+      <span class="km-port" aria-hidden="true"></span>
+      <svg class="km-art" viewBox="0 0 120 78" aria-hidden="true">
+        <rect class="ink-s paper" x="10" y="2" width="100" height="66" rx="5" />
+        <rect class="head" x="18" y="9" width="84" height="52" />
+        <rect class="ink-s thin" x="18" y="9" width="84" height="52" />
+        <rect class="ink-f" x="26" y="15" width="34" height="3" />
+        {[0, 1, 2, 3].map(i => <rect class:list={['ink-s', 'thin', 'paper']} x={26 + (i % 2) * 36} y={24 + Math.floor(i / 2) * 15} width="32" height="11" />)}
+        <rect class="spot-f" x="26" y="24" width="32" height="11" />
+        {[0, 1, 2, 3].map(i => <rect class={i ? 'ink-f' : 'paper'} x={31 + (i % 2) * 36} y={28.5 + Math.floor(i / 2) * 15} width={[18, 14, 20, 12][i]} height="2" />)}
+        <path class="ink-s" d="M50 68V76H70V68M42 76H78" />
+      </svg>
+      <span class="km-dn">Touchscreen</span>
+    </div>
+
+    <span class="km-start" aria-hidden="true"></span>
+
+    <div class:list={cls('idle')} data-s="idle" data-feeds="xstate react">
+      <span class="km-n">Idle</span>
+      <span class="km-x">Waits for the next driver</span>
+    </div>
+
+    <div class:list={cls('lang')} data-s="lang" data-feeds="xstate react">
+      <span class="km-n">Choose language</span>
+      <span class="km-x">Every screen, video and printout after it is in this language</span>
+    </div>
+
+    <div class:list={cls('scan')} data-s="scan" data-feeds="xstate">
+      <span class="km-n">Scan ID</span>
+      <span class="km-x">The driver puts their ID on the scanner</span>
+    </div>
+    <div class="km-dev km-scanner fig-part" data-dev="scan" data-feeds="xstate">
+      <span class="km-port" aria-hidden="true"></span>
+      <svg class="km-art" viewBox="0 0 120 64" aria-hidden="true">
+        <rect class="ink-s paper" x="4" y="4" width="112" height="56" rx="6" />
+        <rect class="head" x="14" y="12" width="84" height="40" />
+        <rect class="ink-s thin" x="14" y="12" width="84" height="40" />
+        <rect class="ink-s paper" x="27" y="18" width="58" height="28" rx="2.5" />
+        <rect class="head" x="31" y="23" width="13" height="17" />
+        <path class="ink-s hair" d="M49 25H79M49 30H74M49 35H79M49 40H68" />
+        <rect class="spot-f" x="31" y="23" width="13" height="3" />
+        <circle class="km-led" cx="107" cy="16" r="2.6" />
+        <path class="ink-s hair" d="M104 26H110M104 30H110M104 34H110" />
+      </svg>
+      <span class="km-dn">ID scanner</span>
+    </div>
+
+    <div class="km-ch fig-part on" data-s="c1" data-feeds="xstate"><span class="sr">Choice: is the driver's ID on file?</span></div>
+    <div class:list={cls('driver')} data-s="driver" data-feeds="rhf react">
+      <span class="km-n">Driver form</span>
+      <span class="km-x">A new driver's details, kept for next time</span>
+    </div>
+
+    <div class:list={cls('book')} data-s="book" data-feeds="xstate net">
+      <span class="km-n">Find the booking</span>
+      <span class="km-x">Looks for this delivery in the yard program</span>
+    </div>
+    <a class="km-dev km-yard fig-part" data-dev="book" data-feeds="net" href="/projects/aurubis-scrap-yard/">
+      <span class="km-port" aria-hidden="true"></span>
+      <span class="km-yt"><b>2</b>Yard program</span>
+      <span class="km-yx">Chapter 2: the check-in step of Fig. 2.1</span>
+    </a>
+
+    <div class="km-ch fig-part on" data-s="c2" data-feeds="xstate"><span class="sr">Choice: is the delivery booked?</span></div>
+    <div class:list={cls('deliv')} data-s="deliv" data-feeds="rhf react">
+      <span class="km-n">Delivery form</span>
+      <span class="km-x">Material and plant, when nothing was booked</span>
+    </div>
+
+    <div class="km-ch fig-part on" data-s="c3" data-feeds="xstate"><span class="sr">Choice: has the driver seen the safety video?</span></div>
+    <div class:list={cls('video')} data-s="video" data-feeds="xstate react" data-dev="video">
+      <span class="km-n">Safety video</span>
+      <span class="km-vid">
+        <svg class="km-art" viewBox="0 0 64 38" aria-hidden="true">
+          <rect class="paper" x="1" y="1" width="62" height="36" />
+          <rect class="head" x="1" y="1" width="62" height="36" />
+          <rect class="ink-s thin" x="1" y="1" width="62" height="36" />
+          <path class="km-play" d="M27 10.5 39.5 18.5 27 26.5Z" />
+          <path class="ink-s hair" d="M6 32H58" />
+          <rect class="ink-f km-prog" x="6" y="30.5" width="18" height="3" />
+        </svg>
+        <span class="km-x">Plays the first time a driver checks in</span>
+      </span>
+    </div>
+
+    <div class:list={cls('print')} data-s="print" data-feeds="xstate">
+      <span class="km-n">Print</span>
+      <span class="km-x">Safety guidelines, and a map to the drop-off spot for this material and plant</span>
+    </div>
+    <div class="km-dev km-printer fig-part" data-dev="print" data-feeds="xstate">
+      <span class="km-port" aria-hidden="true"></span>
+      <svg class="km-art" viewBox="0 0 120 37" aria-hidden="true">
+        <path class="ink-s head" d="M10 16V10Q10 4 16 4H104Q110 4 110 10V16Z" />
+        <rect class="ink-s paper" x="10" y="16" width="100" height="21" />
+        <rect class="ink-f" x="27" y="33" width="66" height="4" />
+        <circle class="km-led" cx="99" cy="25" r="2.6" />
+        <path class="ink-s hair" d="M18 23H44M18 27H38" />
+      </svg>
+      <span class="km-slip-win">
+        <svg class="km-slip" viewBox="0 0 60 122" aria-hidden="true">
+          <path class="ink-s thin paper" d="M1 0V118L6 122L11 118L16 122L21 118L26 122L31 118L36 122L41 118L46 122L51 118L56 122L59 119V0" />
+          <path class="spot-f" d="M10 4.5 15.5 14H4.5Z" />
+          <path class="ink-s hair" d="M10 4.5 15.5 14H4.5Z" />
+          <rect class="ink-f" x="19" y="6" width="34" height="2.6" />
+          <rect class="ink-f" x="19" y="10.5" width="22" height="2.6" />
+          {[20, 26, 32, 38].map((y, i) => <><rect class="ink-f" x="6" y={y} width="3" height="3" /><rect class="ink-f" x="12" y={y + .6} width={[40, 34, 38, 26][i]} height="1.8" opacity=".75" /></>)}
+          <path class="ink-s hair km-tear" d="M3 46H57" />
+          <rect class="ink-s thin" x="4" y="51" width="52" height="62" />
+          <rect class="head" x="35" y="74" width="16" height="7" />
+          <rect class="head" x="9" y="74" width="16" height="7" />
+          <path class="ink-s hair" d="M30 111V63M30 86H13V71M30 86H47V71" />
+          <path class="km-rt" d="M30 111V63" />
+          {Object.entries(bays).map(([t, [x, y]]) => <>
+            <rect class:list={['km-bay', { here: t === 'B' }]} x={x} y={y} width="8" height="8" />
+            <text class="km-bl" x={x + 4} y={y + 6.1}>{t}</text>
+          </>)}
+          <path class="ink-f" d="M26 113H34L30 108.5Z" />
+        </svg>
+      </span>
+      <span class="km-dn">Printer</span>
+      <span class="km-dx">The route depends on the material and plant</span>
+    </div>
+  </div>
+</figure>
