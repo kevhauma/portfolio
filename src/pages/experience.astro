@@ -5,7 +5,8 @@ import Kit from '../components/Kit.astro';
 import '@fontsource-variable/archivo/wdth.css';
 import '../styles/sheet.css';
 import '../styles/experience.css';
-import { team, since, qualifying, sectors, gaps, now, month, short, span, laps, onTheJob, projectHref } from '../data/experience';
+import { projects } from '../data/projects';
+import { team, since, qualifying, sectors, gaps, now, short, span, laps, onTheJob, projectHref } from '../data/experience';
 
 /** "YYYY-MM" moved on by k months */
 const plus = (m: string, k: number) => { const [y, mo] = m.split('-').map(Number); const t = y * 12 + mo - 1 + k; return `${Math.floor(t / 12)}-${String(t % 12 + 1).padStart(2, '0')}`; };
@@ -18,6 +19,15 @@ const longest = Math.max(...sectors.filter(s => s.end).map(s => span(s.start, s.
 const M = span(q.start, now);
 const col = (m: string) => Math.min(span(q.start, m) + 1, M + 2);
 const lapBands = Array.from({ length: laps }, (_, i) => ({ L: i + 1, a: col(plus(since, 12 * i)), b: col(plus(since, 12 * (i + 1))), from: plus(since, 12 * i) }));
+
+/* the paper rack below the monitor: qualifying, every sector and the yellow flag as one sheet each, in race order.
+   A sheet shows its client and project; its description runs on into the slit. */
+type Paper = { tag: string; head: string; desc: string; about: string; tone: 'q' | 'done' | 'best' | 'run' | 'yf'; start: string; id?: string; href?: string };
+const papers: Paper[] = [
+  { tag: 'Q', head: 'Qualifying', desc: qualifying.degree, about: `Internship on ${q.project} at ${q.client}. ${q.shipped}.`, tone: 'q' as const, start: q.start, id: 'pw-key-q' },
+  ...sectors.map(s => ({ tag: `S${s.n}`, head: s.client, desc: s.project, about: s.shipped ? `${s.shipped}.` : projects.find(x => x.slug === s.slug)?.summary[0] ?? '', tone: (!s.end ? 'run' : span(s.start, s.end) === longest ? 'best' : 'done') as Paper['tone'], start: s.start, href: projectHref(s) })),
+  ...gaps.map(g => ({ tag: '', head: 'Yellow flag', desc: 'Time between engagements', about: '', tone: 'yf' as const, start: g.start }))
+].sort((a, b) => a.start.localeCompare(b.start));
 ---
 <Livery title="Experience · Kevin" description="Kevin's experience on the pit wall: a timing monitor plotting every client project as a sector and every year as a lap." sec="03">
   <section class="sheet pw" aria-labelledby="pw-title">
@@ -65,41 +75,19 @@ const lapBands = Array.from({ length: laps }, (_, i) => ({ L: i + 1, a: col(plus
     </div>
 
     <div class="pw-wall">
-      <div class="pw-wall-in">
-        <p class="pw-lede">Every client project is a sector, every year on the job a lap, counted from {month(since)}. <b>{onTheJob} on track at {team}, now in lap {laps}.</b> The bachelor was qualifying. Point at a sector on the monitor to isolate it; open it for the full story in the workshop manual.</p>
-        <ol class="pw-key" aria-label="Sectors in detail">
-          <li id="pw-key-q">
-            <span class="k">Q</span>
-            <div>
-              <h3>Qualifying</h3>
-              <p class="m">{qualifying.degree}<span class="ph">School and dates to come</span></p>
-              <p>Internship at {q.client}, {short(q.start)} to {short(q.end)}: {q.project}. {q.shipped}.</p>
-              <p class="st">{q.stack.join(' · ')}</p>
-            </div>
+      <ol class="pw-rack" aria-label="Sectors in detail">
+        {papers.map(p => { const El = p.href ? 'a' : 'div'; return (
+          <li class={`pw-slit t-${p.tone}`} id={p.id}>
+            <El class="pw-pull" href={p.href}>
+              <div class="pw-sheet">
+                <div class="pw-sh-top"><span class="pw-sh-tag" aria-hidden={p.tag ? undefined : 'true'}>{p.tag}</span><h3>{p.head}</h3></div>
+                <p class="pw-sh-desc">{p.desc}</p>
+                {p.about && <p class="pw-sh-about">{p.about}</p>}
+              </div>
+            </El>
           </li>
-          {sectors.map(s => (
-            <li>
-              <span class="k">S{s.n}</span>
-              <div>
-                <h3><a href={projectHref(s)}>{s.client}: {s.project}</a></h3>
-                <p class="m">{s.role} · {short(s.start)} to {s.end ? short(s.end) : 'now'} · {s.end ? `${span(s.start, s.end)} mo` : 'on track'}</p>
-                <p>{s.shipped ?? 'Not shipped yet: this sector is still running, under NDA.'}</p>
-                <p class="st">{s.stack.join(' · ')}</p>
-              </div>
-            </li>
-          ))}
-          {gaps.map(g => (
-            <li class="yf">
-              <span class="k" aria-hidden="true"></span>
-              <div>
-                <h3>Yellow flag</h3>
-                <p class="m">{short(g.start)} to {short(g.end)} · {span(g.start, g.end)} mo</p>
-                <p>Time between engagements.</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
+        ); })}
+      </ol>
     </div>
   </section>
   <Kit current="03" heading="The rest of the kit." />
