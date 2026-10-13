@@ -135,7 +135,7 @@
 @media (min-width: 641px) { .st-num { grid-column: 2; grid-row: 2; } .paint-shop { grid-row: 2; } }
 @media (max-width: 640px) {
   .stub-in { grid-template-columns: 1fr; }
-  .st-title h1 { font-size: min(17vw, calc((100vw - 72px) / (var(--longest) * .7))); font-stretch: 112%; line-height: .9; }
+  .st-title h1 { font-size: min(17vw, calc((100vw - 72px) / (var(--longest) * .78))); font-stretch: 112%; line-height: .9; }
   .st-num { grid-row: 2; justify-self: end; width: 88px; }
   .kit h2 { font-size: 2.25rem; }
 }

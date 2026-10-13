@@ -15,8 +15,8 @@ export const sections: Section[] = [
   { n: '02', slug: 'projects', href: '/projects/', title: 'Projects', sub: 'Six builds, six interactions', tone: 'red' },
   { n: '03', slug: 'experience', href: '/experience/', title: 'Experience', sub: 'The timing screen', tone: 'green' },
   { n: '04', slug: 'map', href: '/map/', title: 'The map', sub: 'Travel, photos, motorsport', tone: 'white' },
-  { n: '05', slug: 'printing', href: '/3d-printing/', title: '3D printing', sub: 'The slicer preview', tone: 'primer' },
-  { n: '06', slug: 'workbench', href: '/workbench/', title: 'Workbench', sub: 'WLED and side projects', tone: 'black' }
+  { n: '05', slug: 'music', href: '/music/', title: 'Music', sub: 'The tour poster', tone: 'primer' },
+  { n: '06', slug: 'workbench', href: '/workbench/', title: 'Workbench', sub: 'WLED, prints and side projects', tone: 'black' }
 ];
 
 export const raceNumber = 23;

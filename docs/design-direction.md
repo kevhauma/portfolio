@@ -125,8 +125,8 @@ The shared system frames each section; each section's inner interface gets its o
 | 02 | Projects | One small interaction per project | No card grid; GitHub contribution graph may sit behind |
 | 03 | Experience | Race timing screen | Decided over metro map. F1 TV: timing type, data density, broadcast graphics. Bachelor = qualifying, years = laps, clients = sectors |
 | 04 | Map | MapLibre + deck.gl | Curated trips; not the nav. Themes: light, dark (pairs with night race), fog of war, timing-screen mode for circuits. Racetrack as a map feature (James Chughh reference). Photos open in a viewfinder with an EXIF HUD |
-| 05 | 3D printing | Slicer preview | Builds layer by layer with a draggable scrubber |
-| 06 | Personal projects | Simulated WLED strip plus a workbench | **The only place the LED strip appears.** Visitors pick a colour and the simulated strip responds. Its colours belong to this section, not the livery |
+| 05 | Music | Tour poster / setlist | Concerts and festivals as tour dates, current listening as the setlist (changed 2026-10-13; 3D printing moved to 06) |
+| 06 | Personal projects | Simulated WLED strip plus a workbench, with the 3D-print slicer preview on the bench | **The only place the LED strip appears.** Visitors pick a colour and the simulated strip responds. Its colours belong to this section, not the livery |
 
 ## Motion and reduced motion
 

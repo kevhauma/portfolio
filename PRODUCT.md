@@ -21,17 +21,17 @@ The site is a passive showcase that builds reputation. Kevin is not actively job
 
 ## Product Purpose
 
-A personal portfolio for Kevin, a frontend developer with a bachelor in applied computer science and 5 years of consultancy experience. It shows frontend craft through the site itself, not through a wall of text. It also brings his life outside work (photography, motorsport, travel, 3D printing, WLED lighting, side projects) into one place, with a map of everywhere he has been as the centrepiece.
+A personal portfolio for Kevin, a frontend developer with a bachelor in applied computer science and 5 years of consultancy experience. It shows frontend craft through the site itself, not through a wall of text. It also brings his life outside work (photography, motorsport, travel, music, 3D printing, WLED lighting, side projects) into one place, with a map of everywhere he has been as the centrepiece.
 
 Success: a recruiter gets the essentials within seconds (or via recruiter mode), and a developer leaves convinced by what they could touch, inspect and break.
 
 ## Positioning
 
-"One person, many interfaces." Each section borrows the interface language of its subject: a code inspector for the intro, a race timing screen for experience, a camera viewfinder for photos, a slicer preview for 3D printing, a map for travel, and a WLED strip for the personal-projects section. His real trip archive, real projects and real hobbies make it something a template portfolio could not honestly copy.
+"One person, many interfaces." Each section borrows the interface language of its subject: a code inspector for the intro, a race timing screen for experience, a camera viewfinder for photos, a map for travel, a tour poster for music, and a WLED strip plus a slicer preview on the personal-projects workbench. His real trip archive, real projects and real hobbies make it something a template portfolio could not honestly copy.
 
 ## Operating Context
 
-- Six sections: intro (frontend first), projects, experience, the map (travel, photography, motorsport), 3D printing, and WLED plus side projects.
+- Six sections: intro (frontend first), projects, experience, the map (travel, photography, motorsport), music (concerts, festivals and what is on rotation), and the workbench (WLED, 3D printing and side projects).
 - **Recruiter mode:** a visible toggle that collapses the site into one fast, plain page with the essentials. It should read as a deliberate, self-aware feature (a pit-lane speed limiter), not an apology.
 - **LED strip:** belongs to the WLED / personal-projects section only. It is not a site-wide element (decided 2026-10-12, replacing the brief's original "unifying thread").
 - One shared navigation, one type system with per-section accent faces, and one spacing grid across all sections.
@@ -65,6 +65,10 @@ Success: a recruiter gets the essentials within seconds (or via recruiter mode),
 - **One page per section, not one long scroll.** Each of the six sections is its own page, with a short loading transition (well under a second) on every switch; the longer arrival plays once per visit. Reduced motion makes it instant. Recruiter mode stays one plain page.
 - **Navy + orange is rejected**: it reads as Max Verstappen. The palette must be Kevin's own and stay clear of current F1 and MotoGP team liveries. The new palette is **inspired by the Castrol livery** (Castrol red, green and white) adapted with a navy, without any Castrol logo or wordmark. Navy carries the big panels, Castrol red is the signal, Castrol green is the second stripe. Exact values live in `docs/design-direction.md`.
 
+**Decided (2026-10-13)**
+- Section 05 is **Music**, borrowing a **tour poster / setlist**: the concerts and festivals Kevin has been to as tour dates, and what he is listening to as the setlist. Music here means listening and live shows, not playing or producing.
+- **3D printing moves into the workbench** (06), next to the WLED strip and side projects; its slicer preview stays as planned.
+
 **Open product decisions**
 - Deploy target.
 
@@ -83,7 +87,7 @@ Success: a recruiter gets the essentials within seconds (or via recruiter mode),
 - Google Hashcode 2018 result: #113 worldwide.
 - Consultancy clients and projects **may all be named publicly** on the experience timeline, with stack, role and what shipped per client.
 - Trip archive exists (format not yet seen in this repo).
-- Not yet in the repo, and not to be invented: the client list with dates, photos and their EXIF data, a 3D-print model or toolpath, CV content, contact details, and any testimonials. Use clearly marked placeholders until the real material arrives.
+- Not yet in the repo, and not to be invented: the concert and festival list, listening history, the client list with dates, photos and their EXIF data, a 3D-print model or toolpath, CV content, contact details, and any testimonials. Use clearly marked placeholders until the real material arrives.
 
 ## Product Principles
 
