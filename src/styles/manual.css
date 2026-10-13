@@ -21,8 +21,10 @@ body:has(.desk) { background: #3A2314; }
 
   position: relative;
   isolation: isolate;
+  /* the book fills the screen; the pens below it lie past the edge of the desk */
   min-height: 100svh;
-  padding: 48px 24px 150px;
+  overflow: clip;
+  padding: 40px 24px 46px;
   color: var(--pi);
   font: 400 1rem/1.55 var(--body);
   background-color: #4E301B;
@@ -63,7 +65,14 @@ body:has(.desk) { background: #3A2314; }
 .light { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: 6px; background: radial-gradient(70% 55% at 18% 4%, rgb(255 244 222 / .16), transparent 70%); mix-blend-mode: soft-light; }
 /* the spine, showing at the head and tail of the gutter */
 .book::before { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 30px; margin-left: -15px; border-radius: 4px; background: linear-gradient(90deg, #0D1731, #22355F 50%, #0D1731); }
-.block { position: relative; box-shadow: 0 0 0 1px rgb(0 0 0 / .1), 0 2px 5px rgb(0 0 0 / .3); }
+/* one size for every page, from the screen's height: the pages scroll inside it */
+.block {
+  position: relative;
+  height: max(520px, calc(100svh - 122px));
+  background-color: var(--paper);
+  background-image: linear-gradient(90deg, transparent 43%, rgb(7 18 41 / .06) 47.5%, rgb(7 18 41 / .2) 50%, rgb(7 18 41 / .06) 52.5%, transparent 57%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .27 0 0 0 0 .2 0 0 0 0.032 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)'/%3E%3C/svg%3E");
+  box-shadow: 0 0 0 1px rgb(0 0 0 / .1), 0 2px 5px rgb(0 0 0 / .3);
+}
 /* page-block thickness at the fore-edges */
 .block::before, .block::after { content: ""; position: absolute; top: 3px; bottom: -5px; width: 8px; background: repeating-linear-gradient(90deg, #D8D6CE 0 1px, #F5F4EF 1px 2px); }
 .block::before { left: -8px; border-radius: 3px 0 0 3px; }
@@ -118,9 +127,8 @@ body:has(.desk) { background: #3A2314; }
 .cover-rig .cast { position: absolute; top: 0; bottom: 0; left: 50%; right: 0; opacity: 0; background: linear-gradient(90deg, rgb(8 4 1 / .55), rgb(8 4 1 / .18) 38%, transparent 72%); border-radius: 0 6px 6px 0; }
 
 /* ---------- turning a leaf: two page snapshots on one leaf, swung over the spine (book.ts) ---------- */
-.block.turning { background: var(--paper); }
 .flip { position: absolute; inset: 0; z-index: 3; pointer-events: none; perspective: 2600px; }
-.snap { position: absolute; top: 0; isolation: isolate; }
+.snap { position: absolute; top: 0; height: 100%; isolation: isolate; }
 .flip-under, .leaf-face, .flip-cast { position: absolute; top: 0; bottom: 0; overflow: hidden; }
 .leaf { position: absolute; top: 0; bottom: 0; z-index: 2; transform-style: preserve-3d; }
 .leaf-face { inset: 0; backface-visibility: hidden; }
@@ -153,7 +161,8 @@ body:has(.desk) { background: #3A2314; }
 .pg-l, .page-l { background-image: linear-gradient(90deg, transparent 86%, rgb(7 18 41 / .06) 95%, rgb(7 18 41 / .2)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .27 0 0 0 0 .2 0 0 0 0.032 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)'/%3E%3C/svg%3E"); border-radius: 2px 0 0 2px; }
 .pg-r, .page-r { background-image: linear-gradient(270deg, transparent 86%, rgb(7 18 41 / .06) 95%, rgb(7 18 41 / .2)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .27 0 0 0 0 .2 0 0 0 0.032 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)'/%3E%3C/svg%3E"); border-radius: 0 2px 2px 0; }
 
-.spread { position: relative; display: grid; }
+.spread { position: relative; display: grid; height: 100%; }
+.desk .spread, .desk .page { scrollbar-width: thin; scrollbar-color: rgb(19 37 79 / .34) transparent; }
 .mh { font: 800 clamp(2.25rem, 4.4vw, 4.25rem)/.9 var(--m-head); font-stretch: 70%; text-transform: uppercase; letter-spacing: -.01em; word-spacing: .14em; margin: 0; text-wrap: balance; }
 .rh { display: flex; justify-content: space-between; gap: 16px; margin: 0; padding-bottom: 8px; border-bottom: 2px solid var(--pi); font: 600 .6875rem/1.2 var(--mono); letter-spacing: .05em; text-transform: uppercase; font-variant-numeric: tabular-nums; }
 .fig { font: 800 .9375rem/1.1 var(--m-head); font-stretch: 82%; letter-spacing: .03em; text-transform: uppercase; color: var(--spot-ink); margin: 0; }
@@ -181,8 +190,11 @@ body:has(.desk) { background: #3A2314; }
 
 /* ---------- contents spread ---------- */
 .contents {
-  grid-template-columns: 56px 1fr 1fr 44px 44px .9fr 1.6fr 84px;
-  grid-template-rows: auto auto auto 52px auto auto;
+  grid-template-columns: 56px 1fr 1fr 44px 44px .9fr 1.6fr 40px;
+  grid-template-rows: auto auto auto 52px auto 1fr;
+  overflow: hidden auto;
+  /* the spread scrolls as one (the loom crosses the gutter); its scrollbar stops short of the thumb index */
+  margin-right: 44px;
   grid-template-areas:
     ".  rhl rhl .   .   rhr rhr ."
     ".  in  in  .   .   lg  lg  ."
@@ -250,9 +262,12 @@ body:has(.desk) { background: #3A2314; }
 
 /* ---------- a project's spread ---------- */
 .chapter { grid-template-columns: 1fr 1fr; }
-.page { position: relative; display: flex; flex-direction: column; min-width: 0; }
+/* each page scrolls on its own; the wires follow (wiring.ts) */
+.chapter .wiring { overflow: hidden; }
+.page { position: relative; display: flex; flex-direction: column; min-width: 0; overflow: hidden auto; }
 .page-l { padding: 30px 56px 34px 56px; }
-.page-r { padding: 30px 96px 34px 56px; }
+/* the right page stops short of the thumb index, so its scrollbar is not under the tabs */
+.page-r { margin-right: 44px; padding: 30px 52px 34px 56px; }
 .ch-head { display: flex; align-items: flex-end; gap: 20px; margin-top: 30px; }
 .ch-n { margin: 0; font: 800 clamp(4.5rem, 8vw, 7.5rem)/.78 var(--m-head); font-stretch: 62%; color: var(--spot); letter-spacing: -.02em; flex: none; }
 .ch-head .mh { font-size: clamp(2.125rem, 3.6vw, 3.5rem); padding-bottom: 2px; }
@@ -314,7 +329,12 @@ body:has(.desk) { background: #3A2314; }
 
 /* ---------- one page instead of two ---------- */
 @media (max-width: 1099px) {
-  .desk { padding: 76px 12px 150px; }
+  .desk { padding: 76px 12px 46px; }
+  .block { display: flow-root; height: max(420px, calc(100svh - 146px)); background-image: none; }
+  /* one page: the whole column scrolls, below the thumb index */
+  .desk .spread { height: calc(100% - 52px); margin-top: 52px; overflow: hidden auto; }
+  .desk .page { overflow: visible; }
+  .chapter .wiring { overflow: visible; }
   .book { padding: 12px; }
   .book::before { display: none; }
   .block::before { display: none; }
@@ -327,7 +347,7 @@ body:has(.desk) { background: #3A2314; }
 
   .contents {
     grid-template-columns: 20px 40px 1fr 20px;
-    grid-template-rows: none;
+    grid-template-rows: repeat(10, auto) 1fr;
     grid-template-areas:
       ". rhl rhl ."
       ". in  in  ."
@@ -341,9 +361,10 @@ body:has(.desk) { background: #3A2314; }
       ". lm  fz  ."
       ". fr  fr  .";
     row-gap: 18px;
-    padding: 64px 0 28px;
+    padding: 14px 0 28px;
+    margin-right: 0;
   }
-  .contents .pg-l { grid-column: 1 / -1; margin: -64px 0 -28px; background-image: var(--none, none); background-color: var(--paper); }
+  .contents .pg-l { grid-column: 1 / -1; margin: -14px 0 -28px; background-image: var(--none, none); background-color: var(--paper); }
   .contents .pg-r, .contents .rh-r, .contents .foot-l { display: none; }
   .ct-intro { margin: 8px 10px 0; }
   .ct-legend { margin: 0 10px 8px; align-self: start; }
@@ -359,8 +380,8 @@ body:has(.desk) { background: #3A2314; }
   .fuse-list { grid-template-columns: 1fr; }
 
   .chapter { grid-template-columns: 1fr; }
-  .page-l { padding: 64px 22px 10px; background-image: none; background-color: var(--paper); }
-  .page-r { padding: 26px 34px 30px 22px; background-image: none; background-color: var(--paper); }
+  .page-l { padding: 14px 22px 10px; background-image: none; background-color: var(--paper); }
+  .page-r { margin-right: 0; padding: 26px 34px 30px 22px; background-image: none; background-color: var(--paper); }
   .page-r .rh { display: none; }
   .key-row { width: 100%; margin-right: 0; }
   /* the wires run down the right margin: keep the key and the parts clear of their channels */

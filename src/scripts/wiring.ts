@@ -6,7 +6,8 @@
 const SVG = 'http://www.w3.org/2000/svg';
 type Box = { x: number; y: number; w: number; h: number };
 
-const boxOf = (el: Element, origin: DOMRect): Box => {
+type Origin = { left: number; top: number };
+const boxOf = (el: Element, origin: Origin): Box => {
   const r = el.getBoundingClientRect();
   return { x: r.left - origin.left, y: r.top - origin.top, w: r.width, h: r.height };
 };
@@ -42,8 +43,9 @@ function wire(svg: SVGSVGElement, d: string, colour: string, opts: { key?: strin
   return g;
 }
 
+/* the svg lives in the spread's content: when the spread itself scrolls, it is as tall as what scrolls */
 function sizeSvg(svg: SVGSVGElement, host: HTMLElement) {
-  const w = host.offsetWidth, h = host.offsetHeight;
+  const w = host.clientWidth, h = host.scrollHeight;
   svg.setAttribute('width', String(w));
   svg.setAttribute('height', String(h));
   svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
@@ -51,6 +53,12 @@ function sizeSvg(svg: SVGSVGElement, host: HTMLElement) {
 }
 
 /* ---------- contents: the main harness ---------- */
+/* where the spread's content starts on screen, scrolled or not */
+function originOf(spread: HTMLElement): Origin {
+  const r = spread.getBoundingClientRect();
+  return { left: r.left - spread.scrollLeft, top: r.top - spread.scrollTop };
+}
+
 function harness(spread: HTMLElement) {
   const svg = spread.querySelector<SVGSVGElement>('svg.wiring')!;
   const loom = spread.querySelector<HTMLElement>('.loom')!;
@@ -58,7 +66,7 @@ function harness(spread: HTMLElement) {
 
   function draw() {
     sizeSvg(svg, spread);
-    const o = spread.getBoundingClientRect();
+    const o = originOf(spread);
     const L = boxOf(loom, o);
     const vertical = L.h > L.w;
     const ends = circuits.map(c => {
@@ -144,9 +152,10 @@ function diagram(spread: HTMLElement) {
 
   function draw() {
     sizeSvg(svg, spread);
-    const o = spread.getBoundingClientRect();
+    const o = originOf(spread);
     const right = Math.max(...keys.map(k => boxOf(k.querySelector('.key-term')!, o)).map(b => b.x + b.w));
     const GAP = 9;
+    const lo = 4, hi = spread.scrollHeight - 4;
     keys.forEach((k, i) => {
       const id = k.dataset.key!;
       const colour = getComputedStyle(k).getPropertyValue('--w').trim();
@@ -160,12 +169,18 @@ function diagram(spread: HTMLElement) {
         const py = pb.y + pb.h / 2;
         const across = pb.x > right + 20;
         if (across) {
-          /* spread: down the gutter in this wire's own channel, then into the part from the left */
+          /* spread: down the gutter in this wire's own channel, then into the part from the left.
+             The two pages scroll apart: an end scrolled out of its page leaves the wire running off
+             that page's edge, toward where it went. */
           const cx = right + 16 + i * GAP;
-          wire(svg, `M${t.x + t.w} ${ty} H${cx} V${py} H${pb.x}`, colour, { key: id, legacy });
+          const inT = ty >= lo && ty <= hi, inP = py >= lo && py <= hi;
+          if (!inT && !inP && (ty < lo) === (py < lo)) return;
+          const clamp = (y: number) => Math.min(hi, Math.max(lo, y));
+          const d = (inT ? `M${t.x + t.w} ${ty} H${cx}` : `M${cx} ${clamp(ty)}`) + ` V${clamp(py)}` + (inP ? ` H${pb.x}` : '');
+          wire(svg, d, colour, { key: id, legacy });
         } else {
           /* one page: out to the right margin, down, and into the part from the right */
-          const cx = spread.offsetWidth - 12 - i * GAP;
+          const cx = spread.clientWidth - 12 - i * GAP;
           wire(svg, `M${t.x + t.w} ${ty} H${cx} V${py} H${pb.x + pb.w}`, colour, { key: id, legacy });
         }
       });
@@ -218,5 +233,15 @@ export function mountWiring(spread: HTMLElement): Wiring {
   const ro = new ResizeObserver(redraw);
   ro.observe(spread);
   document.fonts?.ready.then(redraw);
-  return { draw, destroy: () => { cancelAnimationFrame(raf); ro.disconnect(); } };
+  /* pages that scroll on their own move the wires' ends */
+  const pages = [...spread.querySelectorAll<HTMLElement>('.page')];
+  pages.forEach(p => p.addEventListener('scroll', redraw, { passive: true }));
+  return {
+    draw,
+    destroy: () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      pages.forEach(p => p.removeEventListener('scroll', redraw));
+    }
+  };
 }

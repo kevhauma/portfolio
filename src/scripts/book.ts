@@ -44,19 +44,26 @@ const el = (cls: string, parent?: HTMLElement) => {
   return e;
 };
 
-/** a still copy of a spread, with its thumb index, laid out at the book's width */
-function snapshot(of: HTMLElement, thumbs: Element | null, width: number, x: number) {
+/** a still copy of a spread and its thumb index, laid out as the book's block; the copy's pages
+    are scrolled where the originals were once it is on the desk (call `settle`) */
+type Snap = HTMLElement & { settle?: () => void };
+function snapshot(of: HTMLElement, thumbs: Element | null, width: number, x: number): Snap {
+  const wrap: Snap = document.createElement('div');
+  wrap.className = 'snap';
+  wrap.style.width = `${width}px`;
+  wrap.style.left = `${x}px`;
   const c = of.cloneNode(true) as HTMLElement;
-  if (thumbs) c.append(thumbs.cloneNode(true));
   c.removeAttribute('data-hot');
   c.removeAttribute('data-harness');
   c.removeAttribute('data-diagram');
   c.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
   c.querySelectorAll('.hot').forEach(n => n.classList.remove('hot'));
-  c.classList.add('snap');
-  c.style.width = `${width}px`;
-  c.style.left = `${x}px`;
-  return c;
+  wrap.append(c);
+  if (thumbs) wrap.append(thumbs.cloneNode(true));
+  const scrollers = (s: HTMLElement) => [s, ...s.querySelectorAll<HTMLElement>('.page')];
+  const tops = scrollers(of).map(n => n.scrollTop);
+  wrap.settle = () => scrollers(c).forEach((n, i) => { n.scrollTop = tops[i]; });
+  return wrap;
 }
 
 /** a face of a leaf (or the page under it): a window onto one half of a snapshot, paper behind it */
@@ -138,13 +145,11 @@ if (scene && block && spread) {
     const forward = to > from;
 
     if (push) history.pushState({ manual: true }, '', path);
-    scrollTo(0, 0);
     document.title = doc.title;
     const desc = doc.querySelector('meta[name="description"]')?.getAttribute('content');
     if (desc) document.querySelector('meta[name="description"]')?.setAttribute('content', desc);
 
     const W = block!.offsetWidth, half = W / 2;
-    const oldH = spread!.offsetHeight;
     const oldThumbs = block!.querySelector('.thumbs');
     const oldA = snapshot(spread!, oldThumbs, W, 0), oldB = snapshot(spread!, oldThumbs, W, 0);
 
@@ -156,9 +161,6 @@ if (scene && block && spread) {
     const thumbs = document.importNode(nextThumbs, true);
     oldThumbs?.replaceWith(thumbs);
     wiring = mountWiring(spread);
-    const newH = spread.offsetHeight, H = Math.max(oldH, newH);
-    block!.style.minHeight = `${H}px`;
-    block!.classList.add('turning');
     const fresh = snapshot(spread, thumbs, W, 0);
 
     const rig = el('flip');
@@ -219,6 +221,7 @@ if (scene && block && spread) {
     if (under) rig.append(under);
     rig.append(cast, leaf);
     block!.append(rig);
+    [oldA, oldB].forEach(s => s.settle?.());
     aim(rig, two ? half : 0);
 
     const t: KeyframeAnimationOptions = { duration: two ? 700 : 540, easing: LEAF_EASE, fill: 'both' };
@@ -235,11 +238,6 @@ if (scene && block && spread) {
 
     rig.remove();
     running = [];
-    block!.classList.remove('turning');
-    block!.style.minHeight = '';
-    if (newH < H) {
-      block!.animate([{ height: `${H}px` }, { height: `${newH}px` }], { duration: 260, easing: 'cubic-bezier(.2, .8, .2, 1)' });
-    }
     const h1 = spread.querySelector<HTMLElement>('h1');
     if (h1) { h1.tabIndex = -1; h1.focus({ preventScroll: true }); }
   }
