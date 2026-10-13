@@ -148,6 +148,8 @@ function diagram(spread: HTMLElement) {
   const svg = spread.querySelector<SVGSVGElement>('svg.wiring')!;
   const keys = [...spread.querySelectorAll<HTMLButtonElement>('.key-row')];
   const parts = [...spread.querySelectorAll<HTMLElement>('.part')];
+  /* a drawn figure's stations light with the parts they share a wire with */
+  const figs = [...spread.querySelectorAll<HTMLElement>('.fig-part')];
   let locked: string | null = null;
 
   function draw() {
@@ -195,7 +197,7 @@ function diagram(spread: HTMLElement) {
     const set = new Set(on ?? []);
     svg.querySelectorAll<SVGGElement>('g.w').forEach(g => g.classList.toggle('hot', set.has(g.dataset.key!)));
     keys.forEach(k => k.classList.toggle('hot', set.has(k.dataset.key!)));
-    parts.forEach(p => p.classList.toggle('hot', (p.dataset.feeds ?? '').split(' ').some(f => set.has(f))));
+    [...parts, ...figs].forEach(p => p.classList.toggle('hot', (p.dataset.feeds ?? '').split(' ').some(f => set.has(f))));
   }
   keys.forEach(k => {
     const id = k.dataset.key!;
@@ -208,6 +210,11 @@ function diagram(spread: HTMLElement) {
       keys.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.key === locked)));
       paint();
     });
+  });
+  figs.forEach(f => {
+    const feeds = (f.dataset.feeds ?? '').split(' ');
+    f.addEventListener('pointerenter', () => { hover = feeds; paint(); });
+    f.addEventListener('pointerleave', () => { hover = null; paint(); });
   });
   parts.forEach(p => {
     const feeds = (p.dataset.feeds ?? '').split(' ');

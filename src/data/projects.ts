@@ -70,30 +70,30 @@ const gh = (repo: string, path = '') => `https://github.com/kevhauma/${repo}${pa
 export const projects: Project[] = [
   {
     slug: 'money-mosaic', n: '1', kind: 'chapter', wire: 'R',
-    title: 'money-mosaic-v2', client: 'Own build', own: true, start: '2026-07', end: null, status: 'In use, self-hosted',
-    line: 'Self-hosted finance: bank CSVs in, rules and a trained categoriser, honest stats out',
+    title: 'money-mosaic-v2', client: 'Own build', own: true, start: '2026-07', end: null, status: 'In use, local-first',
+    line: 'Local-first finance: bank CSVs in, rules and a trained network, honest stats out, nothing sent',
     summary: [
-      'A self-hosted personal finance app. Import bank CSV exports, sort transactions with rules or a trained auto-categoriser, link transfers between your own accounts, and read the result on a dashboard.',
-      'Self-hosted on purpose: every byte lives in one SQLite file on a machine you run, scoped to the account you sign in as. Nothing goes to a third party.'
+      'A personal finance app that runs entirely in the browser. Import bank CSV exports, sort transactions with rules or a small neural network trained on your own history, link transfers between your own accounts, and read the result on a dashboard of charts.',
+      'Local-first on purpose: no backend, no server, no account. Every transaction, and the trained model itself, lives in IndexedDB in your own browser. Nothing is ever sent anywhere.'
     ],
     figure: 'Data path, CSV to stats',
     keys: [
       { id: 'csv', code: 'S', label: 'Bank CSV exports · KBC and Belfius presets' },
       { id: 'papa', code: 'G', label: 'PapaParse, in a Web Worker' },
-      { id: 'cat', code: 'R', label: 'Rules engine + TensorFlow.js categoriser' },
+      { id: 'cat', code: 'R', label: 'Rules + a TensorFlow.js network, trained in a Web Worker' },
       { id: 'ng', code: 'U', label: 'Angular 21 · Signals · @ngrx/signals' },
-      { id: 'api', code: 'B', label: 'Express 5 · SQLite · Drizzle ORM' },
-      { id: 'charts', code: 'Y', label: 'ngx-echarts' }
+      { id: 'idb', code: 'B', label: 'IndexedDB through Dexie 4' },
+      { id: 'charts', code: 'Y', label: 'ECharts, through ngx-echarts' }
     ],
     parts: [
       { id: 'import', title: 'Import', text: 'Bank format detected, or mapped once in a wizard and saved as a profile', feeds: ['csv'] },
       { id: 'parse', title: 'Parse', text: 'Off the main thread, so a large export never freezes the page', feeds: ['papa'] },
       { id: 'categorise', title: 'Categorise', text: 'Rules first, the trained model for the rest; a category set by hand is never overwritten', feeds: ['cat'] },
       { id: 'link', title: 'Link transfers', text: 'Moves between your own accounts are paired, so they never count as income or spend', feeds: ['ng'] },
-      { id: 'store', title: 'Store', text: 'One SQLite file, per signed-in account', feeds: ['api'] },
+      { id: 'store', title: 'Store', text: 'IndexedDB, in this browser only; the trained model is saved there too', feeds: ['idb'] },
       { id: 'stats', title: 'Stats', text: 'Income, spend, savings rate and net worth across every account', feeds: ['charts', 'ng'] }
     ],
-    notes: ['Unit tests in Vitest, with Stryker mutation runs over both workspaces.', 'Built for one real user and real Belgian bank exports, not a generic persona.'],
+    notes: ['Unit tests in Vitest.', 'Built for one real user and real Belgian bank exports, not a generic persona.'],
     source: { label: 'github.com/kevhauma/money-mosaic-v2', href: gh('money-mosaic-v2') }
   },
   {

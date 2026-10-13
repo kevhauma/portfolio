@@ -1,0 +1,187 @@
+---
+/* Fig. 1.1 for money-mosaic-v2: the app drawn as a sealed unit, cut away. The housing is the browser tab;
+   the only way in is the CSV fed through the slot in its top wall, and the one place an outlet would go
+   is blanked off. Each station carries the wire it is fed by, so the wiring key lights it with its part. */
+import { wires } from '../../data/projects';
+interface Props { n: string }
+const { n } = Astro.props;
+
+/* the network, drawn from its real shape: hashed n-gram inputs → Dense 64 (half dropped out) → Dense 32 → softmax */
+const inY = [22, 46, 58, 86, 106];
+const d64 = [13, 28, 43, 58, 73, 88, 103, 118].map((y, i) => ({ y, dropped: [1, 3, 4, 6].includes(i) }));
+const live64 = d64.filter(d => !d.dropped);
+const d32 = [20, 38, 56, 74, 92, 110];
+const out = [{ y: 25, p: 34 }, { y: 45, p: 7 }, { y: 65, p: 3 }, { y: 85, p: 10 }, { y: 105, p: 2 }];
+const links = [
+  ...inY.flatMap(a => live64.map(b => `M18 ${a}L65 ${b.y}`)),
+  ...live64.flatMap(a => d32.map(b => `M75 ${a.y}L123 ${b}`)),
+  ...d32.flatMap(a => out.map(b => `M133 ${a}L173 ${b.y}`))
+].join('');
+const ticks = Array.from({ length: 30 }, (_, i) => 8 + i * 4);
+
+/* a CSV line: fields joined by the separator, drawn as ink bars with red semicolons */
+const rows = [[14, 10, 30], [14, 8, 24], [14, 11, 19], [14, 9, 28]];
+const sep = 5;
+const raw = rows.map((r, j) => {
+  let x = 4;
+  return r.map((w, k) => { const seg = { x, w, y: 12 + j * 16, semi: k < r.length - 1 ? x + w + 1 : null }; x += w + sep; return seg; });
+});
+const cols = [17, 13, 30];
+const colX = [100, 117, 130];
+const w = (c: keyof typeof wires) => wires[c].hex;
+---
+<figure class="cut" aria-labelledby="cut-t">
+  <figcaption id="cut-t" class="fig fig-t">Fig. {n}.1 · Sealed unit: the whole app in one browser tab</figcaption>
+  <p class="sr">A cutaway of the browser tab the app runs in. A bank CSV export is fed in through the only opening, parsed by PapaParse in a Web Worker, categorised by rules and a TensorFlow.js network, stored in IndexedDB and drawn by ECharts. Where an outlet to a server would be, the housing is blanked off: the data never leaves the browser.</p>
+
+  <div class="cut-top" aria-hidden="true">
+    <span class="cut-tab fig-part" data-feeds="ng" style={`--w:${w('U')}`}>Money Mosaic</span>
+    <span class="cut-in fig-part" data-feeds="csv" style={`--w:${w('S')}`}>
+      <svg class="cut-sheet" viewBox="0 0 64 80">
+        <path class="ink-f paper" d="M2 2H46L62 18V80H2Z" />
+        <path class="ink-s" d="M2 80V2H46L62 18V80M46 2V18H62" />
+        <text x="8" y="31" class="sheet-t">CSV</text>
+        {[44, 54, 64, 74].map((y, j) => (
+          <g>
+            <rect class="ink-f" x="8" y={y} width="10" height="3.2" />
+            <rect class="spot-f" x="19.5" y={y - 1} width="1.8" height="5.2" />
+            <rect class="ink-f" x="23" y={y} width={[8, 6, 9, 7][j]} height="3.2" />
+            <rect class="spot-f" x={24.5 + [8, 6, 9, 7][j]} y={y - 1} width="1.8" height="5.2" />
+            <rect class="ink-f" x={28 + [8, 6, 9, 7][j]} y={y} width={[18, 22, 14, 20][j]} height="3.2" />
+          </g>
+        ))}
+      </svg>
+    </span>
+    <span class="st-l cut-l fig-part" data-feeds="csv" style={`--w:${w('S')}`}>
+      <span class="st-h"><b>1</b><i class="st-w"></i><span class="st-n">CSV</span></span>
+      <span class="st-x">The only way in: a bank export you pick. KBC and Belfius presets</span>
+    </span>
+  </div>
+
+  <div class="cut-case" aria-hidden="true">
+    {['tl', 'tr', 'bl', 'br'].map(c => (
+      <svg class:list={['bolt', c]} viewBox="0 0 12 12"><path class="ink-s paper" d="M6 .9 10.4 3.45V8.55L6 11.1 1.6 8.55V3.45Z" /><circle class="ink-f" cx="6" cy="6" r="1.6" /></svg>
+    ))}
+
+    <div class="cut-bay">
+      <section class="st st-parse fig-part" data-feeds="papa" style={`--w:${w('G')}`}>
+        <span class="wk">Web Worker</span>
+        <svg viewBox="0 0 160 82" class="st-art">
+          {raw.map(r => r.map(s => (
+            <>
+              <rect class="ink-f" x={s.x} y={s.y} width={s.w} height="4" opacity=".85" />
+              {s.semi !== null && <rect class="spot-f" x={s.semi} y={s.y - 1.5} width="2" height="7" />}
+            </>
+          )))}
+          <path class="ink-s thin" d="M80 36H90" />
+          <path class="ink-f" d="M89 31.5 95 36 89 40.5Z" />
+          {[0, 1, 2, 3, 4].map(j => (
+            <>
+              {cols.map((cw, k) => <rect class:list={['ink-s', 'hair', { head: j === 0 }]} x={colX[k]} y={4 + j * 15} width={cw} height="15" />)}
+              {j > 0 && cols.map((cw, k) => <rect class="ink-f" x={colX[k] + 3} y={10 + j * 15} width={Math.min(cw - 6, rows[j - 1][k] * 0.62)} height="3" opacity=".85" />)}
+            </>
+          ))}
+        </svg>
+        <span class="st-l">
+          <span class="st-h"><b>2</b><i class="st-w"></i><span class="st-n">PapaParse</span></span>
+          <span class="st-x">Split into fields off the main thread</span>
+        </span>
+      </section>
+
+      <svg class="arr a1" viewBox="0 0 30 14"><path class="ink-s" d="M0 7H21" /><path class="ink-f" d="M20 1.5 30 7 20 12.5Z" /></svg>
+
+      <section class="st st-cat fig-part" data-feeds="cat" style={`--w:${w('R')}`}>
+        <span class="wk">Web Worker</span>
+        <svg viewBox="0 0 220 132" class="st-art">
+          <path class="ink-s faint" d={links} />
+          <path class="spot-s" d="M18 46L65 43M75 43L123 38M133 38L173 25" />
+          <rect class="ink-s" x="6" y="6" width="12" height="120" />
+          {ticks.map(y => <path class="ink-s hair faint" d={`M7 ${y}H17`} />)}
+          {inY.map(y => <rect class="ink-f" x="7" y={y - 1.5} width="10" height="3" />)}
+          {d64.map(d => <circle class:list={['node', { dropped: d.dropped }]} cx="70" cy={d.y} r="5" />)}
+          {d32.map(y => <circle class="node" cx="128" cy={y} r="5" />)}
+          {out.map((o, i) => (
+            <>
+              <circle class:list={['node', { win: i === 0 }]} cx="178" cy={o.y} r="5" />
+              <rect class={i === 0 ? 'spot-f' : 'ink-f'} x="187" y={o.y - 3} width={o.p} height="6" opacity={i === 0 ? 1 : 0.55} />
+            </>
+          ))}
+        </svg>
+        <span class="st-l">
+          <span class="st-h"><b>3</b><i class="st-w"></i><span class="st-n">TensorFlow.js</span></span>
+          <span class="st-x">Rules first; a network trained on your own history sorts the rest</span>
+          <span class="st-spec">8192 → 64 → 32 → softmax</span>
+        </span>
+      </section>
+
+      <div class="a2">
+        <svg class="arr" viewBox="0 0 30 14"><path class="ink-s" d="M0 7H21" /><path class="ink-f" d="M20 1.5 30 7 20 12.5Z" /></svg>
+        <span class="link fig-part" data-feeds="ng" style={`--w:${w('U')}`}>
+          <svg viewBox="0 0 22 12"><rect class="ink-s" x="1.5" y="2" width="11" height="8" rx="4" /><rect class="ink-s" x="9.5" y="2" width="11" height="8" rx="4" /></svg>
+          <b>4</b>Link transfers
+        </span>
+      </div>
+
+      <section class="st st-store fig-part" data-feeds="idb" style={`--w:${w('B')}`}>
+        <div class="store-row">
+          <svg viewBox="0 0 110 132" class="st-art drum">
+            <path class="ink-f paper" d="M7 16V114A48 11 0 0 0 103 114V16Z" />
+            <path class="spot-f" d="M7 94.4V114A48 11 0 0 0 103 114V94.4A48 11 0 0 1 7 94.4Z" />
+            {[35.6, 55.2, 74.8, 94.4].map(y => <path class="ink-s thin" d={`M7 ${y}A48 11 0 0 0 103 ${y}`} />)}
+            <ellipse class="ink-s lid" cx="55" cy="16" rx="48" ry="11" />
+            <path class="ink-s" d="M7 16V114A48 11 0 0 0 103 114V16" />
+          </svg>
+          <ul class="tables">
+            <li>transactions</li><li>accounts</li><li>categories</li><li>rules</li><li class="model">categoryModel</li>
+          </ul>
+        </div>
+        <span class="st-l">
+          <span class="st-h"><b>5</b><i class="st-w"></i><span class="st-n">IndexedDB</span></span>
+          <span class="st-x">Through Dexie, in this browser only. The trained model is kept here too</span>
+        </span>
+        <svg class="plate" viewBox="0 0 26 70"><rect class="spot-f" x="1" y="1" width="24" height="68" /><rect class="ink-s" x="1" y="1" width="24" height="68" /><path class="paper-s" d="M5 12 21 58M21 12 5 58" /><circle class="ink-s paper" cx="13" cy="7" r="3" /><circle class="ink-s paper" cx="13" cy="63" r="3" /></svg>
+      </section>
+
+      <svg class="arr a3" viewBox="0 0 30 14"><path class="ink-s" d="M0 7H21" /><path class="ink-f" d="M20 1.5 30 7 20 12.5Z" /></svg>
+
+      <section class="st st-stats fig-part" data-feeds="charts" style={`--w:${w('Y')}`}>
+        <svg viewBox="0 0 170 108" class="st-art">
+          <g class="dial">
+            <rect class="ink-s thin" x="1" y="1" width="80" height="50" />
+            <path class="chart-f" d="M7 44V36L17 33L27 35L37 27L47 29L57 20L67 22L75 12V44Z" />
+            <path class="ink-s" d="M7 36L17 33L27 35L37 27L47 29L57 20L67 22L75 12" />
+            <path class="ink-s hair" d="M7 44H75" />
+          </g>
+          <g class="dial">
+            <rect class="ink-s thin" x="88" y="1" width="80" height="50" />
+            <circle class="donut" cx="128" cy="26" r="15" transform="rotate(-90 128 26)" style={`stroke:${w('Y')}`} stroke-dasharray="40 54.3" />
+            <circle class="donut" cx="128" cy="26" r="15" transform="rotate(-90 128 26)" style="stroke:var(--pi)" stroke-dasharray="0 40 24 30.3" />
+            <circle class="donut" cx="128" cy="26" r="15" transform="rotate(-90 128 26)" style="stroke:var(--spot)" stroke-dasharray="0 64 18 12.3" />
+            <circle class="donut" cx="128" cy="26" r="15" transform="rotate(-90 128 26)" style={`stroke:${w('S')}`} stroke-dasharray="0 82 12.3 0" />
+          </g>
+          <g class="dial">
+            <rect class="ink-s thin" x="1" y="57" width="80" height="50" />
+            {[0, 1, 2, 3, 4, 5].map(i => (
+              <>
+                <rect class="ink-f" x={8 + i * 11.5} y={101 - [30, 26, 33, 28, 31, 35][i]} width="4.5" height={[30, 26, 33, 28, 31, 35][i]} />
+                <rect class="spot-f" x={13 + i * 11.5} y={101 - [22, 27, 19, 24, 21, 18][i]} width="4.5" height={[22, 27, 19, 24, 21, 18][i]} />
+              </>
+            ))}
+          </g>
+          <g class="dial">
+            <rect class="ink-s thin" x="88" y="57" width="80" height="50" />
+            {Array.from({ length: 40 }, (_, i) => (
+              <rect class="heat" x={93 + (i % 10) * 7} y={63 + Math.floor(i / 10) * 10} width="6" height="9" opacity={[.15, .5, .3, .85, .2, .6, 1, .35, .1, .7, .45, .25, .9, .55, .15, .4, .75, .3, .65, .2][(i * 7) % 20]} />
+            ))}
+          </g>
+        </svg>
+        <span class="st-l">
+          <span class="st-h"><b>6</b><i class="st-w"></i><span class="st-n">ECharts</span></span>
+          <span class="st-x">Income, spend, savings rate and net worth, drawn on the page</span>
+        </span>
+      </section>
+    </div>
+  </div>
+
+  <p class="stamp" aria-hidden="true"><span>Sealed unit</span><small>Data never leaves <span>the browser</span></small></p>
+</figure>

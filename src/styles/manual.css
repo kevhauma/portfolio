@@ -330,6 +330,131 @@ body:has(.desk) { background: #3A2314; }
 .turn a[rel="next"] { margin-left: auto; color: var(--spot-ink); }
 
 /* ---------- one page instead of two ---------- */
+/* ---------- a drawn figure: money-mosaic's sealed unit, cut away (MoneyMosaicCutaway.astro) ---------- */
+.cut { container: fig / inline-size; position: relative; z-index: 2; margin: 0; padding-bottom: 40px; }
+.cut .fig-t { margin-bottom: 8px; }
+.cut svg { display: block; overflow: visible; }
+.cut .ink-s { fill: none; stroke: var(--pi); stroke-width: 1.6; }
+.cut .thin { stroke-width: 1.1; }
+.cut .hair { stroke-width: .7; }
+.cut .faint { stroke-width: .6; opacity: .34; }
+.cut .ink-f { fill: var(--pi); }
+.cut .spot-f { fill: var(--spot); }
+.cut .spot-s { fill: none; stroke: var(--spot); stroke-width: 1.7; }
+.cut .head { fill: rgb(19 37 79 / .16); }
+.cut .lid { fill: rgb(19 37 79 / .1); }
+.cut .paper { fill: var(--paper); }
+.cut .paper-s { fill: none; stroke: var(--paper); stroke-width: 2.2; }
+.cut .node { fill: var(--paper); stroke: var(--pi); stroke-width: 1.5; }
+.cut .node.dropped { stroke: var(--ghost); stroke-dasharray: 2.4 2; }
+.cut .node.win { fill: var(--spot); }
+.cut .chart-f { fill: var(--w); opacity: .6; }
+.cut .donut { fill: none; stroke-width: 8; }
+.cut .heat { fill: var(--w); }
+.cut .sheet-t { font: 800 16px/1 var(--m-head); font-stretch: 70%; fill: var(--pi); }
+
+/* above the housing: the browser tab it is, and the CSV going in through the slot in its top wall */
+.cut-top { position: relative; z-index: 2; display: flex; align-items: flex-end; gap: 22px; padding-left: 16px; }
+.cut-tab { display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 24px; flex: none; background: var(--pi); color: var(--paper); font: 700 .75rem/1 var(--m-head); font-stretch: 86%; letter-spacing: .08em; text-transform: uppercase; clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 100%, 0 100%); transition: opacity .16s var(--ease), background-color .16s var(--ease); }
+.cut-tab::before { content: ""; width: 9px; height: 9px; background: var(--spot); box-shadow: 0 0 0 1.5px var(--paper); }
+.cut-tab.hot { background: var(--w); }
+.cut-in { position: relative; flex: none; transition: opacity .16s var(--ease); }
+.cut-sheet { width: 54px; margin-bottom: -9px; transform: rotate(-4deg); transform-origin: 50% 100%; }
+/* the slot's lips, over the sheet's lower edge */
+.cut-in::after { content: ""; position: absolute; left: -7px; bottom: -11px; width: 68px; height: 5px; background: var(--pi); box-shadow: 0 0 0 1.5px var(--paper); }
+.cut-l { padding-bottom: 12px; transition: opacity .16s var(--ease); }
+
+/* the housing: its wall cut and hatched, bolted at the corners */
+.cut-case { --wall: 12px; container: cut / inline-size; position: relative; z-index: 1; padding: var(--wall); background: repeating-linear-gradient(-45deg, rgb(19 37 79 / .62) 0 1.1px, transparent 1.1px 5px), var(--paper); box-shadow: inset 0 0 0 2px var(--pi); }
+.bolt { position: absolute; width: 11px; height: 11px; }
+.bolt.tl { left: .5px; top: .5px; }
+.bolt.tr { right: .5px; top: .5px; }
+.bolt.bl { left: .5px; bottom: .5px; }
+.bolt.br { right: .5px; bottom: .5px; }
+.cut-bay {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1.3fr);
+  grid-template-areas: "parse a1 cat" ". . a2" "stats a3 store";
+  padding: 18px 16px 26px;
+  background: var(--paper);
+  box-shadow: 0 0 0 2px var(--pi);
+}
+.st { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 24px 10px 10px; transition: opacity .16s var(--ease), background-color .16s var(--ease); }
+.st-parse { grid-area: parse; align-self: start; }
+.st-cat { grid-area: cat; }
+.st-store { grid-area: store; }
+.st-stats { grid-area: stats; padding-top: 14px; }
+/* the two stations that run off the main thread sit in their own compartment */
+.st-parse, .st-cat { outline: 1.5px dashed rgb(19 37 79 / .6); outline-offset: -1px; }
+.wk { position: absolute; top: 7px; left: 9px; font: 600 .625rem/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--pi-2); }
+.st-art { width: 100%; height: auto; }
+.st-parse .st-art { margin-top: 6px; }
+.st-l { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.st-h { display: flex; align-items: center; gap: 7px; }
+.st-h b, .link b { display: grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: 50%; background: var(--pi); color: var(--paper); font: 600 .6875rem/1 var(--mono); }
+.st-w { flex: none; width: 12px; height: 8px; background: var(--w); box-shadow: inset 0 0 0 1.5px var(--pi); }
+.st-n { font: 800 1.3125rem/1 var(--m-head); font-stretch: 72%; letter-spacing: .01em; text-transform: uppercase; }
+.st-x { font-size: .8125rem; line-height: 1.35; color: var(--pi-2); text-wrap: pretty; }
+.st-spec { font: 600 .6875rem/1.3 var(--mono); letter-spacing: .03em; }
+.arr { width: 24px; align-self: center; justify-self: center; }
+.a1 { grid-area: a1; }
+.a3 { grid-area: a3; transform: rotate(180deg); }
+.a2 { grid-area: a2; display: flex; align-items: center; gap: 12px; padding: 12px 0 12px 22%; }
+.a2 .arr { transform: rotate(90deg); }
+.link { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; padding: 5px 9px 5px 7px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--pi); font: 700 .75rem/1 var(--m-head); font-stretch: 86%; letter-spacing: .05em; text-transform: uppercase; transition: opacity .16s var(--ease), box-shadow .16s var(--ease); }
+.link svg { width: 20px; }
+.link b { width: 17px; height: 17px; font-size: .625rem; }
+.link.hot { box-shadow: inset 0 0 0 3px var(--w); }
+.store-row { display: flex; align-items: center; gap: 10px; }
+.drum { width: 38%; max-width: 116px; flex: none; }
+.tables { min-width: 0; list-style: none; margin: 0; padding: 0; font: 600 .6875rem/1.8 var(--mono); letter-spacing: 0; }
+.tables li { display: flex; align-items: center; gap: 7px; }
+.tables li::before { content: ""; width: 6px; height: 6px; flex: none; background: var(--pi); }
+.tables .model { color: var(--spot-ink); }
+.tables .model::before { background: var(--spot); }
+/* where an outlet to a server would go, the wall is blanked off */
+.plate { position: absolute; right: -36px; top: 18px; width: 20px; }
+.st.hot { background: rgb(19 37 79 / .05); outline: 2.5px solid var(--pi); outline-offset: -1px; }
+.spread[data-hot] .fig-part:not(.hot) { opacity: .3; }
+
+/* the inspector's stamp, across the corner of the housing */
+.stamp {
+  position: absolute; right: -6px; bottom: 6px; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  margin: 0; padding: 8px 14px 9px;
+  color: var(--spot-ink);
+  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  box-shadow: inset 0 0 0 2.5px currentColor, inset 0 0 0 4.5px transparent, inset 0 0 0 5.5px currentColor;
+  transform: rotate(-5deg);
+  pointer-events: none;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.4 2.15'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23s)'/%3E%3C/svg%3E");
+}
+.stamp > span { font: 800 1.5rem/1 var(--m-head); font-stretch: 68%; letter-spacing: .07em; text-transform: uppercase; }
+.stamp small { text-align: center; font: 600 .625rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+
+/* a narrow figure: the CSV's label goes above the slot, and the store's tables under the drum */
+@container fig (max-width: 420px) {
+  .cut-top { flex-wrap: wrap; column-gap: 12px; padding-left: 6px; }
+  .cut-tab { gap: 6px; padding: 0 13px; }
+  .cut-sheet { width: 46px; }
+  .cut-in::after { width: 60px; }
+  .stamp { padding-inline: 12px; }
+  .stamp small span { display: block; }
+  .cut-l { order: -1; flex-basis: 100%; padding-bottom: 14px; }
+  .store-row { flex-wrap: wrap; }
+  .drum { width: 72px; }
+  .cut { padding-bottom: 74px; }
+  .stamp { right: 2px; bottom: 4px; }
+}
+/* a narrow housing stacks the stations in the order the data runs */
+@container cut (max-width: 400px) {
+  .cut-bay { grid-template-columns: minmax(0, 1fr); grid-template-areas: "parse" "a1" "cat" "a2" "store" "a3" "stats"; padding: 14px 12px 18px; }
+  .a1, .a3 { transform: rotate(90deg); margin: 10px 0; }
+  .a2 { padding: 10px 0; justify-content: center; }
+  .plate { right: -30px; }
+}
+
 @media (max-width: 1099px) {
   .desk { padding: 76px 12px 46px; }
   .block { display: flow-root; height: max(420px, calc(100svh - 146px)); background-image: none; }
@@ -387,7 +512,7 @@ body:has(.desk) { background: #3A2314; }
   .page-r .rh { display: none; }
   .key-row { width: 100%; margin-right: 0; }
   /* the wires run down the right margin: keep the key and the parts clear of their channels */
-  .key, .key-note, .parts { margin-right: calc(var(--lanes, 6) * 9px + 10px); }
+  .key, .key-note, .parts, .cut { margin-right: calc(var(--lanes, 6) * 9px + 10px); }
   .key-row:hover, .key-row.hot { background: rgb(19 37 79 / .07); }
   .parts { grid-template-columns: 1fr; }
   .parts .part { grid-row: auto !important; grid-column: 1 !important; }
