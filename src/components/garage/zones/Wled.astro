@@ -1,0 +1,32 @@
+---
+/* WLED strip. panel: the caption box with the live controls. list: the plain entry under the scene. */
+import Tag from '../Tag.astro';
+import { wledEffects as FX } from '../../../data/garage';
+interface Props { mode: 'panel' | 'list' }
+const { mode } = Astro.props;
+const swatches = [['WLED default orange', '#ffa000'], ['Warm white', '#ffd2a0'], ['Livery red', '#e2001a'], ['Green', '#00b050'], ['Ice blue', '#4cc8ff'], ['Violet', '#8a3cff'], ['White', '#ffffff']];
+---
+{mode === 'panel' ? (
+  <>
+    <p>A simulated strip, not the real one. Pick a colour and an effect: the strip under the shelf answers, and its light tints the pegboard and the bench below.</p>
+    <span class="g-lbl" id="wled-col">Colour</span>
+    <div class="g-row" role="group" aria-labelledby="wled-col">
+      {swatches.map(([n, c]) => <button class="g-swatch" type="button" data-c={c} aria-label={`${n} ${c}`} aria-pressed="false"><span style={`background:${c}`}></span></button>)}
+      <label class="g-anycol"><span class="wheel"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2v10M2 7h10" stroke="#170f1f" stroke-width="3" stroke-linecap="round" /><path d="M7 2v10M2 7h10" stroke="#fff" stroke-width="1.4" stroke-linecap="round" /></svg></span><input type="color" aria-label="Pick any colour" value="#ffa000" data-any-colour /></label>
+    </div>
+    <span class="g-lbl" id="wled-fx">Effect</span>
+    <div class="g-row" role="group" aria-labelledby="wled-fx">
+      {FX.map(f => <button class="g-btn" type="button" data-fx={f} aria-pressed="false">{f}</button>)}
+    </div>
+    <label class="g-lbl" for="wled-bri">Brightness</label>
+    <input class="g-range" id="wled-bri" type="range" min="1" max="255" value="128" data-bri />
+    <div class="g-readout" aria-live="polite" data-read></div>
+    <p class="g-note g-rm-only">Reduced motion is on, so the effects hold a still frame instead of moving.</p>
+    <p class="g-note"><Tag />Kevin's own presets will load from his presets.json.</p>
+  </>
+) : (
+  <>
+    <p>A simulated LED strip, not the real one: pick a colour and one of the WLED effects ({FX.join(', ')}) and it answers, tinting the pegboard and the bench below it.</p>
+    <p><Tag />Kevin's own presets will come from his presets.json.</p>
+  </>
+)}

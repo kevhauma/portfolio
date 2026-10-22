@@ -1,0 +1,19 @@
+---
+/* Kevin's 2021 Honda CB650R. */
+import Tag from '../Tag.astro';
+interface Props { mode: 'panel' | 'list' }
+const { mode } = Astro.props;
+---
+{mode === 'panel' ? (
+  <>
+    <p class="g-big">2021 Honda CB650R</p>
+    <p>Kevin's own bike. A Neo Sports Café naked: round LED headlight, upside-down fork with radial calipers, a short tail, and the 649 cc inline-four out in the open with its four exhaust headers sweeping down the front of the engine to the muffler underneath.</p>
+    <p>Where it has been: the motorcycle trips are on <a href="/map/">the map</a>.</p>
+    <p class="g-note"><Tag />The paint in the scene is a stand-in; the real colour follows.</p>
+  </>
+) : (
+  <>
+    <p>Kevin's own 2021 Honda CB650R, a Neo Sports Café naked bike: round LED headlight, upside-down fork with radial calipers, the 649 cc inline-four with its four exhaust headers sweeping down to the muffler under the engine, a short tail and a double-sided swingarm.</p>
+    <p>Where it has been: the motorcycle trips are on <a href="/map/">the map</a>.</p>
+  </>
+)}

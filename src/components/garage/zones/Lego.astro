@@ -1,0 +1,19 @@
+---
+/* Lego on the corner rack. */
+import Tag from '../Tag.astro';
+interface Props { mode: 'panel' | 'list' }
+const { mode } = Astro.props;
+const builds = ['the tower', 'the house', 'the car'];
+---
+{mode === 'panel' ? (
+  <>
+    <p>Lego, on the corner rack: real bricks with studs, a stepped tower, a small house and a brick car.</p>
+    <ul class="g-facts">{builds.map((b, i) => <li>Build {i + 1}, {b}. <Tag />set name</li>)}</ul>
+    <p class="g-note">Which sets these really are follows later; the three builds here are stand-ins.</p>
+  </>
+) : (
+  <>
+    <p>Lego builds, modelled as real bricks with studs.</p>
+    <p><Tag />Which sets these are.</p>
+  </>
+)}

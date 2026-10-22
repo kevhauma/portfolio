@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "astro", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "4321"], "port": 4321 }
+    { "name": "astro", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "4321"], "port": 4321 },
+    { "name": "mocks", "runtimeExecutable": "python", "runtimeArgs": ["-m", "http.server", "4330", "--bind", "127.0.0.1"], "port": 4330 }
   ]
 }

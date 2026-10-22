@@ -1,0 +1,18 @@
+---
+/* JDM, 1980 to 1990: an interest, not a collection. */
+import Tag from '../Tag.astro';
+interface Props { mode: 'panel' | 'list' }
+const { mode } = Astro.props;
+---
+{mode === 'panel' ? (
+  <>
+    <p>Japanese cars from 1980 to 1990: an interest, not a collection. The Toyota AE86 is the favourite, the one on the poster in the black-and-white panda paint.</p>
+    <p>The hatch-shaped thing under the cover is the garage daydreaming. Kevin doesn't own an AE86.</p>
+    <p class="g-note"><Tag />The other favourites, which is why the second poster still says so.</p>
+  </>
+) : (
+  <>
+    <p>An interest, not a collection. The Toyota AE86 is the favourite; the hatch shape under the cover is the garage daydreaming, not a car Kevin owns.</p>
+    <p><Tag />Other favourites.</p>
+  </>
+)}

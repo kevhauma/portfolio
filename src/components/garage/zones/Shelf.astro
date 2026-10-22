@@ -1,0 +1,62 @@
+---
+/* The shelf of side projects: one object per project, each with its own part of the caption box. */
+import Tag from '../Tag.astro';
+import { shelfItems } from '../../../data/garage';
+interface Props { mode: 'panel' | 'list' }
+const { mode } = Astro.props;
+const aoc: [number, number][] = [[2020, 14], [2021, 7], [2022, 40], [2023, 23], [2024, 20]];
+const icon: Record<string, string> = {
+  aoc: `<path d="M13 2l3.2 6.6 7.2 1-5.2 5.1 1.2 7.2L13 18.5l-6.4 3.4 1.2-7.2L2.6 9.6l7.2-1z" fill="#ffe14a" stroke="#170f1f" stroke-width="1.8" stroke-linejoin="round"/>`,
+  msgr: `<path d="M4 5h18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H11l-5 4v-4H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" fill="#3b7bff" stroke="#170f1f" stroke-width="1.8" stroke-linejoin="round"/><circle cx="8.5" cy="11.5" r="1.4" fill="#fff"/><circle cx="13" cy="11.5" r="1.4" fill="#fff"/><circle cx="17.5" cy="11.5" r="1.4" fill="#fff"/>`,
+  hash: `<path d="M7 3h12v5a6 6 0 0 1-12 0z" fill="#e7b84a" stroke="#170f1f" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 5H3.5a3.5 3.5 0 0 0 4 4M19 5h3.5a3.5 3.5 0 0 1-4 4" fill="none" stroke="#170f1f" stroke-width="1.8"/><path d="M11 14h4v4h-4zM8 18h10v4H8z" fill="#e7b84a" stroke="#170f1f" stroke-width="1.8" stroke-linejoin="round"/>`,
+  f1: `<path d="M5 3v21" stroke="#c9ccd2" stroke-width="2.4" stroke-linecap="round"/><path d="M6 4h16v11H6z" fill="#f4f4f4" stroke="#170f1f" stroke-width="1.8" stroke-linejoin="round"/><path d="M6 4h4v3.7H6zm8 0h4v3.7h-4zM10 7.7h4v3.6h-4zm8 0h4v3.6h-4zM6 11.3h4V15H6zm8 0h4V15h-4z" fill="#170f1f"/>`,
+  gps: `<path d="M13 24s8-8.2 8-14a8 8 0 0 0-16 0c0 5.8 8 14 8 14z" fill="#E2001A" stroke="#170f1f" stroke-width="1.8" stroke-linejoin="round"/><circle cx="13" cy="10" r="3" fill="#fff" stroke="#170f1f" stroke-width="1.4"/>`
+};
+const tools = ['gpx-to-kml', 'gpx-visualizer', 'routes-drawer', 'gpx-to-db'];
+---
+{mode === 'panel' ? (
+  <>
+    <p>Five side projects, one object each. Pick one up from the shelf, or from the row here.</p>
+    <div class="g-inv" role="group" aria-label="Side projects">
+      {shelfItems.map(i => <button class="g-slot" type="button" data-item={i.id} aria-pressed="false"><svg viewBox="0 0 26 26" aria-hidden="true" set:html={icon[i.id]} /><span>{i.name}</span></button>)}
+    </div>
+    <div data-item-body="aoc" hidden>
+      <p class="g-big">about 104 stars</p>
+      <p>Advent of Code, December after December. Out of 50 possible stars a year:</p>
+      <div class="g-bars">{aoc.map(([y, s]) => <div class="g-bar"><span>{y}</span><span class="t" role="img" aria-label={`${s} of 50 stars`}><b style={`width:${s / 50 * 100}%`}></b></span><span>{s}/50</span></div>)}</div>
+      <p class="g-note"><Tag />A repo estimate; the real total follows.</p>
+    </div>
+    <div data-item-body="msgr" hidden>
+      <p>MessengertoStats turns Messenger chat exports into stats. Here is a tiny chat it could chew on:</p>
+      <div class="g-chat" aria-label="Synthetic chat">
+        <div class="msg a"><em>Sam</em>are we still on for friday?</div><div class="msg b"><em>Kevin</em>yes, garage at 8</div>
+        <div class="msg a"><em>Sam</em>bringing the good coffee</div><div class="msg b"><em>Kevin</em>then you get the comfy stool</div>
+      </div>
+      <div class="g-readout">messages 4  ·  Sam 50% / Kevin 50%  ·  avg 4.5 words  ·  busiest hour 21:00</div>
+      <p class="g-note"><Tag kind="synthetic" />The chat and the stats above are made up for this page.</p>
+    </div>
+    <div data-item-body="hash" hidden>
+      <p class="g-big">#113 of 4,852</p>
+      <p>Google Hashcode 2018, team JustGoogleIt: Kevin with Xander, Wouter and Dries.</p>
+      <ul class="g-facts"><li>Top 3% of all teams worldwide</li><li>4th of 186 Belgian teams</li><li>49,200,184 points</li></ul>
+    </div>
+    <div data-item-body="f1" hidden>
+      <p>The F1 WLED tracker plays F1 lap data on a WLED strip. It sits right next to the strip on this shelf, so you can run a lap on it.</p>
+      <div class="g-row"><button class="g-btn" type="button" aria-pressed="false" data-f1-run>Run a lap on the strip</button></div>
+      <p class="g-note"><Tag kind="synthetic" />The demo lap is three made-up cars, not real timing data.</p>
+    </div>
+    <div data-item-body="gps" hidden>
+      <p>A small family of GPS tools for the routes behind the trips:</p>
+      <ul class="g-facts">{tools.map(t => <li><code>{t}</code></li>)}</ul>
+      <p>Where the routes end up: <a href="/map/">the map</a>.</p>
+    </div>
+  </>
+) : (
+  <ul>
+    <li><strong>Advent of Code</strong>: about 104 stars. {aoc.map(([y, s]) => `${y}: ${s}`).join(', ')}. <Tag />repo estimate; the real total follows.</li>
+    <li><strong>MessengertoStats</strong>: stats from Messenger chat exports. <Tag kind="synthetic" />the demo chat in the scene is made up.</li>
+    <li><strong>Google Hashcode 2018</strong>: team JustGoogleIt, #113 of 4,852 teams worldwide (top 3%), 4th of 186 Belgian teams, 49,200,184 points, with Xander, Wouter and Dries.</li>
+    <li><strong>F1 WLED tracker</strong>: plays F1 lap data on a WLED strip. It sits next to the strip in the scene. <Tag kind="synthetic" />the demo lap is made up.</li>
+    <li><strong>GPS tools</strong>: {tools.join(', ')}. The routes end up on <a href="/map/">the map</a>.</li>
+  </ul>
+)}

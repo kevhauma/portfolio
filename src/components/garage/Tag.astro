@@ -1,0 +1,7 @@
+---
+/* The garage's honesty marks: what is still to follow, what is made up for the demo, what is written for the page. */
+interface Props { kind?: 'follow' | 'synthetic' | 'illustrative' }
+const { kind = 'follow' } = Astro.props;
+const label = { follow: 'to follow', synthetic: 'synthetic', illustrative: 'illustrative' }[kind];
+---
+<span class:list={['g-tag', { syn: kind === 'synthetic', ill: kind === 'illustrative' }]}>{label}</span>

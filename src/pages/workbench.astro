@@ -1,10 +1,14 @@
 ---
-import StubSheet from '../components/StubSheet.astro';
+/* 06 Workbench: Kevin's garage at dusk, drawn as a late-90s anime cel. Every hobby is an object in the room;
+   point at one and the camera cuts in. The same ten things are listed plainly under the scene. */
+import Livery from '../layouts/Livery.astro';
+import Garage from '../components/garage/Garage.astro';
+import Kit from '../components/Kit.astro';
+import '@fontsource/dela-gothic-one/latin-400.css';
+import '../styles/sheet.css';
+import '../styles/garage.css';
 ---
-<StubSheet sec="06" description="Kevin's workbench: a simulated WLED strip, 3D prints and side projects."
-  lede="The workbench: a simulated WLED strip you can recolour, a 3D print in a slicer preview, and the side projects on the bench next to them."
-  plans={[
-    'Pick a colour or an effect and the strip answers. It is a simulation, not the real strip.',
-    'A slicer preview: a real print builds up layer by layer under a scrubber you drag, by mouse, keyboard or touch. Prints and their settings once the models are in.',
-    'Quackbot, the Discord bot, as a small chat you can poke.'
-  ]} />
+<Livery title="Workbench · Kevin" description="Kevin's garage at dusk: the WLED strip, the 3D printer, the side projects on the shelf, the CB650R and the rest of the hobbies, drawn like a late-90s anime cel." sec="06">
+  <Garage />
+  <Kit current="06" heading="Back out of the garage." />
+</Livery>

@@ -1,0 +1,32 @@
+---
+/* Home Assistant: the wall tablet. One demo switch drives this garage's lamps; the rest are placeholders. */
+import Tag from '../Tag.astro';
+interface Props { mode: 'panel' | 'list' }
+const { mode } = Astro.props;
+const ents = [
+  { k: 'garage', name: 'Garage ceiling light', id: 'light.garage_ceiling', note: 'Demo: this one switches the lamps in this garage.', on: true },
+  { k: 'l1', name: 'Room to follow', id: 'light.placeholder_1', on: false },
+  { k: 's2', name: 'Room to follow', id: 'switch.placeholder_2', on: true },
+  { k: 'l3', name: 'Room to follow', id: 'light.placeholder_3', on: false }
+];
+---
+{mode === 'panel' ? (
+  <>
+    <p>Home Assistant runs the house. The tablet on the wall shows its shape: rooms, and toggles for what is in them.</p>
+    <div>
+      {ents.map(e => (
+        <div class="g-ent">
+          <div><b>{e.name}</b><code>{e.id}</code>{e.note && <code class="demo">{e.note}</code>}</div>
+          <button class="g-tog" type="button" role="switch" data-k={e.k} aria-checked={String(e.on)} aria-label={`${e.name}, ${e.id}`}></button>
+        </div>
+      ))}
+      <div class="g-ent"><div><b>Room to follow</b><code>sensor.placeholder_temperature</code></div><span class="g-sensor">--.- °C</span></div>
+    </div>
+    <p class="g-note"><Tag />Kevin's real devices and automations. Every entity here is a placeholder.</p>
+  </>
+) : (
+  <>
+    <p>Home Assistant runs the house. The wall tablet shows the shape of it: rooms and toggles.</p>
+    <p><Tag />The specific devices and automations are not listed yet; the entities shown are placeholders.</p>
+  </>
+)}

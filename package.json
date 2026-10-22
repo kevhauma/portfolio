@@ -12,6 +12,11 @@
     "@fontsource-variable/archivo": "^5.3.0",
     "@fontsource-variable/hanken-grotesk": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
-    "astro": "^7.3.8"
+    "@fontsource/dela-gothic-one": "^5.3.0",
+    "astro": "^7.3.8",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.180.0"
   }
 }
