@@ -1,5 +1,6 @@
 /* 03 Projects: the workshop manual on a walnut desk. Its own world: paper, two-ink print and wiring.
-   The livery only shows through the navy cloth, the red and green ribbons and the red spot ink. */
+   The livery only shows through the navy cloth, the red and green ribbons and the red spot ink.
+   The desk, the book and the pens are drawn as a cel, like the garage; what is printed on the pages stays print. */
 
 html:has(.desk) { background: #3A2314; scrollbar-color: #B48A60 #2A190D; }
 body:has(.desk) { background: #3A2314; }
@@ -14,7 +15,8 @@ body:has(.desk) { background: #3A2314; }
   --rule: rgb(19 37 79 / .17);
   --ghost: #8D939C;
   --cloth: #17284B;
-  --lamp: rgb(255 232 196 / .26);
+  /* the lamp pool is drawn in two steps: a wide ring and the bright core inside it, each laid on at this strength */
+  --lamp: rgb(255 232 196 / .14);
   --dark: 0;
   --m-head: 'Archivo Variable', 'Hanken Grotesk Variable', sans-serif;
   --focus: #13254F;
@@ -27,58 +29,63 @@ body:has(.desk) { background: #3A2314; }
   padding: 40px 24px 46px;
   color: var(--pi);
   font: 400 1rem/1.55 var(--body);
+  /* flat walnut, drawn: the lamp pool in two hard steps, a hard vignette ring, the planks, and a few long grain lines */
   background-color: #4E301B;
   background-image:
-    radial-gradient(70% 60% at 24% 10%, var(--lamp), transparent 62%),
-    radial-gradient(160% 120% at 50% 40%, transparent 46%, rgb(18 9 3 / .55)),
+    radial-gradient(46% 38% at 24% 10%, var(--lamp) 0 99%, transparent 100%),
+    radial-gradient(70% 60% at 24% 10%, var(--lamp) 0 99%, transparent 100%),
+    radial-gradient(160% 120% at 50% 40%, transparent 0 60%, rgb(18 9 3 / .4) 60%),
     repeating-linear-gradient(180deg, rgb(255 228 196 / .035) 0 318px, rgb(10 5 2 / .5) 318px 320px, rgb(0 0 0 / .05) 320px 638px, rgb(10 5 2 / .5) 638px 640px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='640'%3E%3Cfilter id='w' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0022 0.085' numOctaves='5' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='table' tableValues='0.20 0.31 0.41 0.47 0.38 0.27'/%3E%3CfeFuncG type='table' tableValues='0.11 0.18 0.25 0.29 0.23 0.16'/%3E%3CfeFuncB type='table' tableValues='0.05 0.09 0.13 0.15 0.12 0.08'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
-  background-size: auto, auto, auto, 1400px 640px;
+    repeating-linear-gradient(179.4deg, transparent 0 37px, rgb(20 10 3 / .22) 37px 39px, transparent 39px 101px, rgb(255 220 180 / .06) 101px 103px, transparent 103px 163px),
+    repeating-linear-gradient(180.5deg, transparent 0 211px, rgb(20 10 3 / .18) 211px 212.5px, transparent 212.5px 290px);
 }
 /* night race: the room goes dark, the lamp stays on */
-:root[data-theme="night"] .desk { --paper: #E6E3D8; --lamp: rgb(255 214 160 / .2); --dark: .5; --cloth: #121F3B; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="day"]) .desk { --paper: #E6E3D8; --lamp: rgb(255 214 160 / .2); --dark: .5; --cloth: #121F3B; } }
-.desk::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(60% 55% at 30% 18%, transparent, rgb(6 3 1 / calc(var(--dark) * 1.4)) 80%); }
+:root[data-theme="night"] .desk { --paper: #E6E3D8; --lamp: rgb(255 214 160 / .11); --dark: .5; --cloth: #121F3B; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="day"]) .desk { --paper: #E6E3D8; --lamp: rgb(255 214 160 / .11); --dark: .5; --cloth: #121F3B; } }
+.desk::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(60% 55% at 30% 18%, transparent 0 56%, rgb(6 3 1 / calc(var(--dark) * .8)) 56% 80%, rgb(6 3 1 / calc(var(--dark) * 1.4)) 80%); }
 
 .desk :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .desk a { color: inherit; }
 
 /* ---------- the book ---------- */
-.scene { position: relative; width: min(1240px, 100%); margin: 0 auto; }
+/* the book throws its long shadow across the walnut, along the rake */
+.scene { --len: clamp(24px, 4vw, 60px); --cast-c: rgb(12 6 2 / .5); position: relative; width: min(1240px, 100%); margin: 0 auto; }
+/* shut, only the right half of the book is on the desk, so only that half throws a shadow */
+.book-shut .scene::after { left: 50%; width: calc(50% + var(--len)); }
 .book {
   position: relative;
   padding: 18px;
   border-radius: 6px;
+  /* flat cloth, lit on the left and shaded on the right, and its weighted ink line; its shadow is the scene's long cast */
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23c)'/%3E%3C/svg%3E"),
-    linear-gradient(90deg, rgb(255 255 255 / .05), transparent 30% 70%, rgb(0 0 0 / .18)),
+    linear-gradient(90deg, rgb(255 255 255 / .06) 0 24%, transparent 24% 72%, rgb(0 0 0 / .2) 72%),
     var(--cloth);
   box-shadow:
-    inset 0 0 0 1px rgb(255 255 255 / .07),
-    inset 0 2px 1px rgb(255 255 255 / .08),
-    inset 0 -3px 2px rgb(0 0 0 / .3),
-    28px 40px 56px -18px rgb(12 6 2 / .75),
-    8px 12px 16px rgb(12 6 2 / .35);
+    var(--cel-ink-line),
+    inset 0 2px 0 rgb(255 255 255 / .1),
+    inset 0 -3px 0 rgb(0 0 0 / .3);
 }
 /* the board's edge: its thickness, under the cover */
-.book::after { content: ""; position: absolute; left: 2px; right: 2px; bottom: -7px; height: 12px; z-index: -1; border-radius: 0 0 7px 7px; background: linear-gradient(180deg, #0E1A36, #070D1C 70%); }
-.light { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: 6px; background: radial-gradient(70% 55% at 18% 4%, rgb(255 244 222 / .16), transparent 70%); mix-blend-mode: soft-light; }
+.book::after { content: ""; position: absolute; left: 2px; right: 2px; bottom: -7px; height: 12px; z-index: -1; border-radius: 0 0 7px 7px; background: linear-gradient(180deg, #0E1A36 0 55%, #070D1C 55%); box-shadow: 0 0 0 var(--cel-line) var(--cel-ink); }
+/* the lamp's pool on the book, one hard step */
+.light { position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: 6px; background: radial-gradient(70% 55% at 18% 4%, rgb(255 244 222 / .16) 0 52%, transparent 52%); mix-blend-mode: soft-light; }
 /* the spine, showing at the head and tail of the gutter */
-.book::before { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 30px; margin-left: -15px; border-radius: 4px; background: linear-gradient(90deg, #0D1731, #22355F 50%, #0D1731); }
+.book::before { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 30px; margin-left: -15px; border-radius: 4px; background: linear-gradient(90deg, #0D1731 0 30%, #22355F 30% 62%, #0D1731 62%); }
 /* one size for every page, from the screen's height: the pages scroll inside it */
 .block {
   position: relative;
   height: max(520px, calc(100svh - 122px));
   background-color: var(--paper);
-  background-image: linear-gradient(90deg, transparent 43%, rgb(7 18 41 / .06) 47.5%, rgb(7 18 41 / .2) 50%, rgb(7 18 41 / .06) 52.5%, transparent 57%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .27 0 0 0 0 .2 0 0 0 0.032 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)'/%3E%3C/svg%3E");
-  box-shadow: 0 0 0 1px rgb(0 0 0 / .1), 0 2px 5px rgb(0 0 0 / .3);
+  /* the gutter: the pages curve down into it in two hard shade bands each side */
+  background-image: linear-gradient(90deg, transparent 0 45%, rgb(7 18 41 / .07) 45% 48.5%, rgb(7 18 41 / .17) 48.5% 51.5%, rgb(7 18 41 / .07) 51.5% 55%, transparent 55%);
+  box-shadow: 0 0 0 1.5px var(--cel-ink), 0 3px 0 rgb(0 0 0 / .3);
 }
 /* page-block thickness at the fore-edges */
 .block::before, .block::after { content: ""; position: absolute; top: 3px; bottom: -5px; width: 8px; background: repeating-linear-gradient(90deg, #D8D6CE 0 1px, #F5F4EF 1px 2px); }
 .block::before { left: -8px; border-radius: 3px 0 0 3px; }
 .block::after { right: -8px; border-radius: 0 3px 3px 0; }
 
-.ribbon { position: absolute; top: calc(100% - 26px); z-index: 3; width: 17px; height: 56px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%); box-shadow: inset -3px 0 0 rgb(0 0 0 / .16); pointer-events: none; }
+.ribbon { position: absolute; top: calc(100% - 26px); z-index: 3; width: 17px; height: 56px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%); box-shadow: inset 1.5px 0 0 var(--cel-ink), inset -1.5px 0 0 var(--cel-ink), inset -6px 0 0 rgb(0 0 0 / .2), inset 4px 0 0 rgb(255 255 255 / .16); pointer-events: none; }
 .ribbon.r1 { left: calc(50% - 19px); background: var(--spot); transform: rotate(2deg); transform-origin: top; }
 .ribbon.r2 { left: calc(50% + 2px); height: 46px; background: #00843D; transform: rotate(-3deg); transform-origin: top; }
 
@@ -93,18 +100,20 @@ body:has(.desk) { background: #3A2314; }
   display: flex; flex-direction: column; align-items: flex-start;
   padding: clamp(48px, 6.5vw, 76px) clamp(28px, 4vw, 52px) 0 clamp(40px, 5vw, 64px);
   color: #E8E3D3;
+  /* the hinge in two hard steps, a lit sweep across the top left, the far side in shade */
   background:
-    linear-gradient(90deg, rgb(0 0 0 / .42), rgb(0 0 0 / .1) 9px, rgb(255 255 255 / .06) 13px, transparent 18px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23c)'/%3E%3C/svg%3E"),
-    linear-gradient(90deg, rgb(255 255 255 / .04), transparent 40%, rgb(0 0 0 / .16)),
+    linear-gradient(90deg, rgb(0 0 0 / .4) 0 9px, rgb(255 255 255 / .07) 9px 14px, transparent 14px),
+    linear-gradient(160deg, rgb(255 255 255 / .05) 0 32%, transparent 32%),
+    linear-gradient(90deg, transparent 0 64%, rgb(0 0 0 / .16) 64%),
     var(--cloth);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .07), inset 0 2px 1px rgb(255 255 255 / .08), inset 0 -3px 2px rgb(0 0 0 / .3);
+  box-shadow: inset 0 0 0 var(--cel-line) var(--cel-ink), inset 0 4px 0 rgb(255 255 255 / .08), inset 0 -4px 0 rgb(0 0 0 / .3);
 }
 /* blind-stamped frame, pressed into the cloth */
 .cv-front::after { content: ""; position: absolute; inset: 20px 20px 20px 30px; border: 1.5px solid rgb(4 9 22 / .5); box-shadow: 0 1px 0 rgb(255 255 255 / .07), inset 0 1px 0 rgb(255 255 255 / .05); pointer-events: none; }
 .cv-front > p { position: relative; margin: 0; text-shadow: 0 1px 0 rgb(0 0 0 / .5), 0 -1px 0 rgb(255 255 255 / .1); }
 .cv-kind { font: 600 .75rem/1 var(--mono); letter-spacing: .24em; text-transform: uppercase; opacity: .78; }
-.cv-title { margin-top: 18px !important; font: 800 clamp(3.5rem, 7.4vw, 6rem)/.8 var(--m-head); font-stretch: 62%; text-transform: uppercase; letter-spacing: -.01em; }
+.cv-title { margin-top: 18px !important; font: 800 clamp(3.5rem, 7.4vw, 6rem)/.8 var(--m-head); font-stretch: 62%; text-transform: uppercase; letter-spacing: -.01em; -webkit-text-stroke: .1em var(--cel-ink); paint-order: stroke fill; }
+.cv-front > p.cv-title { text-shadow: .06em .03em 0 var(--cel-ink); }
 .cv-sub { margin-top: 18px !important; font: 700 .9375rem/1.25 var(--m-head); font-stretch: 86%; letter-spacing: .07em; text-transform: uppercase; opacity: .85; }
 /* the livery's two stripes, raked at the leading end and run off the fore-edge */
 .cv-stripes { position: relative; align-self: stretch; height: 40px; margin: 46px calc(clamp(28px, 4vw, 52px) * -1) 0 22%; }
@@ -112,19 +121,18 @@ body:has(.desk) { background: #3A2314; }
 .cv-stripes i:first-child { --k: 6px; left: 0; top: 0; height: 24px; background: #E2001A; }
 .cv-stripes i:last-child { --k: 3px; left: 14px; top: 30px; height: 10px; background: #00843D; }
 .cv-foot { display: flex; align-items: center; gap: 14px; margin-top: 40px !important; font: 800 1.5rem/1 var(--m-head); font-stretch: 70%; text-transform: uppercase; letter-spacing: .02em; }
-.cv-num { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: #E2001A; color: #fff; font: 800 1.625rem/1 var(--m-head); font-stretch: 66%; text-shadow: none; box-shadow: 0 1px 1px rgb(0 0 0 / .35); }
+.cv-num { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: radial-gradient(circle at 34% 30%, #E2001A 0 62%, #B00015 62%); color: #fff; font: 800 1.625rem/1 var(--m-head); font-stretch: 66%; text-shadow: none; box-shadow: 0 0 0 var(--cel-line) var(--cel-ink), 2px 3px 0 var(--cel-line) rgb(0 0 0 / .35); }
 /* the cover's inside: the board turned in around the left page it lands as */
 .cv-back {
   transform: rotateY(180deg);
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23c)'/%3E%3C/svg%3E"),
-    var(--cloth);
+  background: var(--cloth);
+  box-shadow: inset 0 0 0 var(--cel-line) var(--cel-ink);
   border-radius: 6px 3px 3px 6px;
 }
-.cv-in { position: absolute; left: 18px; top: 18px; overflow: hidden; box-shadow: 0 0 0 1px rgb(0 0 0 / .1), 0 2px 5px rgb(0 0 0 / .3); }
+.cv-in { position: absolute; left: 18px; top: 18px; overflow: hidden; box-shadow: 0 0 0 1.5px var(--cel-ink), 0 3px 0 rgb(0 0 0 / .3); }
 .cv-in::before { content: ""; position: absolute; top: 3px; bottom: -5px; left: -8px; width: 8px; border-radius: 3px 0 0 3px; background: repeating-linear-gradient(90deg, #D8D6CE 0 1px, #F5F4EF 1px 2px); }
-.cover-rig .shade, .flip .shade { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; background: linear-gradient(90deg, rgb(6 12 26 / .7), rgb(6 12 26 / .45)); }
-.cover-rig .cast { position: absolute; top: 0; bottom: 0; left: 50%; right: 0; opacity: 0; background: linear-gradient(90deg, rgb(8 4 1 / .55), rgb(8 4 1 / .18) 38%, transparent 72%); border-radius: 0 6px 6px 0; }
+.cover-rig .shade, .flip .shade { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; background: linear-gradient(90deg, rgb(6 12 26 / .7) 0 46%, rgb(6 12 26 / .5) 46%); }
+.cover-rig .cast { position: absolute; top: 0; bottom: 0; left: 50%; right: 0; opacity: 0; background: linear-gradient(90deg, rgb(8 4 1 / .5) 0 32%, rgb(8 4 1 / .2) 32% 70%, transparent 70%); border-radius: 0 6px 6px 0; }
 
 /* ---------- turning a leaf: two page snapshots on one leaf, swung over the spine (book.ts) ---------- */
 .flip { position: absolute; inset: 0; z-index: 3; pointer-events: none; perspective: 2600px; }
@@ -136,30 +144,30 @@ body:has(.desk) { background: #3A2314; }
 .flip .paper { position: absolute; top: 0; bottom: 0; background: var(--paper); }
 .flip-under { z-index: 0; }
 .flip-cast { opacity: 0; z-index: 1; }
-.flip .dark-l { background: linear-gradient(90deg, rgb(8 4 1 / .5), rgb(8 4 1 / .16) 38%, transparent 72%); }
-.flip .dark-r { background: linear-gradient(270deg, rgb(8 4 1 / .5), rgb(8 4 1 / .16) 38%, transparent 72%); }
+.flip .dark-l { background: linear-gradient(90deg, rgb(8 4 1 / .45) 0 30%, rgb(8 4 1 / .16) 30% 68%, transparent 68%); }
+.flip .dark-r { background: linear-gradient(270deg, rgb(8 4 1 / .45) 0 30%, rgb(8 4 1 / .16) 30% 68%, transparent 68%); }
 .flip-under .shade.dark-l { right: 8px; }
 
 .pens { position: absolute; left: calc(100% + 26px); top: 70px; display: flex; gap: 14px; align-items: flex-start; pointer-events: none; }
-.pen { display: block; height: auto; filter: drop-shadow(7px 10px 6px rgb(14 7 2 / .55)); }
+/* each pen throws its long shadow on the walnut: the outlined pen swept along the rake in doubling hard steps, one flat walnut shade */
+.pen { --sh: #2E1A0D; display: block; height: auto; filter: var(--cel-outline) drop-shadow(3px .75px 0 var(--sh)) drop-shadow(6px 1.5px 0 var(--sh)) drop-shadow(12px 3px 0 var(--sh)) drop-shadow(24px 6px 0 var(--sh)); }
 .pen-ball { transform: rotate(3deg); }
 .pen-felt { margin-top: 70px; transform: rotate(-4deg); }
 .pen-pencil { margin-top: 300px; margin-left: -40px; transform: rotate(-2deg); }
 @media (max-width: 1439px) {
   /* not enough desk at the side: the pens lie below the book instead */
   .pens { left: calc(100% - 352px); top: calc(100% + 34px); transform-origin: top left; transform: rotate(-90deg) translateX(-100%); }
+  /* the pens lie turned a quarter: their shadow steps turn back the other way, so the shadows still fall along the rake */
+  .pen { filter: drop-shadow(var(--cel-line) 0 0 var(--cel-ink)) drop-shadow(calc(var(--cel-line) * -1) 0 0 var(--cel-ink)) drop-shadow(0 var(--cel-line) 0 var(--cel-ink)) drop-shadow(0 calc(var(--cel-line) * -1) 0 var(--cel-ink)) drop-shadow(calc(var(--cel-weight) * -1) var(--cel-weight) 0 var(--cel-ink)) drop-shadow(-.75px 3px 0 var(--sh)) drop-shadow(-1.5px 6px 0 var(--sh)) drop-shadow(-3px 12px 0 var(--sh)) drop-shadow(-6px 24px 0 var(--sh)); }
   .pen-felt { margin-top: 40px; }
   .pen-pencil { margin-top: 18px; margin-left: 0; }
 }
 
 /* ---------- paper and print ---------- */
-.pg, .page {
-  background-color: var(--paper);
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .27 0 0 0 0 .2 0 0 0 0.032 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)'/%3E%3C/svg%3E");
-}
-.pg-l, .page-l { background-image: linear-gradient(90deg, transparent 86%, rgb(7 18 41 / .06) 95%, rgb(7 18 41 / .2)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .27 0 0 0 0 .2 0 0 0 0.032 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)'/%3E%3C/svg%3E"); border-radius: 2px 0 0 2px; }
-.pg-r, .page-r { background-image: linear-gradient(270deg, transparent 86%, rgb(7 18 41 / .06) 95%, rgb(7 18 41 / .2)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .27 0 0 0 0 .2 0 0 0 0.032 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23p)'/%3E%3C/svg%3E"); border-radius: 0 2px 2px 0; }
+/* flat paper; each page curves into the gutter in two hard shade bands */
+.pg, .page { background-color: var(--paper); }
+.pg-l, .page-l { background-image: linear-gradient(90deg, transparent 0 89%, rgb(7 18 41 / .06) 89% 96%, rgb(7 18 41 / .15) 96%); border-radius: 2px 0 0 2px; }
+.pg-r, .page-r { background-image: linear-gradient(270deg, transparent 0 89%, rgb(7 18 41 / .06) 89% 96%, rgb(7 18 41 / .15) 96%); border-radius: 0 2px 2px 0; }
 
 .spread { position: relative; display: grid; height: 100%; }
 .desk .spread, .desk .page { scrollbar-width: thin; scrollbar-color: rgb(19 37 79 / .34) transparent; }
@@ -183,7 +191,7 @@ body:has(.desk) { background: #3A2314; }
 .thumbs { position: absolute; right: -8px; top: 64px; bottom: 64px; z-index: 3; }
 .thumbs ol { list-style: none; margin: 0; padding: 0; height: 100%; display: flex; flex-direction: column; gap: 5px; }
 .thumbs li { flex: 1; max-height: 96px; }
-.thumbs a { display: flex; justify-content: center; padding-top: 10px; width: 50px; padding-right: 8px; flex-direction: column; align-items: center; gap: 8px; height: 100%; min-height: 44px; background: var(--pi); color: var(--paper); text-decoration: none; font: 800 1.375rem/1 var(--m-head); font-stretch: 66%; transition: background-color .16s var(--ease), width .16s var(--ease); }
+.thumbs a { display: flex; justify-content: center; padding-top: 10px; width: 50px; padding-right: 8px; flex-direction: column; align-items: center; gap: 8px; height: 100%; min-height: 44px; background: var(--pi); color: var(--paper); text-decoration: none; font: 800 1.375rem/1 var(--m-head); font-stretch: 66%; box-shadow: inset 0 0 0 1.5px var(--cel-ink), inset -8px 0 0 rgb(0 0 0 / .2); transition: background-color .16s var(--ease), width .16s var(--ease); }
 .thumbs a i { display: block; width: 12px; height: 6px; background: var(--w, transparent); box-shadow: 0 0 0 1px rgb(255 255 255 / .55); }
 .thumbs a[aria-current="page"], .thumbs a.hot, .thumbs a:hover { background: var(--spot); }
 .thumbs a:focus-visible { outline-offset: -5px; outline-color: var(--paper); }

@@ -127,12 +127,15 @@ Every page is a sheet in a race-livery decal kit. The ground is a white backing 
 
 Lettering is all Sakana, a single-weight racing face slanted onto the rake, the way race numbers and sponsor names are cut. Body copy is Hanken Grotesk, set plainly; JetBrains Mono is reserved for what a plotter or a compiler would print (labels, spec terms, the kit footer). Density is poster-scale on the intro sheet and editorial on stub and kit panels. Two geometric laws: the rake and the swoop. Lettering, LEDs, the page wipe, the masking tape and the kit ladder lean at 14 degrees (tan 0.2493); the livery stripes do not rule straight but swoop, as one constant-width ribbon bent into an S with a big red disc setting behind it (the sunset swoop, after the Castrol Celica GT-Four and the GT86 swoop poster).
 
+The kit is drawn like the workbench garage, as a late-90s anime cel: every object has a heavy ink line that thickens on its shade side, paint is flat and steps from light to shade in hard bands, a lit surface carries one painted highlight, and the low sun setting on the left (the swoop's disc) throws every object's shadow long to the right, along the rake. Each sheet keeps its own world and palette (the decal sheet, the pit wall, the walnut desk); the cel is how all of them are drawn.
+
 Motion is earned and visitor-owned: one arrival per visit (raw HTML, masking tape snaps at the rake, paint fills), then only visitor-triggered motion. Page switches pass through a raked paint wipe under 600ms. Reduced motion makes all of it instant. A recruiter mode (the pit limiter) replaces the livery with one plain, complete page.
 
 **Key Characteristics:**
 - White backing sheet, raked liner wordmark and dashed cut lines, framed by the sunset swoop.
 - Vinyl colour fields with square die-cut corners; the only round shapes are the roundel and the number bubble.
-- On the intro sheet the decals are real stickers that catch the light: most are gloss vinyl, a few are holographic or chrome foil, and the decal sheet tilts toward the cursor as one piece. The printed liner and the car stay rough matte.
+- Drawn as a cel on every built sheet and in the shared chrome: heavy weighted ink lines, inked display lettering, hard bands, one painted highlight, long raked shadows.
+- On the intro sheet the decals are real stickers that catch the light: most are gloss vinyl, a few are holographic or chrome foil, their sheen painted in hard shapes, and the decal sheet tilts toward the cursor as one piece. The printed liner and the car stay rough matte.
 - Sakana, slanted to the rake, for every piece of lettering; Hanken Grotesk for reading; mono only for print.
 - Everything leans at 14 degrees, except the stripes, which swoop.
 - Night race theme: the same livery under floodlights on deep navy.
@@ -201,16 +204,30 @@ Every sheet ends on the sunset swoop: sheets pad their bottom by the drop (`--dr
 
 Spacing runs on an 8px unit with 4px half-steps for tight pairs: 4, 8, 12, 16, 24, 40 and 64px are the reused steps; large section gaps are fluid clamps (72-128px). Fixed chrome sits 16px from the viewport edges (12px for switches on phones). Breakpoints: 420, 640, 760 (bubble moves bottom-right), 820/821 (plate vs stacked).
 
-## Elevation & Depth
+## Elevation & Depth: the Cel
 
-Stuck-down vinyl. Decals lie on the sheet; on stub sheets they carry no shadow at all. On the intro sheet they are stickers a tenth of a millimetre thick, stuck flush: a tight contact shadow cast away from the light, plus a clearcoat (gloss) or foil sheen that follows it. The floating chrome (switches, bubble, fan close) carries a soft two-layer shadow tinted with the navy lift colour. No hard offset shadows; no shadows on panels or text.
+Every built sheet (intro, experience, projects, workbench) and the shared chrome are drawn as an anime cel, after the garage (`src/styles/garage.css`, `src/garage/toon.ts`). The stub sheets keep flat, unshaded decals until they are painted.
+
+- **Weighted ink line.** Every object has a heavy dark outline that runs thicker on its shade side, down and right: `box-shadow: var(--cel-ink-line)` (a 3px ring plus the same ring nudged 1.5px down and right). Clip-path shapes (kit ladder links, fan panels, the monitor body, the pens) can't carry a box-shadow, so their parent takes `filter: var(--cel-outline)`, the same weighted line in zero-blur drop shadows.
+- **Bands, not ramps.** Light steps into shade in two or three flat bands: gradients with doubled stop positions (`a 0 40%, b 40% 72%, c 72%`), never a smooth ramp. Metal, cloth, carbon, concrete, sky and paper all follow this.
+- **One painted highlight.** A lit surface gets one hard-edged highlight shape or a pair of raked glint bars, never a soft hotspot.
+- **Long raked shadows.** The light is a low sun on the left, so every shadow is thrown to the right along the rake: the object swept along (L, L × tan 14°). Flat, 0 blur, tinted from the ground's shade rather than black. Rectangles sweep a hexagon and round objects a pill, drawn by the shared `:is([data-finish], .cast)::after` rule in `livery.css` (an object sets `--len`, and may set `--cast-c`, `--foot` and `--cast-shape`); it stays translucent so the print underneath still reads. Clipped shapes (kit rungs, pens) sweep themselves with doubling drop shadows (3, 6, 12, 24px) in one opaque shade of their ground. Small chrome takes a single rake offset (`8-12px 2-3px`).
+- **Flat textures.** No noise textures on things that are drawn: the walnut, cloth, paper, asphalt and concrete are flat paint with a few drawn lines. Printed matter (the liner wordmark, cut lines, the car, the manual's two-ink figures and wiring) stays print.
+- **Inked lettering.** Display lettering on vinyl, panels and covers is inked like the garage titles: `-webkit-text-stroke: .08-.12em var(--cel-ink)` with `paint-order: stroke fill`, plus a heavier ink step on the shade side (`text-shadow: .05em .03em 0`). The name, the 23, the coloured stack decals, the kit heading and numbers, the fan numbers, EXPERIENCE and the manual's cover title.
+
+### Tokens (`src/styles/livery.css`)
+- `--cel-ink` `#0A1330`, the ink line on every sheet, day and night.
+- `--cel-line` `3px` and `--cel-weight` `1.5px`, combined in `--cel-ink-line` (on the intro plate they scale with the sheet: `max(3px, k × .26)` and `max(1.5px, k × .14)`).
+- `--cel-shade` the hard-shadow tint (navy at 22% by day, black at 45% at night); `--cel-hi` the highlight white.
+- `--cel-outline` the four-drop-shadow outline for clipped shapes.
 
 ### Shadow Vocabulary
-- **Floating chrome** (`box-shadow: 0 1px 2px rgb(7 18 41 / .14), 0 8px 20px -8px var(--lift)`): display switches; the bubble uses the heavier `0 2px 4px rgb(7 18 41 / .22), 0 14px 30px -10px var(--lift)`.
-- **Fan focus card** (`filter: drop-shadow(0 10px 18px rgb(7 18 41 / .4))`): the current sheet in the open fan.
+- **Chrome** (switches, bubble, fan close): weighted ink line plus a short rake shadow `8-10px 2-2.5px 0 var(--cel-line) var(--cel-shade)`; hover lengthens it, press shortens it.
+- **Sticker** (intro decals): weighted ink line, a hard contact shadow whose direction follows the lamp, and the long sun shadow across the liner (2.6k, 16px on phones).
+- **Object on a surface**: weighted ink line plus its long sun shadow: the monitor across the fence (28-56px), the rack on the concrete (24-44px), each rack sheet on the steel (12px), the book on the walnut (24-60px), each pen (45px), each kit rung on the navy (21px).
 
 ### Named Rules
-**The Lift Rule.** A soft shadow means the thing floats above the sheet. A sticker on the sheet only gets its contact shadow, never a floating one.
+**The Sun Rule.** One low sun lights every sheet from the left, so every shadow falls to the right along the 14° rake, never down and right at 45°. Its length says how much stands up off the ground: a flush sticker a little, the book on the desk the most. Nothing gets a blurred shadow. The cursor-lamp on the intro only moves the stickers' sheen and contact shadows; the sun's shadows stay put.
 
 **The Lamp Rule.** On the intro sheet the cursor is a lamp over the sheet (`src/scripts/stickers.ts`). The whole decal sheet (the plate: stickers, cut lines and car together) tilts toward it as one piece, up to 4 degrees, with the side under the lamp pressing in; stickers never tilt on their own. Each sticker's sheen follows the lamp. On touch, the light hangs above the top right of the screen and slides with scroll, and a press on the sheet holds the lamp there. Reduced motion keeps the sheet flat under the resting light (top left, low). The liner, the cut lines and the car never shine.
 
@@ -223,7 +240,7 @@ Square die-cut corners everywhere (0 radius); vinyl is cut, not rounded. The onl
 ### Decal (signature)
 Die-cut vinyl in its slot, the unit of the whole system.
 - **Structure:** a slot with a dashed cut line and the vinyl decal inside it. Decals have no hover, focus or click state of their own; links inside them behave as links.
-- **Finish** (`finish` prop, intro sheet only): `gloss` vinyl (clearcoat hotspot, a window streak, a lit top edge), `holo` foil (rainbow diffraction and glitter under the ink, brightest where the light falls: pink-gold on red, oil slick on black, pearl on white) or `chrome` foil (brushed silver, primer only). The 23 roundel, the black, the round white and the primer stack decals are foil; the rest are gloss. Ink printed on foil stays flat white or navy.
+- **Finish** (`finish` prop, intro sheet only), painted as cel: `gloss` vinyl (a hard highlight blob in a paler halo, two raked glint bars that slide with the light, a shade band on the far side, a lit top edge), `holo` foil (flat rainbow bands and glitter under the ink, stepping down in rings from where the light falls: pink-gold on red, oil slick on black, pearl on white) or `chrome` foil (brushed silver in hard bands, primer only). The 23 roundel, the black, the round white and the primer stack decals are foil; the rest are gloss. Ink printed on foil stays flat white or navy.
 - **Tones:** one of the six vinyl tones; white decals carry an inset navy outline (2px, scaling with the sheet).
 
 ### Buttons
@@ -255,7 +272,8 @@ A sheet masked off but not yet painted: a headline decal, a race-number decal, a
 ### Don't:
 - **Don't** use the orange/cobalt values from the pre-build direction doc, or navy with orange; the livery is navy, Castrol red and Castrol green.
 - **Don't** round the corners of vinyl; curves are reserved for true circles (roundel, bubble).
-- **Don't** add soft floating shadows to anything lying on the sheet; stickers get only their contact shadow.
+- **Don't** use blurred shadows, soft glows or smooth gradient ramps on drawn things; the cel steps in hard bands and casts hard shadows.
+- **Don't** put noise textures on drawn surfaces; noise is only for print grain (the car on the liner).
 - **Don't** give the liner, the cut lines or the car any sheen; they are printed matte.
 - **Don't** introduce a second display face or set display lettering in Hanken or mono.
 - **Don't** use mono as a decorative kicker above headings; it is print, not a label system.

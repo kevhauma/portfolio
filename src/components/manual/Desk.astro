@@ -10,7 +10,7 @@ interface Props { current?: string }
 const { current } = Astro.props;
 ---
 <section class="desk">
-  <div class="scene">
+  <div class="scene cast">
     <div class="book">
       <div class="block">
         <slot />
@@ -37,14 +37,15 @@ const { current } = Astro.props;
     <div class="pens" aria-hidden="true">
       <svg class="pen pen-ball" viewBox="0 0 20 320" width="20" height="320">
         <defs>
+          <!-- drawn as a cel: a dark rim, one hard highlight stripe, the body, then the shade side -->
           <linearGradient id="cyl" x1="0" x2="1">
-            <stop offset="0" stop-color="#000" stop-opacity=".45" />
-            <stop offset=".32" stop-color="#fff" stop-opacity=".32" />
-            <stop offset=".55" stop-color="#fff" stop-opacity="0" />
-            <stop offset="1" stop-color="#000" stop-opacity=".4" />
+            <stop offset=".14" stop-color="#000" stop-opacity=".3" /><stop offset=".14" stop-color="#fff" stop-opacity=".34" />
+            <stop offset=".27" stop-color="#fff" stop-opacity=".34" /><stop offset=".27" stop-color="#fff" stop-opacity="0" />
+            <stop offset=".66" stop-color="#fff" stop-opacity="0" /><stop offset=".66" stop-color="#000" stop-opacity=".38" />
           </linearGradient>
           <linearGradient id="steel" x1="0" x2="1">
-            <stop offset="0" stop-color="#6F757D" /><stop offset=".4" stop-color="#E9ECEF" /><stop offset="1" stop-color="#5F656D" />
+            <stop offset=".24" stop-color="#6F757D" /><stop offset=".24" stop-color="#E9ECEF" /><stop offset=".55" stop-color="#E9ECEF" />
+            <stop offset=".55" stop-color="#A3A9B0" /><stop offset=".8" stop-color="#A3A9B0" /><stop offset=".8" stop-color="#5F656D" />
           </linearGradient>
         </defs>
         <rect x="3" y="0" width="14" height="22" rx="6" fill="#13254F" />

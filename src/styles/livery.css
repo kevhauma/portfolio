@@ -33,6 +33,19 @@
   --focus: var(--green);
   --lift: rgb(7 18 41 / .32);
 
+  /* cel: the kit is drawn like the garage, an anime cel. A heavy ink line round every object, thicker on its shade
+     side, flat paint in hard bands, one painted highlight, and long hard shadows. The light is the low sun setting
+     on the left (the swoop's disc), so every shadow is thrown to the right along the rake: (L, L × tan). */
+  --cel-ink: #0A1330;
+  --cel-line: 3px;
+  /* how much heavier the line runs on the shade side, down and right */
+  --cel-weight: 1.5px;
+  --cel-shade: rgb(7 18 41 / .22);
+  --cel-hi: rgb(255 255 255 / .5);
+  --cel-ink-line: 0 0 0 var(--cel-line) var(--cel-ink), var(--cel-weight) var(--cel-weight) 0 var(--cel-line) var(--cel-ink);
+  /* the same weighted line round a clipped shape (clip-path cuts off box-shadow): hard drop shadows on its parent */
+  --cel-outline: drop-shadow(var(--cel-line) 0 0 var(--cel-ink)) drop-shadow(calc(var(--cel-line) * -1) 0 0 var(--cel-ink)) drop-shadow(0 var(--cel-line) 0 var(--cel-ink)) drop-shadow(0 calc(var(--cel-line) * -1) 0 var(--cel-ink)) drop-shadow(var(--cel-weight) var(--cel-weight) 0 var(--cel-ink));
+
   --display: 'Sakana', 'Hanken Grotesk Variable', sans-serif;
   --body: 'Hanken Grotesk Variable', system-ui, sans-serif;
   --mono: 'JetBrains Mono Variable', ui-monospace, monospace;
@@ -55,6 +68,7 @@
   --cut: rgb(247 248 250 / .45);
   --focus: var(--white);
   --lift: rgb(0 0 0 / .55);
+  --cel-shade: rgb(0 0 0 / .45);
   color-scheme: dark;
 }
 @media (prefers-color-scheme: dark) {
@@ -66,6 +80,7 @@
     --cut: rgb(247 248 250 / .45);
     --focus: var(--white);
     --lift: rgb(0 0 0 / .55);
+    --cel-shade: rgb(0 0 0 / .45);
     color-scheme: dark;
   }
 }
@@ -88,11 +103,11 @@ img, svg { display: block; }
 /* ---------- display switches ---------- */
 .controls { position: fixed; top: 16px; right: 16px; z-index: 40; display: flex; gap: 4px; view-transition-name: controls; }
 .sw { appearance: none; border: 0; background: none; font: 800 .75rem/1 var(--display); letter-spacing: .07em; text-transform: uppercase; padding: 0 18px; min-height: 44px; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; position: relative; isolation: isolate; color: var(--ink); }
-.sw::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ground); transform: skewX(calc(var(--rake) * -1)); box-shadow: 0 1px 2px rgb(7 18 41 / .14), 0 8px 20px -8px var(--lift); transition: transform .25s var(--ease), background-color .2s; }
-.sw:hover::before { transform: skewX(calc(var(--rake) * -1)) translateY(-2px); }
-.sw:active::before { transform: skewX(calc(var(--rake) * -1)) translateY(1px); }
-.sw-led { width: 20px; height: 8px; transform: skewX(calc(var(--rake) * -1)); background: var(--primer); transition: background-color .2s; }
-.sw[aria-pressed="true"] .sw-led { background: var(--red); box-shadow: 0 0 0 1.5px var(--ink); }
+.sw::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--ground); transform: skewX(calc(var(--rake) * -1)); box-shadow: var(--cel-ink-line), 8px 2px 0 var(--cel-line) var(--cel-shade); transition: transform .25s var(--ease), box-shadow .25s var(--ease), background-color .2s; }
+.sw:hover::before { transform: skewX(calc(var(--rake) * -1)) translateY(-2px); box-shadow: var(--cel-ink-line), 12px 3px 0 var(--cel-line) var(--cel-shade); }
+.sw:active::before { transform: skewX(calc(var(--rake) * -1)) translateY(1px); box-shadow: var(--cel-ink-line), 4px 1px 0 var(--cel-line) var(--cel-shade); }
+.sw-led { width: 20px; height: 8px; transform: skewX(calc(var(--rake) * -1)); background: var(--primer); box-shadow: 0 0 0 1.5px var(--cel-ink); transition: background-color .2s; }
+.sw[aria-pressed="true"] .sw-led { background: linear-gradient(var(--red) 0 60%, #B00015 60%); box-shadow: 0 0 0 1.5px var(--cel-ink); }
 @media (max-width: 640px) {
   .controls { top: 12px; right: 12px; gap: 2px; }
   .sw { padding: 0 12px; font-size: .6875rem; gap: 8px; letter-spacing: .05em; }
@@ -101,12 +116,13 @@ img, svg { display: block; }
 }
 
 /* ---------- number bubble ---------- */
-.bubble { position: fixed; left: 16px; bottom: 16px; z-index: 40; width: 72px; height: 72px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: var(--navy); color: var(--white); display: grid; place-items: center; box-shadow: 0 2px 4px rgb(7 18 41 / .22), 0 14px 30px -10px var(--lift); transition: transform .3s var(--ease), --p .9s var(--ease); view-transition-name: bubble; }
+.bubble { position: fixed; left: 16px; bottom: 16px; z-index: 40; width: 72px; height: 72px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: var(--navy); color: var(--white); display: grid; place-items: center; box-shadow: var(--cel-ink-line), 10px 2.5px 0 var(--cel-line) var(--cel-shade); transition: transform .3s var(--ease), --p .9s var(--ease); view-transition-name: bubble; }
 .bubble:hover { transform: scale(1.06); }
 .bubble:active { transform: scale(.97); }
 /* the ring is a lap counter: it fills as sheets get visited this session */
 .bubble::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--red) calc(var(--p) * 1turn), rgb(185 190 198 / .38) 0); -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 6px), #000 calc(100% - 5.5px)); mask: radial-gradient(farthest-side, #0000 calc(100% - 6px), #000 calc(100% - 5.5px)); }
-.bubble-num { font: 900 italic 1.625rem/1 var(--display); letter-spacing: -.02em; translate: calc(var(--lean) * -1) 0; font-variant-numeric: tabular-nums; }
+.bubble::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle at 36% 30%, transparent 0 62%, rgb(7 18 41 / .32) 62%); }
+.bubble-num { position: relative; z-index: 1; font: 900 italic 1.625rem/1 var(--display); letter-spacing: -.02em; translate: calc(var(--lean) * -1) 0; font-variant-numeric: tabular-nums; }
 .limiter .bubble-num { font-size: 1.125rem; letter-spacing: .02em; }
 .limiter .bubble::before { background: repeating-conic-gradient(var(--red) 0 18deg, var(--primer) 0 36deg); }
 :root[data-theme="night"] .bubble { background: var(--white); color: var(--navy); }
@@ -122,7 +138,9 @@ img, svg { display: block; }
 .fan.portrait .fan-list a { transform-origin: 100% 100%; transform: translateX(105%); }
 .fan.open .fan-list a { transform: none; }
 .fan.open .fan-list li.current a { transform: translate(var(--lx, 0px), var(--ly, 0px)); }
-.fan-list li.current { filter: drop-shadow(0 10px 18px rgb(7 18 41 / .4)); z-index: 2; }
+.fan-list li { filter: var(--cel-outline); }
+.fan-list li.current { filter: var(--cel-outline) drop-shadow(16px 4px 0 rgb(7 18 41 / .45)); z-index: 2; }
+.fan-n { -webkit-text-stroke: .08em var(--cel-ink); paint-order: stroke fill; text-shadow: .05em .03em 0 var(--cel-ink); }
 .fan-list a:focus-visible { outline: none; }
 .fan-list a:focus-visible .fan-t, .fan-list a:hover .fan-t { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
 .fan-list a:focus-visible .fan-n { text-decoration: underline; text-decoration-thickness: 4px; text-underline-offset: 8px; }
@@ -140,9 +158,23 @@ img, svg { display: block; }
 .fan-list li.visited .lap { display: block; }
 .fan.portrait .fan-n { font-size: 2.75rem; }
 .fan.portrait .fan-t { font-size: 1.0625rem; }
-.fan-close { position: absolute; left: 16px; bottom: 16px; z-index: 5; width: 72px; height: 72px; border-radius: 50%; border: 0; background: var(--white); color: var(--navy); cursor: pointer; display: grid; place-items: center; box-shadow: 0 14px 30px -10px rgb(7 18 41 / .5); }
+.fan-close { position: absolute; left: 16px; bottom: 16px; z-index: 5; width: 72px; height: 72px; border-radius: 50%; border: 0; background: var(--white); color: var(--navy); cursor: pointer; display: grid; place-items: center; box-shadow: var(--cel-ink-line), 10px 2.5px 0 var(--cel-line) rgb(7 18 41 / .45); }
 .fan-close .icon { width: 26px; height: 26px; }
 .fan.portrait .fan-close { left: auto; right: 16px; width: 64px; height: 64px; }
+
+/* ---------- the long shadow: what a sheet's objects throw on their ground ---------- */
+/* The low sun on the left throws each object's shadow to the right along the rake. The shadow is the object swept
+   along (L, L × tan): one hexagon drawn behind it (a pill for a round one), flat and translucent so the ground's print
+   still reads through. An object sets --len (L), and may set --cast-c (its tint), --foot (a stand under it that throws
+   no shadow of its own) and --cast-shape (its own outline, swept). */
+:is([data-finish], .cast)::after {
+  content: ""; position: absolute; left: 0; top: 0; z-index: -1; pointer-events: none;
+  width: calc(100% + var(--len)); height: calc(100% - var(--foot, 0px) + var(--len) * var(--tan));
+  background: var(--cast-c, var(--cel-shade));
+  clip-path: var(--cast-shape, polygon(0 0, calc(100% - var(--len)) 0, 100% calc(var(--len) * var(--tan)), 100% 100%, var(--len) 100%, 0 calc(100% - var(--len) * var(--tan))));
+}
+/* a round object sweeps a pill: centred on it, turned to the rake, and cut at its centre line so only the trailing half shows */
+.round[data-finish]::after { left: calc(var(--len) * -1.031); width: calc(100% + var(--len) * 2.062); height: 100%; border-radius: 999px; clip-path: inset(0 0 0 50%); transform: rotate(var(--rake)); }
 
 /* ---------- pit limiter (recruiter mode) ---------- */
 #pit { display: none; }
@@ -175,7 +207,7 @@ img, svg { display: block; }
   from { clip-path: polygon(0 0, 0 0, -25vh 100%, -25vh 100%); }
   to { clip-path: polygon(0 0, calc(100vw + 25vh) 0, 100vw 100%, -25vh 100%); }
 }
-.wipe { position: fixed; top: 0; bottom: 0; left: 0; width: 34vh; z-index: 70; pointer-events: none; display: none; transform: skewX(calc(var(--rake) * -1)); background: linear-gradient(90deg, var(--green) 0 16%, transparent 16% 26%, var(--navy) 26% 33%, transparent 33% 41%, var(--red) 41% 100%); view-transition-name: wipe; }
+.wipe { position: fixed; top: 0; bottom: 0; left: 0; width: 34vh; z-index: 70; pointer-events: none; display: none; transform: skewX(calc(var(--rake) * -1)); background: linear-gradient(90deg, var(--cel-ink) 0 1.5%, var(--green) 1.5% 16%, var(--cel-ink) 16% 17.5%, transparent 17.5% 26%, var(--cel-ink) 26% 27.5%, var(--navy) 27.5% 33%, var(--cel-ink) 33% 34.5%, transparent 34.5% 41%, var(--cel-ink) 41% 42.5%, var(--red) 42.5% 100%); view-transition-name: wipe; }
 .vt-in .wipe { display: block; }
 ::view-transition-group(wipe) { animation: none; }
 ::view-transition-new(wipe) { animation: wipe-stripes .52s var(--ease) both; }
@@ -198,7 +230,7 @@ html.raw { background: #fff; color-scheme: light; }
 html.raw .bubble { position: fixed !important; right: 8px; bottom: 8px; }
 html.raw .controls { display: flex !important; gap: 4px; justify-content: flex-end; margin: 8px; }
 .tape { position: fixed; inset: 0; z-index: 80; pointer-events: none; view-transition-name: tape; }
-.tape i { position: absolute; left: -10vw; width: 120vw; height: clamp(22px, 3.4vh, 36px); background: var(--tape); transform-origin: 0 50%; transform: rotate(calc(var(--rake) * -1)) scaleX(0); box-shadow: 0 1px 2px rgb(60 48 20 / .25); }
+.tape i { position: absolute; left: -10vw; width: 120vw; height: clamp(22px, 3.4vh, 36px); background: var(--tape); transform-origin: 0 50%; transform: rotate(calc(var(--rake) * -1)) scaleX(0); box-shadow: 0 0 0 1.5px rgb(60 48 20 / .55), 0 4px 0 rgb(60 48 20 / .22); }
 .tape.snap i { transition: transform .26s cubic-bezier(.3, .9, .3, 1) var(--d); transform: rotate(calc(var(--rake) * -1)) scaleX(1); }
 .tape.off i { transition: transform .34s cubic-bezier(.6, 0, .9, .4) var(--d), opacity .34s linear var(--d); transform: rotate(calc(var(--rake) * -1)) translate(18vw, -6vh) scaleX(1); opacity: 0; }
 ::view-transition-group(tape) { animation: none; }

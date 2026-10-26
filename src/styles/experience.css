@@ -1,12 +1,13 @@
 /* 02 Experience: the pit wall. A CRT timing monitor in a carbon housing sits on the pit-wall ledge,
    the catch fence and the track behind it, the sector list painted on the concrete below.
-   The race history chart: every sector plotted against the laps (a lap is a year on the job). */
+   The race history chart: every sector plotted against the laps (a lap is a year on the job).
+   Drawn as a cel, like the garage: ink lines, flat paint in hard bands, hard shadows. */
 
 .pw {
   /* day: overcast daylight through the fence */
   --sky: #D5DCE3; --sky-2: #AEB8C2; --track: #6F7780; --track-2: #858C95; --far: rgb(120 128 138 / .55);
   --mesh: rgb(58 64 72 / .34); --post: #6A717A; --post-hi: rgb(255 255 255 / .35); --cable: rgb(52 58 66 / .5);
-  --wall: #D3D2CC; --wall-dot: rgb(40 36 30 / .07); --wall-hi: rgb(255 255 255 / .28); --joint: rgb(40 36 30 / .1);
+  --wall: #D3D2CC; --joint: rgb(40 36 30 / .12);
   --w-ink: #1E2227; --w-ink-2: #4A505A;
   --w-focus: var(--green);
   --amber: #FFD23F;
@@ -18,7 +19,7 @@
 :root[data-theme="night"] .pw {
   --sky: #060A13; --sky-2: #0F1828; --track: #1A1E25; --track-2: #252A32; --far: rgb(255 240 210 / .08);
   --mesh: rgb(190 200 214 / .2); --post: #3A4049; --post-hi: rgb(255 255 255 / .14); --cable: rgb(190 200 214 / .3);
-  --wall: #2A2D32; --wall-dot: rgb(255 255 255 / .04); --wall-hi: rgb(0 0 0 / .2); --joint: rgb(0 0 0 / .3);
+  --wall: #2A2D32; --joint: rgb(0 0 0 / .3);
   --w-ink: #ECEFF3; --w-ink-2: #AEB5BF;
   --w-focus: var(--white);
 }
@@ -26,7 +27,7 @@
   :root:not([data-theme="day"]) .pw {
     --sky: #060A13; --sky-2: #0F1828; --track: #1A1E25; --track-2: #252A32; --far: rgb(255 240 210 / .08);
     --mesh: rgb(190 200 214 / .2); --post: #3A4049; --post-hi: rgb(255 255 255 / .14); --cable: rgb(190 200 214 / .3);
-    --wall: #2A2D32; --wall-dot: rgb(255 255 255 / .04); --wall-hi: rgb(0 0 0 / .2); --joint: rgb(0 0 0 / .3);
+    --wall: #2A2D32; --joint: rgb(0 0 0 / .3);
     --w-ink: #ECEFF3; --w-ink-2: #AEB5BF;
     --w-focus: var(--white);
   }
@@ -34,52 +35,59 @@
 
 /* ---------- the stage: track and catch fence behind the monitor ---------- */
 .pw-stage { position: relative; isolation: isolate; padding: clamp(104px, 10vw, 152px) 5vw 0; }
-/* beyond the fence: sky, the far side of the track, its kerb, the asphalt; floodlights at night */
+/* beyond the fence: sky in three flat bands, the far side of the track, its kerb, the asphalt; floodlights at night */
 .pw-stage::before {
   content: ""; position: absolute; inset: 0; z-index: -2;
   background:
     linear-gradient(to bottom, transparent 63%, var(--far) 63% 63.4%, transparent 63.4%),
     linear-gradient(to bottom, transparent 66%, rgb(0 0 0 / .1) 66% 66.6%, transparent 66.6%),
     repeating-linear-gradient(90deg, #C23A33 0 46px, #E9E9E6 46px 92px) 0 66.6% / 100% 1.1% no-repeat,
-    linear-gradient(to bottom, var(--sky) 0, var(--sky-2) 58%, var(--track-2) 58% 60%, var(--track) 60% 100%);
-  filter: blur(1.5px) saturate(.7);
+    linear-gradient(to bottom, var(--sky) 0 30%, color-mix(in srgb, var(--sky), var(--sky-2)) 30% 46%, var(--sky-2) 46% 58%, var(--track-2) 58% 60%, var(--track) 60% 100%);
+  filter: saturate(.7);
   transition: background-color .3s;
 }
 :root[data-theme="night"] .pw-stage::after { --glow: 1; }
-/* the catch fence: chain-link mesh, a post every few metres, two tension cables */
+/* the catch fence: chain-link mesh, an inked post every few metres, two tension cables; the floodlight pools step down in two rings */
 .pw-stage::after {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
-    radial-gradient(ellipse 30% 26% at 12% 0, rgb(255 244 214 / calc(var(--glow, 0) * .22)), transparent 70%),
-    radial-gradient(ellipse 30% 26% at 88% 0, rgb(255 244 214 / calc(var(--glow, 0) * .22)), transparent 70%),
+    radial-gradient(ellipse 30% 26% at 12% 0, rgb(255 244 214 / calc(var(--glow, 0) * .2)) 0 42%, rgb(255 244 214 / calc(var(--glow, 0) * .09)) 42% 70%, transparent 70%),
+    radial-gradient(ellipse 30% 26% at 88% 0, rgb(255 244 214 / calc(var(--glow, 0) * .2)) 0 42%, rgb(255 244 214 / calc(var(--glow, 0) * .09)) 42% 70%, transparent 70%),
     linear-gradient(to bottom, transparent 18%, var(--cable) 18% calc(18% + 2px), transparent calc(18% + 2px)),
     linear-gradient(to bottom, transparent 52%, var(--cable) 52% calc(52% + 2px), transparent calc(52% + 2px)),
-    repeating-linear-gradient(90deg, transparent 0 296px, var(--post) 296px 306px, var(--post-hi) 306px 308px, transparent 308px 312px),
+    repeating-linear-gradient(90deg, transparent 0 294px, var(--cel-ink) 294px 296px, var(--post-hi) 296px 299px, var(--post) 299px 306px, var(--cel-ink) 306px 308px, transparent 308px 312px),
     repeating-linear-gradient(62deg, var(--mesh) 0 1px, transparent 1px 13px),
     repeating-linear-gradient(-62deg, var(--mesh) 0 1px, transparent 1px 13px);
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="day"]) .pw-stage::after { --glow: 1; } }
 
 /* ---------- the monitor: a CRT in a carbon housing, on a pedestal ---------- */
-.pw-unit { --ch: clamp(16px, 2.2vw, 32px); position: relative; max-width: 76rem; margin: 0 auto; padding-bottom: 18px; filter: drop-shadow(0 2px 2px rgb(7 18 41 / .35)) drop-shadow(0 28px 30px rgb(7 18 41 / .4)); }
-.pw-unit::after { content: ""; position: absolute; left: 50%; bottom: 0; width: min(32%, 260px); height: 18px; translate: -50% 0; background: linear-gradient(to bottom, #1B1D21, #2E3238 40%, #15171A); clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%); }
+/* the monitor throws its long shadow across the fence: its chamfered outline swept along the rake (the pedestal throws none) */
+.pw-unit {
+  --ch: clamp(16px, 2.2vw, 32px); --foot: 18px; --len: clamp(28px, 4vw, 56px); --cast-c: rgb(7 18 41 / .3);
+  --cast-shape: polygon(var(--ch) 0, calc(100% - var(--len) - var(--ch)) 0, calc(100% - var(--ch)) calc(var(--len) * var(--tan)), 100% calc(var(--ch) + var(--len) * var(--tan)), 100% calc(100% - var(--ch)), calc(100% - var(--ch)) 100%, calc(var(--ch) + var(--len)) 100%, 0 calc(100% - var(--ch) - var(--len) * var(--tan)), 0 var(--ch));
+  position: relative; max-width: 76rem; margin: 0 auto;
+}
+.pw-body { position: relative; padding-bottom: var(--foot); filter: var(--cel-outline); }
+.pw-body::after { content: ""; position: absolute; left: 50%; bottom: 0; width: min(32%, 260px); height: var(--foot); translate: -50% 0; background: linear-gradient(to bottom, #2E3238 0 40%, #1B1D21 40% 76%, #111316 76%); clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%); }
 .pw-frame {
   position: relative; padding: clamp(24px, 3vw, 40px) clamp(14px, 2.6vw, 40px) clamp(18px, 2.2vw, 28px);
   clip-path: polygon(var(--ch) 0, calc(100% - var(--ch)) 0, 100% var(--ch), 100% calc(100% - var(--ch)), calc(100% - var(--ch)) 100%, var(--ch) 100%, 0 calc(100% - var(--ch)), 0 var(--ch));
+  /* flat carbon in three bands, lit at the top left, and one painted glint */
   background:
-    linear-gradient(165deg, rgb(255 255 255 / .09), transparent 35%, transparent 70%, rgb(0 0 0 / .3)),
-    repeating-linear-gradient(45deg, rgb(255 255 255 / .025) 0 1px, transparent 1px 3px),
-    conic-gradient(#1B1E23 0 25%, #0E1013 0 50%, #1B1E23 0 75%, #0E1013 0) 0 0 / 10px 10px;
+    linear-gradient(118deg, transparent 0 7%, rgb(255 255 255 / .07) 7% 10%, transparent 10%),
+    linear-gradient(165deg, rgb(255 255 255 / .07) 0 24%, transparent 24% 68%, rgb(0 0 0 / .32) 68%),
+    #181B20;
   color: #E9ECF0;
 }
-.pw-bolt { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 38% 34%, #B8BEC6, #5B616A 58%, #2C2F35); box-shadow: 0 1px 2px rgb(0 0 0 / .7); }
+.pw-bolt { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 36% 32%, #C9CED5 0 34%, #6B717A 34% 64%, #3A3E45 64%); box-shadow: 0 0 0 1.5px var(--cel-ink), 1.5px 2px 0 1.5px rgb(0 0 0 / .45); }
 .pw-bolt::after { content: ""; position: absolute; inset: 4px; background: #24272C; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%); }
 .pw-bolt.b1 { top: 10px; left: calc(var(--ch) + 8px); }
 .pw-bolt.b2 { top: 10px; right: calc(var(--ch) + 8px); }
 .pw-bolt.b3 { bottom: 10px; left: calc(var(--ch) + 8px); }
 .pw-bolt.b4 { bottom: 10px; right: calc(var(--ch) + 8px); }
 .pw-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 18px; }
-.pw-top h1 { margin: 0; font: 800 italic clamp(1.75rem, 4.2vw, 3.25rem)/1 'Archivo Variable', var(--body); font-stretch: 125%; letter-spacing: .01em; text-transform: uppercase; color: #F4F6F8; }
+.pw-top h1 { margin: 0; font: 800 italic clamp(1.75rem, 4.2vw, 3.25rem)/1 'Archivo Variable', var(--body); font-stretch: 125%; letter-spacing: .01em; text-transform: uppercase; color: #F4F6F8; -webkit-text-stroke: .12em #000; paint-order: stroke fill; text-shadow: .07em .04em 0 #000; }
 /* the one nod to the livery: a red and a green pinstripe under the name */
 .pw-top h1::after { content: ""; display: block; width: 3.2em; height: .12em; margin-top: .16em; background: linear-gradient(90deg, var(--red) 0 60%, transparent 60% 68%, var(--green) 68%); transform: skewX(calc(var(--rake) * -1)); }
 .pw-print { margin: 0; font: 600 .6875rem/1.4 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #A3ABB5; }
@@ -90,13 +98,14 @@
   position: relative; overflow: hidden; margin: clamp(6px, .8vw, 10px);
   padding: clamp(16px, 2.6vw, 34px) clamp(14px, 2.6vw, 38px) clamp(14px, 2vw, 24px);
   border-radius: 26px / 34px;
-  background: radial-gradient(ellipse 90% 80% at 50% 45%, #0D1526, #060A12 70%, #020408);
+  /* the tube's curve in stepped rings, darkest at the rim */
+  background: radial-gradient(ellipse 90% 80% at 50% 45%, #0D1526 0 54%, #090F1C 54% 78%, #04070D 78%);
   color: var(--fg); font: 500 .8125rem/1.35 var(--mono);
-  text-shadow: 0 0 .45em rgb(232 239 252 / .28);
-  box-shadow: 0 0 0 clamp(6px, .8vw, 10px) #07080A, 0 0 0 calc(clamp(6px, .8vw, 10px) + 1px) #34383F, inset 0 0 0 2px #000, inset 0 0 80px rgb(0 0 0 / .85);
+  box-shadow: 0 0 0 clamp(6px, .8vw, 10px) #07080A, 0 0 0 calc(clamp(6px, .8vw, 10px) + 2px) #34383F, inset 0 0 0 2px #000, inset 0 0 0 12px rgb(0 0 0 / .32);
 }
 .pw-screen::after { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; background: repeating-linear-gradient(to bottom, rgb(0 0 0 / .27) 0 1px, transparent 1px 3px); }
-.pw-screen::before { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; background: radial-gradient(ellipse 70% 42% at 26% 0%, rgb(255 255 255 / .08), transparent 70%); }
+/* the glass: two raked reflection bars, painted flat, the way a cel draws a screen */
+.pw-screen::before { content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; background: linear-gradient(118deg, transparent 0 9%, rgb(255 255 255 / .055) 9% 21%, transparent 21% 24%, rgb(255 255 255 / .04) 24% 27%, transparent 27%); }
 .pw-status { display: flex; flex-wrap: wrap; gap: 6px 24px; margin: 0 0 18px; padding-bottom: 14px; border-bottom: 1px solid rgb(147 164 194 / .3); letter-spacing: .06em; text-transform: uppercase; color: var(--dim); }
 .pw-status b { color: var(--fg); font-weight: 800; }
 .pw-status span:first-child { color: var(--yel); font-weight: 800; }
@@ -125,10 +134,11 @@
 .pw-p { display: block; color: var(--dim); font-size: .75rem; font-weight: 400; letter-spacing: 0; text-transform: none; }
 .pw-a:is(:hover, :focus-visible) .pw-p { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
 .pw-mo { color: var(--dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.pw-bar { grid-column: var(--a) / var(--b); grid-row: 1; height: 10px; background: var(--fg); box-shadow: 0 0 10px rgb(232 239 252 / .55); }
-.pw-run .pw-bar { background: var(--grn); box-shadow: 0 0 12px rgb(60 217 131 / .7); }
+/* the phosphor glow as a hard halo, one step out from the bar */
+.pw-bar { grid-column: var(--a) / var(--b); grid-row: 1; height: 10px; background: var(--fg); box-shadow: 0 0 0 3px rgb(232 239 252 / .2); }
+.pw-run .pw-bar { background: var(--grn); box-shadow: 0 0 0 3px rgb(60 217 131 / .3); }
 .pw-run :is(.pw-n, .pw-mo) { color: var(--grn); }
-.pw-best .pw-bar { background: var(--pur); box-shadow: 0 0 12px rgb(183 132 255 / .7); }
+.pw-best .pw-bar { background: var(--pur); box-shadow: 0 0 0 3px rgb(183 132 255 / .3); }
 .pw-best .pw-mo { color: var(--pur); }
 .pw-qr .pw-bar { background: transparent; box-shadow: inset 0 0 0 2px var(--dim); }
 .pw-legend { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 18px 0 0; padding-top: 12px; border-top: 1px solid rgb(147 164 194 / .3); color: var(--dim); font-size: .6875rem; letter-spacing: .08em; text-transform: uppercase; }
@@ -139,25 +149,26 @@
 .pw-legend i.yf { background: repeating-linear-gradient(104deg, var(--yel) 0 2px, transparent 2px 5px); }
 
 /* ---------- the ledge the monitor stands on ---------- */
-.pw-ledge { position: relative; height: 24px; margin: 0 -5vw; background: repeating-linear-gradient(90deg, rgb(255 255 255 / .14) 0 1px, transparent 1px 3px), linear-gradient(to bottom, #15171A 0 3px, #E3E7EB 3px, #B6BCC3 45%, #868D95); box-shadow: 0 12px 18px -8px rgb(0 0 0 / .45); }
+.pw-ledge { position: relative; z-index: 1; height: 24px; margin: 0 -5vw; background: linear-gradient(to bottom, var(--cel-ink) 0 3px, #E3E7EB 3px 38%, #B6BCC3 38% 72%, #868D95 72% calc(100% - 2px), var(--cel-ink) calc(100% - 2px)); box-shadow: 0 9px 0 rgb(0 0 0 / .24); }
 
 /* ---------- the wall: a perforated steel rack bolted to the concrete, every sector a sheet slid into its own slit ---------- */
 .pw-wall {
+  isolation: isolate;
   padding: clamp(48px, 6vw, 88px) 5vw clamp(48px, 5vw, 72px);
+  /* flat concrete: the shadow under the ledge as one hard band, and the expansion joints */
   background:
-    linear-gradient(to bottom, rgb(0 0 0 / .18), transparent 40px),
-    repeating-linear-gradient(90deg, transparent 0 calc(25% - 1px), var(--joint) calc(25% - 1px) 25%),
-    radial-gradient(var(--wall-dot) .8px, transparent 1.2px) 0 0 / 6px 6px,
-    radial-gradient(var(--wall-hi) .8px, transparent 1.2px) 3px 2px / 9px 9px,
+    linear-gradient(to bottom, rgb(0 0 0 / .14) 0 32px, transparent 32px),
+    repeating-linear-gradient(90deg, transparent 0 calc(25% - 2px), var(--joint) calc(25% - 2px) 25%),
     var(--wall);
   color: var(--w-ink);
 }
 .pw-rack {
-  --screw: radial-gradient(circle at 38% 34%, #C3C8CF, #5B616A 52%, #2C2F35 66%, transparent 70%);
+  --screw: radial-gradient(circle at 38% 34%, #C3C8CF 0 26%, #6B717A 26% 50%, var(--cel-ink) 50% 66%, transparent 68%);
+  --len: clamp(24px, 3.2vw, 44px); --cast-c: rgb(0 0 0 / .24);
   position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 34px clamp(18px, 2.4vw, 36px);
   max-width: 1312px; margin: 0 auto; padding: 52px clamp(24px, 3.2vw, 48px) 46px; list-style: none;
-  background: radial-gradient(circle, rgb(0 0 0 / .55) 1.5px, transparent 2px) 0 0 / 10px 10px, linear-gradient(165deg, #2A2E35, #14161A);
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / .35), inset 0 1px 0 rgb(255 255 255 / .07), 0 2px 3px rgb(0 0 0 / .35), 0 26px 34px -16px rgb(0 0 0 / .6);
+  background: radial-gradient(circle, rgb(0 0 0 / .55) 1.5px, transparent 2px) 0 0 / 10px 10px, linear-gradient(165deg, #2E333A 0 36%, #22262C 36% 74%, #181B20 74%);
+  box-shadow: var(--cel-ink-line), inset 0 2px 0 rgb(255 255 255 / .09);
 }
 /* the four bolts holding it to the wall */
 .pw-rack::before { content: ""; position: absolute; inset: 12px; pointer-events: none; background: var(--screw) 0 0 / 12px 12px no-repeat, var(--screw) 100% 0 / 12px 12px no-repeat, var(--screw) 0 100% / 12px 12px no-repeat, var(--screw) 100% 100% / 12px 12px no-repeat; }
@@ -167,16 +178,17 @@
 .pw-slit:nth-child(even) { --tilt: .8deg; }
 .pw-slit:nth-child(3n) { --tilt: -.4deg; }
 /* the slit: a cut through the steel, its lower lip catching the light */
-.pw-slit::after { content: ""; position: absolute; z-index: 2; left: -12px; right: -12px; bottom: -5px; height: 10px; border-radius: 5px; background: linear-gradient(to bottom, #000 0 55%, #0B0C0F); box-shadow: inset 0 3px 3px rgb(0 0 0 / .95), 0 1.5px 0 rgb(255 255 255 / .2), 0 -1px 0 rgb(0 0 0 / .5); pointer-events: none; }
+.pw-slit::after { content: ""; position: absolute; z-index: 2; left: -12px; right: -12px; bottom: -5px; height: 10px; border-radius: 5px; background: #000; box-shadow: 0 2px 0 rgb(255 255 255 / .22); pointer-events: none; }
 /* everything below the slit is behind the steel, including the end of the description */
 .pw-pull { position: relative; flex: 1; display: flex; color: inherit; text-decoration: none; clip-path: inset(-240px -32px 0 -32px); }
-.pw-pull::after { content: ""; position: absolute; inset: auto 0 0; height: 22px; background: linear-gradient(to bottom, transparent, rgb(7 18 41 / .38)); pointer-events: none; }
+.pw-pull::after { content: ""; position: absolute; inset: auto 0 0; height: 22px; background: linear-gradient(to bottom, transparent 0 45%, rgb(7 18 41 / .3) 45%); pointer-events: none; }
 .pw-sheet {
   --hide: 76px;
   flex: 1; margin-bottom: calc(-28px - var(--hide)); padding: 14px 15px 42px;
   background: var(--white); color: var(--navy);
-  box-shadow: inset 0 4px 0 var(--tone);
-  filter: drop-shadow(0 2px 3px rgb(0 0 0 / .4));
+  /* the paper's ink line, and its shadow thrown along the rake onto the steel */
+  --cel-paper: var(--cel-ink-line), 12px 3px 0 var(--cel-line) rgb(0 0 0 / .4);
+  box-shadow: inset 0 4px 0 var(--tone), var(--cel-paper);
   rotate: calc(var(--tilt) * 2); transform-origin: 50% calc(100% - 28px - var(--hide));
   transition: translate .35s var(--ease), rotate .35s var(--ease);
 }
@@ -193,9 +205,9 @@ a.pw-pull:is(:hover, :focus-visible) h3 { text-decoration: underline 2px var(--r
 /* the tones match the monitor: purple for the longest stint, green on track, an outline for qualifying, yellow for the flag */
 .pw-slit.t-best { --tone: #7B3FD1; }
 .pw-slit.t-run { --tone: var(--green); }
-.t-q .pw-sheet { box-shadow: none; outline: 1.5px dashed rgb(19 37 79 / .45); outline-offset: -6px; }
+.t-q .pw-sheet { box-shadow: var(--cel-paper); outline: 1.5px dashed rgb(19 37 79 / .45); outline-offset: -6px; }
 .t-q .pw-sh-tag { background: transparent; color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--navy); }
-.t-yf .pw-sheet { background: #FFD23F; color: #16171A; box-shadow: none; }
+.t-yf .pw-sheet { background: #FFD23F; color: #16171A; box-shadow: var(--cel-paper); }
 .t-yf .pw-sh-tag { min-width: 0; width: 2.1em; height: 1.2em; background: repeating-linear-gradient(104deg, #16171A 0 2px, transparent 2px 5px); }
 /* no hover to pull with: the sheet sits high enough to read in full */
 @media (hover: none) { .pw-sheet { --hide: 0px; } }
@@ -206,8 +218,7 @@ a.pw-pull:is(:hover, :focus-visible) h3 { text-decoration: underline 2px var(--r
 }
 @media (max-width: 760px) {
   .pw-stage { padding: 84px 10px 0; }
-  .pw-unit { --ch: 14px; padding-bottom: 12px; }
-  .pw-unit::after { height: 12px; }
+  .pw-unit { --ch: 14px; --foot: 12px; }
   .pw-frame { padding: 28px 8px 20px; }
   .pw-top { padding: 0 6px; }
   .pw-screen { font-size: .75rem; padding: 16px 12px 14px; border-radius: 16px / 22px; }
@@ -231,24 +242,22 @@ a.pw-pull:is(:hover, :focus-visible) h3 { text-decoration: underline 2px var(--r
 .pl {
   --asphalt: #4A4E54; --kerb: #B9B7AF; --kerb-hi: #D6D4CC; --rubber: rgb(16 17 20 / .3); --paint: #F1F2EE; --foot: #DADDE1;
   --fast: 196px; --dash: 150px; --gut: max(5vw, (100% - 1312px) / 2);
-  --wear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.09 .3' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -8 0 0 0 6.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E") 0 0 / 160px 160px;
   position: relative; isolation: isolate; overflow: hidden;
   padding-top: var(--fast);
+  /* flat asphalt, drawn: the kerb in two bands with its hard shadow, the rubbered line where the tyres run */
   background:
-    linear-gradient(to bottom, var(--kerb-hi) 0 2px, var(--kerb) 2px 16px, rgb(0 0 0 / .32) 16px, transparent 26px),
-    linear-gradient(to bottom, transparent calc(var(--dash) - 86px), var(--rubber) calc(var(--dash) - 58px) calc(var(--dash) - 36px), transparent calc(var(--dash) - 12px)),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='1' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 4.5 0 0 0 -3.05'/%3E%3C/filter%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='1' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4.5 0 0 0 -2.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='.5'/%3E%3Crect width='100%25' height='100%25' filter='url(%23b)' opacity='.6'/%3E%3C/svg%3E") 0 0 / 180px 180px,
+    linear-gradient(to bottom, var(--cel-ink) 0 2px, var(--kerb-hi) 2px 6px, var(--kerb) 6px 16px, var(--cel-ink) 16px 18px, rgb(0 0 0 / .3) 18px 28px, transparent 28px),
+    linear-gradient(to bottom, transparent calc(var(--dash) - 64px), var(--rubber) calc(var(--dash) - 64px) calc(var(--dash) - 32px), transparent calc(var(--dash) - 32px)),
     var(--asphalt);
   color: var(--foot);
   transition: background-color .3s;
 }
-/* the lane lines: solid along the wall, dashed between the fast lane and the working lane; worn where the tyres run */
+/* the lane lines: solid along the wall, dashed between the fast lane and the working lane; crisp flat paint */
 .pl::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background:
     linear-gradient(to bottom, transparent 32px, var(--paint) 32px 38px, transparent 38px),
     repeating-linear-gradient(90deg, var(--paint) 0 56px, transparent 56px 96px) 0 var(--dash) / 100% 5px no-repeat;
-  -webkit-mask: var(--wear); mask: var(--wear);
 }
 :root[data-theme="night"] .pl { --asphalt: #212429; --kerb: #44474C; --kerb-hi: #55585D; --rubber: rgb(0 0 0 / .35); --foot: #C4C9D1; }
 @media (prefers-color-scheme: dark) {
@@ -256,7 +265,7 @@ a.pw-pull:is(:hover, :focus-visible) h3 { text-decoration: underline 2px var(--r
 }
 
 /* painted in the working lane: the words, the speed limit and the direction of travel */
-.pl-paint { display: flex; align-items: center; gap: clamp(20px, 3.5vw, 56px); padding: 0 var(--gut); color: var(--paint); -webkit-mask: var(--wear); mask: var(--wear); }
+.pl-paint { display: flex; align-items: center; gap: clamp(20px, 3.5vw, 56px); padding: 0 var(--gut); color: var(--paint); }
 .pl-word { font: 800 clamp(3.25rem, 8vw, 6rem)/.8 'Archivo Variable', var(--body); font-stretch: 62.5%; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap; }
 .pl-limit { --s: clamp(64px, 7vw, 100px); flex: none; display: grid; place-items: center; width: var(--s); height: var(--s); border-radius: 50%; background: var(--paint); box-shadow: inset 0 0 0 calc(var(--s) * .12) var(--red); }
 .pl-limit span { font: 800 calc(var(--s) * .4)/1 'Archivo Variable', var(--body); font-stretch: 75%; color: #16171A; letter-spacing: -.02em; }
@@ -265,7 +274,7 @@ a.pw-pull:is(:hover, :focus-visible) h3 { text-decoration: underline 2px var(--r
 /* the garage line, with the footer along it */
 /* the bottom padding keeps the number bubble clear of the footer at the end of the scroll */
 .pl-foot { position: relative; display: flex; flex-wrap: wrap; gap: 8px 28px; margin: clamp(44px, 5vw, 72px) 0 0; padding: 24px var(--gut) 112px; font: 600 .75rem/1.5 var(--mono); letter-spacing: .03em; text-transform: uppercase; }
-.pl-foot::before { content: ""; position: absolute; inset: 0 0 auto; height: 5px; background: var(--paint); -webkit-mask: var(--wear); mask: var(--wear); }
+.pl-foot::before { content: ""; position: absolute; inset: 0 0 auto; height: 5px; background: var(--paint); }
 .pl-foot a { color: var(--paint); text-underline-offset: 3px; text-decoration-thickness: 1px; transition: text-decoration-color .16s; }
 .pl-foot a:hover { text-decoration-color: var(--red); text-decoration-thickness: 2px; }
 .pl-foot a:focus-visible { outline: 2px solid var(--paint); outline-offset: 4px; }

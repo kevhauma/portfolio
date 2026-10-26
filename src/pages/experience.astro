@@ -32,42 +32,44 @@ const papers: Paper[] = [
 <Livery title="Experience · Kevin" description="Kevin's experience on the pit wall: a timing monitor plotting every client project as a sector and every year as a lap." sec="02">
   <section class="sheet pw" aria-labelledby="pw-title">
     <div class="pw-stage">
-      <div class="pw-unit">
-        <div class="pw-frame">
-          <span class="pw-bolt b1" aria-hidden="true"></span><span class="pw-bolt b2" aria-hidden="true"></span><span class="pw-bolt b3" aria-hidden="true"></span><span class="pw-bolt b4" aria-hidden="true"></span>
-          <header class="pw-top">
-            <h1 id="pw-title">Experience</h1>
-            <p class="pw-print">Timing monitor KH-23 · Race history</p>
-          </header>
-          <div class="pw-screen">
-            <p class="pw-status"><span>Race history</span><span>Lap <b>{laps}</b></span><span>On track <b>{onTheJob}</b></span><span>Team <b>{team}</b></span></p>
-            <figure class="pw-chart" style={`--m:${M};--rows:${sectors.length + 1}`} aria-label={`Chart of ${sectors.length} sectors across ${laps} laps`}>
-              <div class="pw-band q" style={`--a:2;--b:${col(since)};--n:${col(since) - 2}`}><span><span class="l">Qualifying</span><span class="s">Q</span><small>{short(q.start)}</small></span></div>
-              {lapBands.map(b => (
-                <div class="pw-band" style={`--a:${b.a};--b:${b.b};--n:${b.b - b.a}`}><span><span class="l">Lap {b.L}</span><span class="s">L{b.L}</span><small>{short(b.from)}</small></span></div>
-              ))}
-              {gaps.map(g => (
-                <div class="pw-flag" style={`--a:${col(g.start)};--b:${col(g.end) + 1}`} aria-hidden="true"><span>Yellow</span></div>
-              ))}
-              <span class="pw-hd">Sector</span>
-              <ol class="pw-rows">
-                <li class="pw-row pw-qr" style="grid-row:2">
-                  <a class="pw-a" href="#pw-key-q">
-                    <span class="pw-lb"><span class="pw-n">Q</span><span class="pw-c">Qualifying<span class="pw-p">Bachelor, internship at {q.client}</span></span><span class="pw-mo">{span(q.start, q.end)} mo</span></span>
-                    <span class="pw-bar" style={`--a:${col(q.start)};--b:${col(q.end) + 1}`}></span>
-                  </a>
-                </li>
-                {sectors.map((s, i) => (
-                  <li class:list={['pw-row', { 'pw-run': !s.end, 'pw-best': !!s.end && span(s.start, s.end) === longest }]} style={`grid-row:${i + 3}`}>
-                    <a class="pw-a" href={projectHref(s)}>
-                      <span class="pw-lb"><span class="pw-n">S{s.n}</span><span class="pw-c">{s.client}<span class="pw-p">{s.project}</span></span><span class="pw-mo">{s.end ? `${span(s.start, s.end)} mo` : 'on track'}</span></span>
-                      <span class="pw-bar" style={`--a:${col(s.start)};--b:${col(endOf(s)) + 1}`}></span>
+      <div class="pw-unit cast">
+        <div class="pw-body">
+          <div class="pw-frame">
+            <span class="pw-bolt b1" aria-hidden="true"></span><span class="pw-bolt b2" aria-hidden="true"></span><span class="pw-bolt b3" aria-hidden="true"></span><span class="pw-bolt b4" aria-hidden="true"></span>
+            <header class="pw-top">
+              <h1 id="pw-title">Experience</h1>
+              <p class="pw-print">Timing monitor KH-23 · Race history</p>
+            </header>
+            <div class="pw-screen">
+              <p class="pw-status"><span>Race history</span><span>Lap <b>{laps}</b></span><span>On track <b>{onTheJob}</b></span><span>Team <b>{team}</b></span></p>
+              <figure class="pw-chart" style={`--m:${M};--rows:${sectors.length + 1}`} aria-label={`Chart of ${sectors.length} sectors across ${laps} laps`}>
+                <div class="pw-band q" style={`--a:2;--b:${col(since)};--n:${col(since) - 2}`}><span><span class="l">Qualifying</span><span class="s">Q</span><small>{short(q.start)}</small></span></div>
+                {lapBands.map(b => (
+                  <div class="pw-band" style={`--a:${b.a};--b:${b.b};--n:${b.b - b.a}`}><span><span class="l">Lap {b.L}</span><span class="s">L{b.L}</span><small>{short(b.from)}</small></span></div>
+                ))}
+                {gaps.map(g => (
+                  <div class="pw-flag" style={`--a:${col(g.start)};--b:${col(g.end) + 1}`} aria-hidden="true"><span>Yellow</span></div>
+                ))}
+                <span class="pw-hd">Sector</span>
+                <ol class="pw-rows">
+                  <li class="pw-row pw-qr" style="grid-row:2">
+                    <a class="pw-a" href="#pw-key-q">
+                      <span class="pw-lb"><span class="pw-n">Q</span><span class="pw-c">Qualifying<span class="pw-p">Bachelor, internship at {q.client}</span></span><span class="pw-mo">{span(q.start, q.end)} mo</span></span>
+                      <span class="pw-bar" style={`--a:${col(q.start)};--b:${col(q.end) + 1}`}></span>
                     </a>
                   </li>
-                ))}
-              </ol>
-            </figure>
-            <p class="pw-legend"><span><i></i>Completed</span><span><i class="run"></i>On track</span><span><i class="best"></i>Longest stint</span><span><i class="q"></i>Qualifying</span><span><i class="yf"></i>Yellow flag</span></p>
+                  {sectors.map((s, i) => (
+                    <li class:list={['pw-row', { 'pw-run': !s.end, 'pw-best': !!s.end && span(s.start, s.end) === longest }]} style={`grid-row:${i + 3}`}>
+                      <a class="pw-a" href={projectHref(s)}>
+                        <span class="pw-lb"><span class="pw-n">S{s.n}</span><span class="pw-c">{s.client}<span class="pw-p">{s.project}</span></span><span class="pw-mo">{s.end ? `${span(s.start, s.end)} mo` : 'on track'}</span></span>
+                        <span class="pw-bar" style={`--a:${col(s.start)};--b:${col(endOf(s)) + 1}`}></span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </figure>
+              <p class="pw-legend"><span><i></i>Completed</span><span><i class="run"></i>On track</span><span><i class="best"></i>Longest stint</span><span><i class="q"></i>Qualifying</span><span><i class="yf"></i>Yellow flag</span></p>
+            </div>
           </div>
         </div>
       </div>
@@ -75,7 +77,7 @@ const papers: Paper[] = [
     </div>
 
     <div class="pw-wall">
-      <ol class="pw-rack" aria-label="Sectors in detail">
+      <ol class="pw-rack cast" aria-label="Sectors in detail">
         {papers.map(p => { const El = p.href ? 'a' : 'div'; return (
           <li class={`pw-slit t-${p.tone}`} id={p.id}>
             <El class="pw-pull" href={p.href}>

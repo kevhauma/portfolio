@@ -20,6 +20,8 @@ const bands = [
 ---
 <svg class="swoop" viewBox={`0 0 1000 ${H}`} preserveAspectRatio="none" aria-hidden="true">
   <clipPath id="sun-clip"><path d={sun.clip} /></clipPath>
+  <!-- the setting sun as a cel: lit red, and a hard shade crescent away from the light -->
+  <linearGradient id="sun-cel" x1="0" y1="0" x2="1" y2=".4"><stop offset=".6" stop-color="#E2001A" /><stop offset=".6" stop-color="#B00015" /></linearGradient>
   <path class="swoop-sun" d={sun.d} clip-path="url(#sun-clip)" />
   <path class="swoop-cut" d={cut} />
   {bands.map((b, i) => <path class="swoop-band" d={b.d} style={`fill:${b.c};--i:${i}`} />)}
