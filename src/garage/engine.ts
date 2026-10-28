@@ -50,7 +50,7 @@ export async function boot(stage: HTMLElement) {
   for (const zone of ZONES) {
     await yieldToMain();
     const g = new THREE.Group(); g.userData.zone = zone.id; g.userData.ink = zone.ink ?? 1.5; root.add(g);
-    zone.build(g, { env, root, item: (id, ig) => { ig.userData.item = id; ITEMS.set(zone.id + ':' + id, ig); } });
+    await zone.build(g, { env, root, item: (id, ig) => { ig.userData.item = id; ITEMS.set(zone.id + ':' + id, ig); } });
     Z.set(zone.id, { zone, group: g, panel: dbox.querySelector<HTMLElement>(`[data-panel="${zone.id}"]`)! });
   }
   for (const G of [env, ...[...Z.values()].map(z => z.group), ...ITEMS.values()]) { mergeIn(G); await yieldToMain(); }

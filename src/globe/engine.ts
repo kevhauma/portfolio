@@ -71,7 +71,8 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
     for (const poly of g.type === 'Polygon' ? [g.coordinates] : g.coordinates) for (const [lo, la] of poly[0]) { a = Math.min(a, lo); b = Math.max(b, lo); c = Math.min(c, la); d = Math.max(d, la); }
     return [a, c, b, d];
   });
-  function paint(w: number, h: number, [lo0, la0, lo1, la1]: number[], k: number, wrap: boolean) {
+  function paint(w: number, h: number, [lo0, la0, lo1, la1]: number[], wrap: boolean) {
+    const deg = w / (lo1 - lo0); // pixels per degree
     const cv = document.createElement('canvas'); cv.width = w; cv.height = h; const g = cv.getContext('2d')!;
     const px = (lon: number, lat: number) => [(lon - lo0) / (lo1 - lo0) * w, (la1 - lat) / (la1 - la0) * h];
     const paths: { id: string; p: Path2D }[] = [];
@@ -91,11 +92,12 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
     });
     const offs = wrap ? [-w, 0, w] : [0];
     g.fillStyle = '#24407A'; g.fillRect(0, 0, w, h); g.lineJoin = 'round';
-    for (const [lw, c] of [[40 * k, '#2D4E8E'], [18 * k, '#3A63A6']] as const) { g.lineWidth = lw; g.strokeStyle = c; for (const o of offs) { g.save(); g.translate(o, 0); paths.forEach(q => g.stroke(q.p)); g.restore(); } }
+    for (const [lw, c] of [[1.76 * deg, '#2D4E8E'], [0.79 * deg, '#3A63A6']] as const) { g.lineWidth = lw; g.strokeStyle = c; for (const o of offs) { g.save(); g.translate(o, 0); paths.forEach(q => g.stroke(q.p)); g.restore(); } }
     for (const o of offs) {
       g.save(); g.translate(o, 0);
-      for (const q of paths) { g.fillStyle = PAINTED.has(q.id) ? '#EDCB8E' : '#A9AEBB'; g.fill(q.p); }
-      if (wrap) { g.globalAlpha = 0.45; g.lineWidth = 2.4 * k; g.strokeStyle = '#0A1330'; paths.forEach(q => g.stroke(q.p)); g.globalAlpha = 1; } // up close the crisp border lines do this job
+      g.lineWidth = 2; // each fill is also stroked in its own paint, so neighbouring countries leave no seam
+      for (const q of paths) { g.fillStyle = g.strokeStyle = PAINTED.has(q.id) ? '#EDCB8E' : '#A9AEBB'; g.fill(q.p); g.stroke(q.p); }
+      if (wrap) { g.globalAlpha = 0.45; g.lineWidth = 2.4 * w / 8192; g.strokeStyle = '#0A1330'; paths.forEach(q => g.stroke(q.p)); g.globalAlpha = 1; } // up close the crisp border lines do this job
       g.restore();
     }
     const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace;
@@ -104,11 +106,11 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
     return t;
   }
   const big = Math.min(4096, maxTex);
-  const world = paint(big, big / 2, [-180, -90, 180, 90], big / 8192, true); await yieldToMain();
+  const world = paint(big, big / 2, [-180, -90, 180, 90], true); await yieldToMain();
   /* sharper windows where the trips are: Europe and Japan */
-  const EU = [-10, 42, 18, 60], JP = [128, 30, 146, 42];
-  const mapEU = paint(big, big / 2, EU, 1.2, false); await yieldToMain();
-  const mapJP = paint(big / 2, big / 2, JP, 1.2, false); await yieldToMain();
+  const EU = [-14, 42, 18, 60], JP = [128, 30, 146, 42];
+  const mapEU = paint(big, big / 2, EU, false); await yieldToMain();
+  const mapJP = paint(big / 2, big / 2, JP, false); await yieldToMain();
 
   const col = (h: number) => new THREE.Color(h);
   const globeMat = new THREE.ShaderMaterial({
@@ -135,9 +137,8 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
         float ndl = dot(N, uSun);
         float b0 = band(ndl, -0.06), b1 = band(ndl, 0.12), b2 = band(ndl, 0.46);
         vec3 c = mix(mix(mix(mix(base * 0.22, uNight, 0.62), mix(base * 0.5, uViolet, 0.42), b0), mix(base * 0.86, uViolet, 0.1), b1), base * mix(vec3(1.0), uWarm * 1.12, 0.12), b2);
-        float sp = pow(max(dot(reflect(-uSun, N), V), 0.0), 90.0);
-        c = mix(c, uHi, band(sp, 0.7) * sea * 0.9);   // one painted highlight on the water
         float e = dot(N, V);
+        c = mix(c, uHi, band(1.0 - e, 0.72) * (1.0 - band(1.0 - e, 0.86)) * band(ndl, 0.62) * sea * 0.85); // one painted highlight on the water, along the lit limb
         c = mix(c, uWarm, band(1.0 - e, 0.94) * b1 * 0.55);
         c = mix(uInk, c, smoothstep(2.0, 3.4, e / max(fwidth(e), 1e-5))); // the ink limb, about three pixels
         gl_FragColor = vec4(c, 1.0);
@@ -150,7 +151,7 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
   const lineMats: LineMaterial[] = [];
   function lineSet(m: GeoJSON.MultiLineString, w: number, opacity: number) {
     const a: number[] = [];
-    for (const arc of m.coordinates) for (let i = 0; i < arc.length - 1; i++) { const p = ll2v(arc[i][1], arc[i][0], 1.0003), q = ll2v(arc[i + 1][1], arc[i + 1][0], 1.0003); a.push(p.x, p.y, p.z, q.x, q.y, q.z); }
+    for (const arc of m.coordinates) for (let i = 0; i < arc.length - 1; i++) { const p = ll2v(arc[i][1], arc[i][0], 1.0001), q = ll2v(arc[i + 1][1], arc[i + 1][0], 1.0001); a.push(p.x, p.y, p.z, q.x, q.y, q.z); }
     const geo = new LineSegmentsGeometry(); geo.setPositions(a);
     const mt = new LineMaterial({ color: C.ink, linewidth: w, transparent: opacity < 1, opacity }); lineMats.push(mt);
     G.add(new LineSegments2(geo, mt));
@@ -160,19 +161,19 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
   await yieldToMain();
 
   /* ---------- the trips: an ink line under a mode-coloured one, both in screen pixels ---------- */
-  type TripObj = { mode: Mode; ink: LineMaterial; col: LineMaterial; lines: Line2[]; cuts: THREE.Mesh[] };
+  type TripObj = { id: string; mode: Mode; ink: LineMaterial; col: LineMaterial; lines: Line2[]; cuts: THREE.Mesh[]; pts: THREE.Vector3[] };
   const tripObjs: TripObj[] = [];
   const cutGeo = new THREE.SphereGeometry(0.00028, 10, 8), cutMat = new THREE.MeshBasicMaterial({ color: C.ink });
   for (const t of trips) if (t.route) {
     const line = road(t.route, t.mode === 'walk' ? 14 : 40);
-    const geo = new LineGeometry(); geo.setPositions(line.flatMap(([la, lo]) => ll2v(la, lo, 1.0009).toArray()));
+    const geo = new LineGeometry(); geo.setPositions(line.flatMap(([la, lo]) => ll2v(la, lo, 1.0004).toArray()));
     const ink = new LineMaterial({ color: C.ink, linewidth: 7.5, transparent: true, depthWrite: false });
     const cm = new LineMaterial({ color: MODE_COL[t.mode], linewidth: 4, transparent: true, depthWrite: false, dashed: t.mode === 'walk', dashSize: 0.00035, gapSize: 0.00022 });
     lineMats.push(ink, cm);
     const a = new Line2(geo, ink), b = new Line2(geo, cm); b.computeLineDistances(); a.renderOrder = 1; b.renderOrder = 2; G.add(a, b);
     // the trimmed ends: the route stops short of where it really began and ended
-    const cuts = [line[0], line[line.length - 1]].map(([la, lo]) => { const m = new THREE.Mesh(cutGeo, cutMat); m.position.copy(ll2v(la, lo, 1.0011)); G.add(m); return m; });
-    tripObjs.push({ mode: t.mode, ink, col: cm, lines: [a, b], cuts });
+    const cuts = [line[0], line[line.length - 1]].map(([la, lo]) => { const m = new THREE.Mesh(cutGeo, cutMat); m.position.copy(ll2v(la, lo, 1.0005)); G.add(m); return m; });
+    tripObjs.push({ id: t.id, mode: t.mode, ink, col: cm, lines: [a, b], cuts, pts: line.filter((_, i) => i % 3 === 0).map(([la, lo]) => ll2v(la, lo, 1.0004)) });
   }
 
   /* ---------- the real Spa line at true scale, kerbed red and white ---------- */
@@ -189,7 +190,7 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
     }
     pts.push(pts[0]);
     const m = spa.metresPerUnit / 111320;
-    const geo = new LineGeometry(); geo.setPositions(pts.flatMap(([px, py]) => ll2v(spa.lat - (py - spa.centre[1]) * m, spa.lon + (px - spa.centre[0]) * m / Math.cos(spa.lat * D2R), 1.0009).toArray()));
+    const geo = new LineGeometry(); geo.setPositions(pts.flatMap(([px, py]) => ll2v(spa.lat - (py - spa.centre[1]) * m, spa.lon + (px - spa.centre[0]) * m / Math.cos(spa.lat * D2R), 1.0004).toArray()));
     for (const [c, w, dashed] of [[C.ink, 9, false], [C.white, 5, false], [C.red, 5, true]] as const) {
       const mt = new LineMaterial({ color: c, linewidth: w, transparent: true, depthWrite: false, dashed, dashSize: 0.000012, gapSize: 0.000012 }); lineMats.push(mt);
       const l = new Line2(geo, mt); l.computeLineDistances(); l.renderOrder = 3; G.add(l); spaLines.push(l);
@@ -206,7 +207,7 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
       #include <colorspace_fragment>
       }`
   });
-  type PhotoObj = { p: Photo; holder: THREE.Group; plane: THREE.Mesh; w: number };
+  type PhotoObj = { p: Photo; holder: THREE.Group; plane: THREE.Mesh; w: number; h: number };
   const photoObjs: PhotoObj[] = [];
   for (const p of photos) {
     const w = 0.0125 * (p.size ?? 1), h = w * 1.2, n = ll2v(p.lat, p.lon).normalize();
@@ -219,21 +220,39 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
     const pinInk = new THREE.Mesh(new THREE.SphereGeometry(w * 0.095, 14, 10), new THREE.MeshBasicMaterial({ color: C.ink, side: THREE.BackSide }));
     pin.position.z = pinInk.position.z = 0.0004;
     holder.add(shadow, plane, pinInk, pin); G.add(holder);
-    plane.userData.trip = p.trip; photoObjs.push({ p, holder, plane, w: 0.0125 });
+    plane.userData.trip = p.trip; photoObjs.push({ p, holder, plane, w: 0.0125, h: 0.015 });
   }
 
   /* ---------- labels, projected each frame ---------- */
   const LBL = [
-    ...countries.filter(c => c.id !== 'lu').map(c => ({ t: c.short ?? c.name, v: ll2v(c.view.lat + 0.6, c.view.lon), lv: 2 })),
-    ...trips.filter(t => t.route || t.mode === 'race').map(t => ({ t: t.short ?? t.name, v: ll2v(t.view.lat + 0.1, t.view.lon + 0.15), lv: 0 })),
-    { t: 'Japan', v: ll2v(36.4, 138.4), lv: 1 }
-  ].map(l => { const e = document.createElement('span'); e.className = 'gl-lbl' + (l.lv ? ' big' : ''); e.textContent = l.t; labelsEl.append(e); return { ...l, e, v: l.v.multiplyScalar(1.001) }; });
+    ...countries.filter(c => c.id !== 'lu').map(c => ({ t: c.short ?? c.name, v: ll2v(c.view.lat + 0.6, c.view.lon), lv: 2, trip: '' })),
+    ...trips.filter(t => t.route).map(t => { const m = t.route![Math.floor(t.route!.length / 2)]; return { t: t.short ?? t.name, v: ll2v(m[0], m[1]), lv: 0, trip: t.id }; }),
+    { t: 'Spa', v: ll2v(spa.lat - 0.012, spa.lon), lv: 0, trip: 'spa' },
+    { t: 'Japan', v: ll2v(36.4, 138.4), lv: 1, trip: '' }
+  ].map(l => { const e = document.createElement('span'); e.className = 'gl-lbl' + (l.lv ? ' big' : ''); e.textContent = l.t; labelsEl.append(e); return { ...l, e, v: l.v.multiplyScalar(1.001), w: 0, h: 0 }; });
 
   /* ---------- the camera: views, flights, room for the paper ---------- */
   const view: View = { ...overview };
   let overD = 3, room = 0, ox = 0, oxT = 0;
   const views = new Map<string, View>([...countries.map(c => [c.id, c.view] as const), ...trips.map(t => [t.id, t.view] as const)]);
-  const target = (id: string): View => id === 'overview' ? { ...overview, d: overD } : views.get(id) ?? { ...overview, d: overD };
+  const gc = (a: number[], b: number[]) => { const p = ll2v(a[0], a[1]), q = ll2v(b[0], b[1]); return Math.acos(Math.min(1, p.dot(q))); };
+  const frames = new Map(trips.filter(t => t.route).map(t => {
+    const pts: number[][] = [...t.route!, ...photos.filter(p => p.trip === t.id).map(p => [p.lat, p.lon])];
+    const la = pts.map(p => p[0]), lo = pts.map(p => p[1]);
+    const c = [(Math.min(...la) + Math.max(...la)) / 2, (Math.min(...lo) + Math.max(...lo)) / 2];
+    return [t.id, { c, a: Math.max(...pts.map(p => gc(c, p))), p: t.view.p }] as const;
+  }));
+  const portrait = () => Math.max(1, 0.9 * H / W);
+  function target(id: string): View {
+    if (id === 'overview' || !views.has(id)) return { ...overview, d: overD };
+    const fr = frames.get(id);
+    if (fr) { // the whole route and its print inside the free part of the stage
+      const R = 0.4 * Math.min(W - 90, H), lift = 1.25; // lift: room for the print hanging off its pin
+      return { lat: fr.c[0], lon: fr.c[1], d: Math.max(1.035, 1 + f * fr.a * lift / R), p: fr.p };
+    }
+    const v = views.get(id)!; return { ...v, d: 1 + (v.d - 1) * portrait() };
+  }
+  let picked = '';
   function hitAngle(d: number, p: number) { // where the camera's centre ray meets the globe, as an angle from straight down
     const c = -d * Math.cos(p), disc = c * c - (d * d - 1); if (disc < 0) return Math.acos(1 / d);
     const t = -c - Math.sqrt(disc); return Math.atan2(t * Math.sin(p), d - t * Math.cos(p));
@@ -245,6 +264,7 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
   let fly: { from: View; to: View; dl: number; t0: number; dur: number; far: number } | null = null;
   const ease = (t: number) => 1 - Math.pow(2, -10 * t);
   function go(id: string) {
+    picked = frames.has(id) ? id : ''; restyle();
     const to = target(id), from = { ...view };
     const dl = ((to.lon - from.lon + 540) % 360) - 180;
     if (RM) { Object.assign(view, to); fly = null; invalidate(); return; }
@@ -317,20 +337,50 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
     if (Math.abs(oxT - ox) > 0.3) { ox = RM ? oxT : ox + (oxT - ox) * 0.08; dirty = true; } else ox = oxT;
     if (!dirty) return;
     dirty = false;
-    camera.setViewOffset(W, H, -ox, 0, W, H); apply();
+    camera.near = Math.min(0.05, Math.max(0.0002, (view.d - 1) * 0.25)); camera.setViewOffset(W, H, -ox, 0, W, H); apply();
     const far = view.d > 1.6, sc = Math.min(W, H) / 900;
     // prints and lines keep a readable size on screen as the globe comes closer
-    const want = (58 + 130 * Math.min(1, Math.max(0, (2.6 - view.d) / 1.56))) * Math.max(0.65, sc);
-    for (const o of photoObjs) o.holder.scale.setScalar(want * (view.d - 1) / (o.w * f));
+    const want = (far ? 46 : 58 + 130 * Math.min(1, Math.max(0, (2.6 - view.d) / 1.56))) * Math.max(0.65, sc);
+    // from afar one print per place: a print close to one already shown waits until the globe comes closer
+    scene.updateMatrixWorld(); camera.updateMatrixWorld();
+    const shown: number[][] = [];
+    for (const o of photoObjs) {
+      o.holder.scale.setScalar(want * (view.d - 1) / (o.w * f));
+      o.holder.getWorldPosition(tmp).project(camera);
+      const at = [(tmp.x + 1) / 2 * W, (1 - tmp.y) / 2 * H];
+      const clear = at[0] > room + 90 && !(at[0] < 170 && at[1] > H - 170); // out of the notes' strip and the bubble's corner
+      const free = clear && (!far || !shown.some(p => Math.hypot(p[0] - at[0], p[1] - at[1]) < want * 1.3));
+      o.holder.visible = !off.has('photo') && free; if (o.holder.visible) shown.push(at);
+    }
     const lw = far ? 0.55 : 1;
-    for (const o of tripObjs) { o.ink.linewidth = 7.5 * lw; o.col.linewidth = 4 * lw; o.cuts.forEach(c => { c.visible = !far && o.lines[0].visible; c.scale.setScalar(4.5 * (view.d - 1) / (0.00028 * f)); }); }
+    for (const o of tripObjs) {
+      const k = o.id === picked ? 1.35 : 1;
+      o.ink.linewidth = 7.5 * lw * k; o.col.linewidth = 4 * lw * k;
+      o.cuts.forEach(c => { c.visible = !far && o.lines[0].visible; c.scale.setScalar(4.5 * (view.d - 1) / (0.00028 * f)); });
+    }
     spaLines.forEach(l => { l.visible = view.d < 1.2 && !off.has('race'); });
     scene.updateMatrixWorld(); camera.updateMatrixWorld(); camera.getWorldPosition(camW);
+    // what labels must stay clear of: the prints on screen, then each label already placed
+    const taken: number[][] = [];
+    for (const o of photoObjs) if (o.holder.visible) {
+      const b = new THREE.Box2();
+      for (const [sx, sy] of [[-.5, -.5], [.5, -.5], [.5, .5], [-.5, .5]]) { tmp.set(sx * o.w * (o.p.size ?? 1), sy * o.h * (o.p.size ?? 1), 0); o.plane.localToWorld(tmp).project(camera); b.expandByPoint(new THREE.Vector2((tmp.x + 1) / 2 * W, (1 - tmp.y) / 2 * H)); }
+      taken.push([b.min.x, b.min.y, b.max.x, b.max.y]);
+    }
+    taken.push([0, H - 120, 130, H]); // the number bubble's corner
+    const left = room + 24, lines = new Map<string, number[][]>();
+    if (!far) for (const o of tripObjs) if (o.lines[0].visible) lines.set(o.id, o.pts.map(p => { tmp.copy(p).applyMatrix4(G.matrixWorld).project(camera); const x = (tmp.x + 1) / 2 * W, y = (1 - tmp.y) / 2 * H; return [x - 4, y - 4, x + 4, y + 4]; }));
     for (const L of LBL) {
       tmp.copy(L.v).applyMatrix4(G.matrixWorld);
       const facing = tmp.clone().normalize().dot(camW.clone().sub(tmp).normalize()); tmp.project(camera);
-      const x = (tmp.x + 1) / 2 * W, y = (1 - tmp.y) / 2 * H;
-      const show = facing > 0.12 && tmp.z < 1 && x > room + 24 && x < W && y > 0 && y < H && (far ? L.lv === 1 : L.lv !== 1) && !(L.lv === 2 && view.d < 1.03);
+      if (!L.w) { L.w = L.e.offsetWidth; L.h = L.e.offsetHeight; }
+      let x = (tmp.x + 1) / 2 * W, y = (1 - tmp.y) / 2 * H + L.h; // a label sits just under the point it names
+      let show = facing > 0.12 && tmp.z < 1 && x > left - L.w && x < W + L.w && y > -L.h && y < H + L.h && (far ? L.lv === 1 : L.lv !== 1) && !(L.lv === 2 && view.d < 1.03);
+      x = Math.min(Math.max(x, left + L.w / 2), W - 10 - L.w / 2); y = Math.min(Math.max(y, 10 + L.h / 2), H - 10 - L.h / 2);
+      const r = [x - L.w / 2 - 4, y - L.h / 2 - 3, x + L.w / 2 + 4, y + L.h / 2 + 3];
+      const hits = (t: number[]) => r[0] < t[2] && r[2] > t[0] && r[1] < t[3] && r[3] > t[1];
+      if (show && (taken.some(hits) || [...lines].some(([id, pts]) => id !== L.trip && pts.some(hits)))) show = false; // clear of prints, labels and other routes
+      if (show) taken.push(r);
       L.e.style.opacity = show ? '1' : '0';
       L.e.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-50%)`;
     }
@@ -341,10 +391,10 @@ export async function boot(stage: HTMLElement, hooks: { photo(trip: string): voi
   function filter(o: Set<string>) {
     off = new Set(o);
     for (const t of tripObjs) { const v = !off.has(t.mode); t.lines.forEach(l => { l.visible = v; }); }
-    for (const p of photoObjs) p.holder.visible = !off.has('photo');
     invalidate();
   }
 
+  function restyle() { invalidate(); }
   resize(); view.d = overD; ox = oxT;
   requestAnimationFrame(frame);
   stage.classList.add('live');

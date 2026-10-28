@@ -73,16 +73,15 @@ html[data-theme="night"] .gl-sun { display: none; }
 /* the cut edge and the long sun shadow follow the folds */
 .gl-edge { position: absolute; left: var(--ml); top: var(--mt); z-index: 7; pointer-events: none; box-shadow: var(--g-line); width: var(--W); height: var(--H); transition: width .5s var(--fold) .42s, height .5s var(--fold) 0s; }
 .gl-shadow { position: absolute; left: var(--ml); top: var(--mt); z-index: 5; pointer-events: none; background: rgb(14 8 34 / .34); width: calc(var(--W) + 44px); height: calc(var(--H) + 11px); clip-path: polygon(0 0, calc(100% - 44px) 0, 100% 11px, 100% 100%, 44px 100%, 0 calc(100% - 11px)); transition: width .5s var(--fold) .42s, height .5s var(--fold) 0s; }
-.gl-stage.shut .gl-edge { width: var(--pw); height: var(--ph); transition-delay: 0s, .42s; }
+.gl-stage.shut .gl-edge { width: var(--pw); height: var(--ph); transition-delay: 0s, .42s; box-shadow: var(--g-line), 4px 4px 0 3px #E2D0AE, 4px 4px 0 4.5px var(--gk), 8px 8px 0 3px #D6C29C, 8px 8px 0 4.5px var(--gk); }
 .gl-stage.shut .gl-shadow { width: calc(var(--pw) + 44px); height: calc(var(--ph) + 11px); transition-delay: 0s, .42s; }
 .gl-stage.flipping :is(.gl-edge, .gl-shadow) { opacity: 0; transition: none; }
 .gl-stage.flipping .gl-atlas > .leaf { box-shadow: 0 0 0 3px var(--gk); }
 .gl-atlas .ref { position: absolute; right: 10px; top: 9px; font: 600 9px/1 var(--mono); letter-spacing: .06em; color: rgb(19 37 79 / .5); }
-.gl-atlas .m { margin: 0; font: 600 9px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #B8C3DA; }
 
 /* the cover: the sheet's title, where the globe is now, the livery stripes, open and fold */
 .gl-atlas .cover { background: var(--navy); color: var(--white); padding: 16px 16px 0; }
-.gl-atlas .cv-title { margin: 12px 0 0; }
+.gl-atlas .cv-title { margin: 6px 0 0; }
 .gl-atlas .cv-title .the { display: block; font-size: 22px; letter-spacing: .04em; color: var(--white); }
 .gl-atlas .cv-title .map { display: block; font-size: 62px; letter-spacing: -.01em; color: var(--white); margin-top: 3px; }
 .gl-atlas .now { position: absolute; left: 16px; right: 12px; bottom: 21px; margin: 0; display: flex; align-items: baseline; gap: 6px; font: 600 8.5px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #B8C3DA; white-space: nowrap; }
@@ -95,10 +94,10 @@ html[data-theme="night"] .gl-sun { display: none; }
 .gl-atlas .unfold:focus-visible::before { box-shadow: 0 0 0 2.5px var(--gk), 0 0 0 6px var(--green); }
 .gl-atlas .unfold svg { transition: transform .4s var(--ease); }
 .gl-stage:not(.shut) .unfold svg { transform: rotate(180deg); }
-.gl-atlas .ccover .flag { position: absolute; left: 16px; top: 44px; width: 40px; height: 27px; box-shadow: 0 0 0 2.5px var(--gk), 1.5px 1.5px 0 2.5px var(--gk); }
-.gl-atlas .ccover .cn { position: absolute; left: 16px; top: 82px; margin: 0; font-size: 30px; color: var(--white); letter-spacing: .01em; }
-.gl-atlas .ccover .cn.long { font-size: 21px; top: 88px; }
-.gl-atlas .ccover .cn.xl { font-size: 16px; top: 92px; }
+.gl-atlas .ccover .flag { position: absolute; left: 16px; top: 18px; width: 40px; height: 27px; box-shadow: 0 0 0 2.5px var(--gk), 1.5px 1.5px 0 2.5px var(--gk); }
+.gl-atlas .ccover .cn { position: absolute; left: 16px; top: 60px; margin: 0; font-size: 30px; color: var(--white); letter-spacing: .01em; }
+.gl-atlas .ccover .cn.long { font-size: 21px; top: 66px; }
+.gl-atlas .ccover .cn.xl { font-size: 16px; top: 70px; }
 
 /* the blurb and the legend */
 .gl-atlas .blurb { padding: 14px 15px; }
@@ -124,7 +123,7 @@ html[data-theme="night"] .gl-sun { display: none; }
 .gl-atlas .trip { position: absolute; inset: 0; border: 0; margin: 0; padding: 16px 16px 14px; text-align: left; cursor: pointer; background: transparent; display: flex; flex-direction: column; align-items: flex-start; transition: background-color .2s; }
 .gl-atlas .flag { display: block; flex: none; }
 .gl-atlas .trip .flag { width: 52px; height: 35px; box-shadow: 0 0 0 2.5px var(--gk), 1.5px 1.5px 0 2.5px var(--gk), 9px 2.2px 0 2.5px rgb(59 51 87 / .28); }
-.gl-atlas .trip .nm { margin-top: auto; font-size: 25px; color: var(--white); letter-spacing: .01em; }
+.gl-atlas .trip .nm { margin-top: auto; font-size: 25px; color: var(--paper-ink); letter-spacing: .01em; -webkit-text-stroke: 0; text-shadow: none; } /* lettering printed on the paper, in the map's own ink */
 .gl-atlas .trip .nm.long { font-size: 19px; }
 .gl-atlas .trip .type { margin-top: 8px; display: flex; align-items: center; gap: 8px; font: 600 12.5px/1 var(--body); color: var(--paper-ink-2); }
 .gl-atlas .trip .type i { width: 20px; height: 7px; transform: skewX(calc(var(--rake) * -1)); box-shadow: 0 0 0 1.5px var(--gk); }
@@ -136,10 +135,15 @@ html[data-theme="night"] .gl-sun { display: none; }
 .gl-atlas .blank { display: grid; place-items: center; }
 
 /* compact panels: short stages and phones */
-.gl-stage.compact .cv-title .map { font-size: 46px; }
-.gl-stage.compact .cv-title .the { font-size: 18px; }
+.gl-stage.compact .cv-title { margin-top: 14px; }
+.gl-stage.compact .cv-title .map { font-size: 36px; }
+.gl-stage.compact .cv-title .the { font-size: 16px; }
+.gl-stage.compact .now { bottom: 18px; }
+.gl-stage.compact .unfold { top: 9px; right: 10px; height: 24px; font-size: 11px; }
 .gl-stage.compact .blurb p { font-size: 12.5px; }
-.gl-stage.compact .blurb .sample { display: none; }
+.gl-stage.compact .blurb .full { display: none; }
+.gl-stage.compact .blurb .sample { margin-top: 5px; font-size: 9px; }
+.gl-stage.compact .whole { margin-top: 6px; }
 .gl-stage.compact .legend h3 { display: none; }
 .gl-stage.compact .key { height: 17px; font-size: 11.5px; }
 .gl-stage.compact .trip { padding: 12px 12px 11px; }
@@ -147,8 +151,9 @@ html[data-theme="night"] .gl-sun { display: none; }
 .gl-stage.compact .trip .nm { font-size: 19px; }
 .gl-stage.compact .trip .nm.long { font-size: 15px; }
 .gl-stage.compact .trip .type { margin-top: 6px; font-size: 11.5px; }
-.gl-stage.compact .ccover .cn { font-size: 24px; top: 76px; }
-.gl-stage.compact .ccover .cn.long, .gl-stage.compact .ccover .cn.xl { font-size: 15px; top: 80px; }
+.gl-stage.compact .ccover .flag { top: 14px; width: 34px; height: 23px; }
+.gl-stage.compact .ccover .cn { font-size: 22px; top: 44px; }
+.gl-stage.compact .ccover .cn.long, .gl-stage.compact .ccover .cn.xl { font-size: 15px; top: 48px; }
 
 /* ---------- the sticky notes: tucked into the left edge with only the flag showing; hover or focus pulls one out ---------- */
 .gl-hint { position: absolute; left: 12px; top: 188px; z-index: 8; margin: 0; font: 400 italic 13px/1 var(--display); letter-spacing: .07em; text-transform: uppercase; color: var(--white); -webkit-text-stroke: .16em var(--gk); paint-order: stroke fill; text-shadow: .08em .05em 0 var(--gk); }
@@ -170,17 +175,20 @@ html[data-theme="night"] .gl-sun { display: none; }
 .snote:hover, .snote:focus-visible { transform: translateX(0) rotate(0deg); z-index: 30 !important; box-shadow: var(--g-line), 16px 4px 0 3px rgb(14 8 34 / .3); outline: none; }
 .snote:focus-visible { box-shadow: var(--g-line), 0 0 0 7px var(--green); }
 /* the picked country sticks out a little further, a red bar beside its flag */
-.snote.on { transform: translateX(-166px) rotate(0deg); background: linear-gradient(90deg, transparent 0 170px, var(--gk) 170px 171.5px, var(--red) 171.5px 182px, var(--gk) 182px 183.5px, transparent 183.5px), linear-gradient(180deg, var(--n) 0 72%, var(--n2) 72%); }
-.snote.on:hover, .snote.on:focus-visible { transform: translateX(0) rotate(0deg); background: linear-gradient(180deg, var(--n) 0 72%, var(--n2) 72%); }
-@media (hover: none) { .snote.on { transform: translateX(-166px) rotate(0deg); } }
+.snote.on { transform: translateX(-160px) rotate(0deg); }
+.snote.on:not(:hover):not(:focus-visible) .tx { visibility: hidden; }
+.snote.on:hover, .snote.on:focus-visible { transform: translateX(0) rotate(0deg); }
+.snote .tape { display: none; position: absolute; right: -10px; top: -7px; width: 34px; height: 15px; background: rgb(228 214 178 / .92); box-shadow: 0 0 0 1.5px rgb(10 19 48 / .55); transform: rotate(32deg); }
+.snote.on .tape { display: block; }
 
 /* ---------- phones: the notes stay on the left edge, the map sits beside them, two panels wide ---------- */
 @media (max-width: 759px) {
   .gl-stage { --ml: 66px; --mt: 76px; }
-  .gl-hint { top: 236px; }
+  .gl-hint { top: 236px; transition: opacity .2s; }
+  .gl-stage:not(.shut) .gl-hint { opacity: 0; } /* the open map covers where it would sit */
   .gl-notes { top: 258px; }
   .snote { top: calc(var(--i) * 58px); height: 52px; }
-  .gl-sun { display: none; }
+  .gl-sun { left: -9vw; bottom: 3svh; width: 36vw; height: 36vw; }
 }
 
 /* ---------- reduced motion: folds, flips and notes cut ---------- */

@@ -26,13 +26,13 @@ export function mountAtlas(stage: HTMLElement, globe: Globe) {
   /* ---------- faces ---------- */
   const unfoldBtn = () => `<button class="unfold" type="button" aria-controls="atlas"><span class="ut">Open</span><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="#F7F8FA" stroke-width="2.2"/></svg></button>`;
   const nowLine = () => `<p class="now">Now<b>${esc(name(menu.now))}</b></p><span class="stripes" aria-hidden="true"></span>`;
-  const coverIndex = () => `<div class="face front cover"><p class="m">Sheet 04</p>
+  const coverIndex = () => `<div class="face front cover">
     <h2 class="ink cv-title"><span class="the">The</span><span class="map">Map</span></h2>${nowLine()}${unfoldBtn()}</div>`;
-  const coverCountry = (c: Country) => `<div class="face front cover ccover"><p class="m">Sheet 04</p>
+  const coverCountry = (c: Country) => `<div class="face front cover ccover">
     <svg class="flag" aria-hidden="true"><use href="#fl-${c.id}"/></svg>
     <h2 class="ink cn${c.name.length > 12 ? ' xl' : c.name.length > 9 ? ' long' : ''}">${esc(c.name)}</h2>${nowLine()}${unfoldBtn()}</div>`;
   const blurb = () => `<div class="face front blurb"><span class="ref">B1</span>
-    <p>Everywhere Kevin has ridden, driven, cycled and walked. Pick a country from the notes.</p>
+    <p><span class="full">Everywhere Kevin has ridden, driven, cycled and walked. </span>Pick a country from the notes.</p>
     <button class="whole" type="button" data-go="overview">Whole globe</button>
     <p class="sample">Sample trips for now</p></div>`;
   const legend = () => `<div class="face front legend" role="group" aria-label="Show or hide each mode"><span class="ref">A2</span><h3 class="ink">Show</h3>
@@ -112,7 +112,7 @@ export function mountAtlas(stage: HTMLElement, globe: Globe) {
   const TONES = [['#FBD769', '#E5B03E'], ['#F6B07A', '#DC8A57'], ['#F8E3A6', '#E0C07A']], TILT = [-1.6, 1.1, -0.5, 1.7, -1.2, 0.6, -1.9];
   notes.innerHTML = countries.map((c, i) => `<button class="snote" type="button" data-country="${c.id}" style="--i:${i};--n:${TONES[i % 3][0]};--n2:${TONES[i % 3][1]};--r:${TILT[i % TILT.length]}deg;z-index:${20 - i}">
     <span class="tx"><span class="ink nm${c.name.length > 11 ? ' long' : ''}">${esc(c.name)}</span><span class="ct">${count(c.trips.length)}<span class="modes" aria-hidden="true">${modes(c)}</span></span></span>
-    <svg class="flag" aria-hidden="true"><use href="#fl-${c.id}"/></svg></button>`).join('');
+    <svg class="flag" aria-hidden="true"><use href="#fl-${c.id}"/></svg><span class="tape" aria-hidden="true"></span></button>`).join('');
   const markNote = (id: string | null) => notes.querySelectorAll<HTMLElement>('.snote').forEach(n => { const on = n.dataset.country === id; n.classList.toggle('on', on); on ? n.setAttribute('aria-current', 'true') : n.removeAttribute('aria-current'); });
   function country(id: string) {
     if (menu.sheet === id && !isShut()) return setShut(true); // the same note again folds the map

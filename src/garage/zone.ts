@@ -39,8 +39,9 @@ export interface Zone {
   view: View;
   /** sub-objects that can be picked once the zone is open (the shelf's side projects) */
   items?: string[];
-  /** add the zone's objects to `g`; give it an invisible proxy() so the whole object answers the pointer */
-  build(g: THREE.Group, ctx: BuildCtx): void;
+  /** add the zone's objects to `g`; give it an invisible proxy() so the whole object answers the pointer.
+   *  May be async (a loaded model); the garage waits for it before inking. */
+  build(g: THREE.Group, ctx: BuildCtx): void | Promise<void>;
   /** wire the caption box once (it is server-rendered and stays in the DOM) */
   mount?(panel: HTMLElement, ctx: RunCtx): void;
   open?(ctx: RunCtx): void;

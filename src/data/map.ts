@@ -64,7 +64,7 @@ export const countries: Country[] = [
 export const overview: View = { lat: 40, lon: 13, d: 0, p: 0 }; // d is worked out from the stage size
 
 export const photos: Photo[] = [
-  { trip: 'spa', lat: 50.4445, lon: 5.9635, caption: 'Spa · 2024', exif: 'EOS 250D · placed by hand', scene: 'eau', rot: -9, ax: 0.9, ay: -0.9 },
+  { trip: 'spa', lat: 50.4445, lon: 5.9635, caption: 'Spa · 2024', scene: 'eau', rot: -9, ax: 0.9, ay: -0.9 },
   { trip: 'eifel', lat: 50.336, lon: 6.947, caption: 'Eifel', scene: 'hairpin', rot: -8, ax: 0.8, ay: -0.9, size: 0.95 },
   { trip: 'sisters', lat: 50.756, lon: 0.2, caption: 'Seven Sisters', scene: 'cliffs', rot: 7, ax: -0.4, ay: -0.95 },
   { trip: 'ardennes', lat: 49.794, lon: 5.067, caption: 'Bouillon', scene: 'forest', rot: -6, ax: 0.7, ay: 0.7, size: 0.9 },
