@@ -1,11 +1,13 @@
 ---
-import StubSheet from '../components/StubSheet.astro';
+/* 04 The map: a paper road map over a cel-painted globe at dusk. The countries are sticky notes on the left edge;
+   the map opens on the one you pick and folds away when you choose a trip, while the globe flies there. */
+import Livery from '../layouts/Livery.astro';
+import Globe from '../components/globe/Globe.astro';
+import Kit from '../components/Kit.astro';
+import '../styles/sheet.css';
+import '../styles/globe.css';
 ---
-<StubSheet sec="04" description="A map of everywhere Kevin has been: travel, photography and motorsport."
-  lede="A map of a curated set of trips by motorcycle, car, bike and on foot, with the circuits on their own layer."
-  plans={[
-    'Mode filters, trip details on hover or tap, and a time scrubber you drive yourself.',
-    'Photos pinned where they were taken, opened in a viewfinder with an EXIF readout.',
-    'Fog of war, and a timing-screen look when you zoom into a circuit.',
-    'Every route has its first and last stretch trimmed, so home and work never show.'
-  ]} />
+<Livery title="The map · Kevin" description="Everywhere Kevin has ridden, driven, cycled and walked, plus the circuits: a paper road map over a cel-painted globe." sec="04">
+  <Globe />
+  <Kit current="04" heading="Fold the map, take another road." />
+</Livery>

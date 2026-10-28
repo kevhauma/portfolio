@@ -1,0 +1,82 @@
+---
+/* Sheet 04: a paper road map over a cel-painted globe at dusk. The countries are sticky notes on the left edge;
+   picking one flies the globe there and unfolds the map on its trips. Every trip is listed plainly below.
+   The globe lives in src/globe/engine.ts, the map and the notes in src/globe/atlas.ts, the facts in src/data/map.ts. */
+import { countries } from '../../data/map';
+---
+<div class="globe-page">
+  <section class="gl-stage" data-globe aria-labelledby="gl-title">
+    <div class="gl-sky" aria-hidden="true"><span class="gl-sun"></span></div>
+    <canvas data-gl tabindex="0" aria-label="Globe with Kevin's trips. Drag or use the arrow keys to turn it."></canvas>
+    <div class="gl-labels" data-labels aria-hidden="true"></div>
+    <h1 id="gl-title" class="gl-sr">The map</h1>
+    <p class="gl-sr">Everywhere Kevin has ridden, driven, cycled and walked, plus the circuits: pick a country from the notes and the map opens on its trips. The same trips are listed below.</p>
+
+    <div class="gl-fallback" data-fallback hidden>
+      <p class="gl-fallback-h">This globe needs WebGL, and this browser said no.</p>
+      <p>Every trip is listed <a href="#map-list">below</a>.</p>
+    </div>
+
+    <p class="gl-hint" aria-hidden="true">Countries</p>
+    <nav class="gl-notes" data-notes aria-label="Countries"></nav>
+    <div class="gl-shadow" aria-hidden="true"></div>
+    <nav class="gl-atlas" id="atlas" data-atlas aria-label="Road map"></nav>
+    <div class="gl-edge" aria-hidden="true"></div>
+
+    <svg width="0" height="0" class="gl-defs" aria-hidden="true">
+      <symbol id="fl-be" viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#0E0F12" /><rect x="1" width="1" height="2" fill="#FDDA24" /><rect x="2" width="1" height="2" fill="#EF3340" /></symbol>
+      <symbol id="fl-de" viewBox="0 0 5 3" preserveAspectRatio="none"><rect width="5" height="1" fill="#0E0F12" /><rect y="1" width="5" height="1" fill="#DD0000" /><rect y="2" width="5" height="1" fill="#FFCE00" /></symbol>
+      <symbol id="fl-jp" viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="3" height="2" fill="#F7F8FA" /><circle cx="1.5" cy="1" r=".6" fill="#BC002D" /></symbol>
+      <symbol id="fl-nl" viewBox="0 0 3 3" preserveAspectRatio="none"><rect width="3" height="1" fill="#AE1C28" /><rect y="1" width="3" height="1" fill="#F7F8FA" /><rect y="2" width="3" height="1" fill="#21468B" /></symbol>
+      <symbol id="fl-lu" viewBox="0 0 3 3" preserveAspectRatio="none"><rect width="3" height="1" fill="#EA141D" /><rect y="1" width="3" height="1" fill="#F7F8FA" /><rect y="2" width="3" height="1" fill="#51ADDA" /></symbol>
+      <symbol id="fl-fr" viewBox="0 0 3 2" preserveAspectRatio="none"><rect width="1" height="2" fill="#002654" /><rect x="1" width="1" height="2" fill="#F7F8FA" /><rect x="2" width="1" height="2" fill="#CE1126" /></symbol>
+      <symbol id="fl-gb" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice">
+        <clipPath id="fl-gb-s"><path d="M0 0v30h60V0z" /></clipPath><clipPath id="fl-gb-t"><path d="M30 15h30v15zv15H0zH0V0zV0h30z" /></clipPath>
+        <g clip-path="url(#fl-gb-s)"><path d="M0 0v30h60V0z" fill="#012169" /><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6" /><path d="M0 0l60 30m0-30L0 30" clip-path="url(#fl-gb-t)" stroke="#C8102E" stroke-width="4" /><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10" /><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6" /></g>
+      </symbol>
+    </svg>
+  </section>
+
+  <section class="gl-index" id="map-list" aria-labelledby="gl-idx-title">
+    <h2 id="gl-idx-title" class="ink">Every trip</h2>
+    <p class="lede">The same trips as the globe above, by country. These are sample trips until the real archive is in.</p>
+    <div class="gl-groups">
+      {countries.map(c => (
+        <section class="gl-group" aria-labelledby={`gl-c-${c.id}`}>
+          <h3 id={`gl-c-${c.id}`}><svg class="flag" aria-hidden="true"><use href={`#fl-${c.id}`} /></svg>{c.name}</h3>
+          <ul>
+            {c.trips.map(t => (
+              <li><span class="nm">{t.name}</span><span class="ty">{t.type}</span><button class="gl-go" type="button" data-trip={t.id} aria-label={`Show ${t.name} on the globe`}>On the globe</button></li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </section>
+</div>
+
+<script>
+  import { mountAtlas } from '../../globe/atlas';
+  import type { GlobeApi } from '../../globe/engine';
+  const stage = document.querySelector<HTMLElement>('[data-globe]');
+  if (stage) {
+    // the map and the notes work at once; the globe arrives as its own chunk and catches up
+    let api: GlobeApi | null = null, pending: string | null = null, off = new Set<string>(), room = 0;
+    const globe = {
+      go(id: string) { if (api) api.go(id); else pending = id; },
+      filter(o: Set<string>) { off = new Set(o); api?.filter(off); },
+      room(px: number) { room = px; api?.room(px); }
+    };
+    const atlas = mountAtlas(stage, globe);
+    if (atlas.start) pending = atlas.start;
+    import('../../globe/engine').then(m => m.boot(stage, { photo: id => atlas.trip(id) })).then(a => {
+      api = a; a.room(room); if (off.size) a.filter(off); if (pending) a.go(pending);
+    }).catch(() => {
+      stage.classList.add('no-gl'); stage.querySelector<HTMLElement>('[data-fallback]')!.hidden = false;
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-trip]').forEach(b => b.addEventListener('click', () => {
+      stage.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      atlas.trip(b.dataset.trip!);
+    }));
+  }
+</script>

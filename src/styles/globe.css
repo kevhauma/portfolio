@@ -1,0 +1,206 @@
+/* Sheet 04, the map: a paper road map over a cel globe at dusk. The sky steps in hard bands, the paper is cut with
+   an ink edge and folds on its creases, the sticky notes carry the countries. Sakana for lettering, Hanken for
+   reading, mono only for what a printer would print (panel refs). The site chrome stays livery. */
+.globe-page {
+  --gk: #0A1330; --g-line: 0 0 0 3px var(--gk), 1.5px 1.5px 0 3px var(--gk);
+  --paper: #F5E6C9; --paper-sh: #DCC7A3; --paper-hi: #FBF1DC; --paper-ink: #13254F; --paper-ink-2: #3B4A6B; --fold: cubic-bezier(.55, .05, .25, 1);
+  --sky: linear-gradient(180deg, #151230 0 23%, #211943 23% 44%, #3A2453 44% 62%, #6B3157 62% 76%, #B44A48 76% 86%, #E07B3C 86% 93%, #F4B054 93%);
+  --sun: linear-gradient(180deg, #FF5A3C 0 34%, var(--red) 34% 70%, #B8001A 70%);
+  background: #151230; color: var(--white); color-scheme: dark;
+  padding-bottom: var(--drop);
+}
+html[data-sec="04"], html[data-sec="04"] body { background: #151230; }
+/* night race: the same sky after the sun is gone, under floodlights */
+html[data-theme="night"] .globe-page { --sky: linear-gradient(180deg, #050A1C 0 30%, #0A1330 30% 56%, #13254F 56% 78%, #1C2F63 78% 92%, #2A3F7A 92%); }
+html[data-theme="night"] .gl-sun { display: none; }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) .globe-page { --sky: linear-gradient(180deg, #050A1C 0 30%, #0A1330 30% 56%, #13254F 56% 78%, #1C2F63 78% 92%, #2A3F7A 92%); }
+  html:not([data-theme]) .gl-sun { display: none; }
+}
+.globe-page ::selection { background: var(--red); color: var(--white); }
+.globe-page button { font: inherit; color: inherit; }
+.gl-stage .ink, .gl-index .ink { font-family: var(--display); font-style: italic; font-weight: 400; text-transform: uppercase; line-height: .86; -webkit-text-stroke: .08em var(--gk); paint-order: stroke fill; text-shadow: .05em .03em 0 var(--gk); }
+.gl-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.gl-defs { position: absolute; }
+
+/* ---------- the stage ---------- */
+.gl-stage { --ml: 164px; --mt: 36px; position: relative; height: 100svh; min-height: 600px; max-height: 1200px; overflow: hidden; isolation: isolate; }
+.gl-sky { position: absolute; inset: 0; background: var(--sky); }
+/* the sun going down behind the globe's lower-left limb */
+.gl-sun { position: absolute; left: calc(50% - 46svh); bottom: -6svh; width: 21svh; height: 21svh; border-radius: 50%; background: var(--sun); box-shadow: 0 0 0 3px var(--gk); }
+.gl-sun::after { content: ""; position: absolute; left: 19%; top: 14%; width: 30%; height: 8%; border-radius: 50%; background: #FF8A5C; transform: rotate(-14deg); opacity: .9; }
+.gl-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; outline: none; }
+.gl-stage canvas.drag { cursor: grabbing; }
+.gl-stage canvas:focus-visible { box-shadow: inset 0 0 0 3px var(--green); }
+.gl-stage:not(.live) canvas { opacity: 0; }
+.gl-stage.live canvas { opacity: 1; transition: opacity .5s; }
+.gl-labels { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.gl-lbl { position: absolute; left: 0; top: 0; white-space: nowrap; font: 400 italic 13px/1 var(--display); letter-spacing: .06em; text-transform: uppercase; color: var(--white); -webkit-text-stroke: .16em var(--gk); paint-order: stroke fill; text-shadow: .08em .05em 0 var(--gk); transition: opacity .2s; opacity: 0; }
+.gl-lbl.big { font-size: 20px; }
+.gl-fallback { position: absolute; left: 50%; top: 50%; z-index: 4; transform: translate(-50%, -50%); width: min(460px, calc(100% - 32px)); padding: 20px 22px; background: var(--paper); color: var(--navy); box-shadow: var(--g-line), 12px 3px 0 3px rgb(14 8 34 / .35); }
+.gl-fallback[hidden] { display: none; }
+.gl-fallback p { margin: 0; }
+.gl-fallback-h { margin: 0 0 6px !important; font: 400 italic 20px/1.1 var(--display); text-transform: uppercase; }
+.gl-fallback a { color: var(--red); }
+.gl-stage.no-gl :is(.gl-notes, .gl-hint, .gl-atlas, .gl-edge, .gl-shadow) { display: none; }
+
+/* ---------- the paper road map: it folds like the real thing, columns onto the cover, then rows up behind it ---------- */
+.gl-atlas { position: absolute; left: var(--ml); top: var(--mt); z-index: 6; perspective: 2600px; perspective-origin: 0 0; }
+.gl-atlas .leaf { position: absolute; left: 0; top: 0; width: var(--W); height: var(--H); transform-style: preserve-3d; transform-origin: 50% 50%; }
+.gl-atlas .row, .gl-atlas .pnl { position: absolute; left: 0; top: 0; width: var(--pw); height: var(--ph); transform-style: preserve-3d; }
+.gl-atlas .pnl { transform-origin: 0 50%; }
+.gl-atlas .row { transform-origin: 50% 0; }
+.gl-atlas .row .row { top: 100%; }
+.gl-atlas .pnl .pnl { left: 100%; }
+.gl-atlas .pnl.c { transition: transform .5s var(--fold) .42s; }
+.gl-atlas .row.r { transition: transform .5s var(--fold) 0s; }
+.gl-atlas.shut .pnl.c { transition-delay: 0s; }
+.gl-atlas.shut .row.r { transition-delay: .42s; }
+/* every fold swings away from the reader and lands a set depth behind the one before; rows sit deeper than a folded row is thick */
+.gl-atlas.shut .pnl.c.o { transform: rotateY(180deg) translateZ(1.5px); }
+.gl-atlas.shut .pnl.c.e { transform: rotateY(-180deg) translateZ(-1.5px); }
+.gl-atlas.shut .row.r.o { transform: rotateX(-180deg) translateZ(8px); }
+.gl-atlas.shut .row.r.e { transform: rotateX(180deg) translateZ(-8px); }
+.gl-atlas .face { position: absolute; inset: 0; backface-visibility: hidden; overflow: hidden; background: var(--paper); color: var(--navy); }
+.gl-atlas .face.back { transform: rotateY(180deg); background: #E2D0AE repeating-linear-gradient(-76deg, transparent 0 9px, rgb(120 96 64 / .13) 9px 10px); }
+/* creases, and the fold shade: a panel turning away from the low sun darkens in hard steps */
+.gl-atlas .face.front { box-shadow: inset -1px 0 0 #9C8463, inset 0 -1px 0 rgb(120 96 64 / .5); }
+.gl-atlas .face.front::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: #3b3357; opacity: 0; transition: opacity .5s steps(3) .42s; }
+.gl-atlas.shut .pnl.c .face.front::after { opacity: .5; transition-delay: 0s; }
+.gl-atlas .row.r > .pnl > .face.front::after { transition-delay: 0s; }
+.gl-atlas.shut .row.r > .pnl > .face.front::after { opacity: .5; transition-delay: .42s; }
+.gl-atlas .pnl.mid > .face.front { background: var(--paper-sh); }
+/* the cut edge and the long sun shadow follow the folds */
+.gl-edge { position: absolute; left: var(--ml); top: var(--mt); z-index: 7; pointer-events: none; box-shadow: var(--g-line); width: var(--W); height: var(--H); transition: width .5s var(--fold) .42s, height .5s var(--fold) 0s; }
+.gl-shadow { position: absolute; left: var(--ml); top: var(--mt); z-index: 5; pointer-events: none; background: rgb(14 8 34 / .34); width: calc(var(--W) + 44px); height: calc(var(--H) + 11px); clip-path: polygon(0 0, calc(100% - 44px) 0, 100% 11px, 100% 100%, 44px 100%, 0 calc(100% - 11px)); transition: width .5s var(--fold) .42s, height .5s var(--fold) 0s; }
+.gl-stage.shut .gl-edge { width: var(--pw); height: var(--ph); transition-delay: 0s, .42s; }
+.gl-stage.shut .gl-shadow { width: calc(var(--pw) + 44px); height: calc(var(--ph) + 11px); transition-delay: 0s, .42s; }
+.gl-stage.flipping :is(.gl-edge, .gl-shadow) { opacity: 0; transition: none; }
+.gl-stage.flipping .gl-atlas > .leaf { box-shadow: 0 0 0 3px var(--gk); }
+.gl-atlas .ref { position: absolute; right: 10px; top: 9px; font: 600 9px/1 var(--mono); letter-spacing: .06em; color: rgb(19 37 79 / .5); }
+.gl-atlas .m { margin: 0; font: 600 9px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #B8C3DA; }
+
+/* the cover: the sheet's title, where the globe is now, the livery stripes, open and fold */
+.gl-atlas .cover { background: var(--navy); color: var(--white); padding: 16px 16px 0; }
+.gl-atlas .cv-title { margin: 12px 0 0; }
+.gl-atlas .cv-title .the { display: block; font-size: 22px; letter-spacing: .04em; color: var(--white); }
+.gl-atlas .cv-title .map { display: block; font-size: 62px; letter-spacing: -.01em; color: var(--white); margin-top: 3px; }
+.gl-atlas .now { position: absolute; left: 16px; right: 12px; bottom: 21px; margin: 0; display: flex; align-items: baseline; gap: 6px; font: 600 8.5px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: #B8C3DA; white-space: nowrap; }
+.gl-atlas .now b { font: 400 italic 13px/1 var(--display); letter-spacing: .05em; text-transform: uppercase; color: var(--white); overflow: hidden; text-overflow: ellipsis; }
+.gl-atlas .stripes { position: absolute; left: 0; right: 0; bottom: 0; height: 13px; background: linear-gradient(180deg, var(--gk) 0 1.5px, var(--red) 1.5px 5.5px, var(--gk) 5.5px 6.5px, var(--white) 6.5px 8px, var(--gk) 8px 9px, var(--green) 9px 12px, var(--gk) 12px); }
+.gl-atlas .unfold { position: absolute; right: 14px; top: 12px; z-index: 1; height: 28px; padding: 0 12px 0 10px; border: 0; background: none; cursor: pointer; display: flex; align-items: center; gap: 7px; font: 400 italic 12px/1 var(--display); letter-spacing: .07em; text-transform: uppercase; color: var(--white); }
+.gl-atlas .unfold::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--red); transform: skewX(calc(var(--rake) * -1)); box-shadow: 0 0 0 2.5px var(--gk), 7px 2px 0 2.5px rgb(0 0 0 / .3); transition: box-shadow .2s var(--ease); }
+.gl-atlas .unfold:hover::before { box-shadow: 0 0 0 2.5px var(--gk), 9px 2.5px 0 2.5px rgb(0 0 0 / .3); }
+.gl-atlas .unfold:focus-visible { outline: none; }
+.gl-atlas .unfold:focus-visible::before { box-shadow: 0 0 0 2.5px var(--gk), 0 0 0 6px var(--green); }
+.gl-atlas .unfold svg { transition: transform .4s var(--ease); }
+.gl-stage:not(.shut) .unfold svg { transform: rotate(180deg); }
+.gl-atlas .ccover .flag { position: absolute; left: 16px; top: 44px; width: 40px; height: 27px; box-shadow: 0 0 0 2.5px var(--gk), 1.5px 1.5px 0 2.5px var(--gk); }
+.gl-atlas .ccover .cn { position: absolute; left: 16px; top: 82px; margin: 0; font-size: 30px; color: var(--white); letter-spacing: .01em; }
+.gl-atlas .ccover .cn.long { font-size: 21px; top: 88px; }
+.gl-atlas .ccover .cn.xl { font-size: 16px; top: 92px; }
+
+/* the blurb and the legend */
+.gl-atlas .blurb { padding: 14px 15px; }
+.gl-atlas .blurb p { margin: 0; font: 650 14px/1.32 var(--body); color: var(--navy); max-width: 18ch; }
+.gl-atlas .blurb .sample { margin-top: 8px; font: 600 8.5px/1.3 var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--red); }
+.gl-atlas .whole { margin-top: 10px; height: 26px; padding: 0 10px; border: 0; cursor: pointer; background: var(--navy); color: var(--white); font: 400 italic 11.5px/1 var(--display); letter-spacing: .07em; text-transform: uppercase; box-shadow: 0 0 0 2px var(--gk); }
+.gl-atlas .whole:hover { background: #1E3466; }
+.gl-atlas .whole:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.gl-atlas .legend { padding: 10px 14px; }
+.gl-atlas .legend h3 { margin: 0 0 5px; font-size: 19px; color: var(--white); letter-spacing: .02em; }
+.gl-atlas .key { display: flex; align-items: center; gap: 8px; width: 100%; height: 19.5px; padding: 0; border: 0; background: none; font: 600 12.5px/1 var(--body); color: var(--navy); cursor: pointer; text-align: left; }
+.gl-atlas .key .box { flex: 0 0 14px; height: 14px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--navy); position: relative; }
+.gl-atlas .key .box svg { position: absolute; left: -2px; top: -5px; }
+.gl-atlas .key.off .box svg { display: none; }
+.gl-atlas .key.off { color: #6F6656; }
+.gl-atlas .key.off .smp { opacity: .25; }
+.gl-atlas .key:hover .box { box-shadow: inset 0 0 0 2.5px var(--navy); }
+.gl-atlas .key:focus-visible { outline: 2px solid var(--green); outline-offset: 1px; }
+.gl-atlas .smp { width: 28px; height: 6px; margin-left: auto; box-shadow: 0 0 0 1.5px var(--gk); }
+.gl-atlas .smp.print { width: 11px; height: 13px; margin-right: 8px; background: var(--white); transform: rotate(-8deg); }
+
+/* a trip: flag, name, type */
+.gl-atlas .trip { position: absolute; inset: 0; border: 0; margin: 0; padding: 16px 16px 14px; text-align: left; cursor: pointer; background: transparent; display: flex; flex-direction: column; align-items: flex-start; transition: background-color .2s; }
+.gl-atlas .flag { display: block; flex: none; }
+.gl-atlas .trip .flag { width: 52px; height: 35px; box-shadow: 0 0 0 2.5px var(--gk), 1.5px 1.5px 0 2.5px var(--gk), 9px 2.2px 0 2.5px rgb(59 51 87 / .28); }
+.gl-atlas .trip .nm { margin-top: auto; font-size: 25px; color: var(--white); letter-spacing: .01em; }
+.gl-atlas .trip .nm.long { font-size: 19px; }
+.gl-atlas .trip .type { margin-top: 8px; display: flex; align-items: center; gap: 8px; font: 600 12.5px/1 var(--body); color: var(--paper-ink-2); }
+.gl-atlas .trip .type i { width: 20px; height: 7px; transform: skewX(calc(var(--rake) * -1)); box-shadow: 0 0 0 1.5px var(--gk); }
+.gl-atlas .trip:hover { background: var(--paper-hi); }
+.gl-atlas .pnl.mid .trip:hover { background: #E8D6B5; }
+.gl-atlas .trip:focus-visible { outline: 3px solid var(--green); outline-offset: -6px; }
+.gl-atlas .trip.on { background: var(--white); }
+.gl-atlas .trip.on::after { content: ""; position: absolute; inset: 5px; box-shadow: inset 0 0 0 3px var(--red); pointer-events: none; }
+.gl-atlas .blank { display: grid; place-items: center; }
+
+/* compact panels: short stages and phones */
+.gl-stage.compact .cv-title .map { font-size: 46px; }
+.gl-stage.compact .cv-title .the { font-size: 18px; }
+.gl-stage.compact .blurb p { font-size: 12.5px; }
+.gl-stage.compact .blurb .sample { display: none; }
+.gl-stage.compact .legend h3 { display: none; }
+.gl-stage.compact .key { height: 17px; font-size: 11.5px; }
+.gl-stage.compact .trip { padding: 12px 12px 11px; }
+.gl-stage.compact .trip .flag { width: 40px; height: 27px; }
+.gl-stage.compact .trip .nm { font-size: 19px; }
+.gl-stage.compact .trip .nm.long { font-size: 15px; }
+.gl-stage.compact .trip .type { margin-top: 6px; font-size: 11.5px; }
+.gl-stage.compact .ccover .cn { font-size: 24px; top: 76px; }
+.gl-stage.compact .ccover .cn.long, .gl-stage.compact .ccover .cn.xl { font-size: 15px; top: 80px; }
+
+/* ---------- the sticky notes: tucked into the left edge with only the flag showing; hover or focus pulls one out ---------- */
+.gl-hint { position: absolute; left: 12px; top: 188px; z-index: 8; margin: 0; font: 400 italic 13px/1 var(--display); letter-spacing: .07em; text-transform: uppercase; color: var(--white); -webkit-text-stroke: .16em var(--gk); paint-order: stroke fill; text-shadow: .08em .05em 0 var(--gk); }
+.gl-notes { position: absolute; left: 0; top: 214px; z-index: 8; }
+.snote { position: absolute; left: 0; top: calc(var(--i) * 64px); width: 238px; height: 58px; padding: 0 12px 0 28px; border: 0; cursor: pointer; display: flex; align-items: center; gap: 10px; text-align: left; color: var(--navy);
+  background: linear-gradient(180deg, var(--n) 0 72%, var(--n2) 72%);
+  transform: translateX(-180px) rotate(var(--r)); transform-origin: 0 50%;
+  box-shadow: var(--g-line), 10px 2.5px 0 3px rgb(14 8 34 / .3); transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
+/* the glued strip runs along the edge it is stuck to; the free corner lifts off */
+.snote::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 16px; background: var(--n2); box-shadow: inset -1.5px 0 0 rgb(10 19 48 / .25); }
+.snote::after { content: ""; position: absolute; right: 0; bottom: 0; width: 14px; height: 14px; background: linear-gradient(135deg, var(--n2) 0 50%, rgb(14 8 34 / .35) 50%); clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+.snote .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+.snote .nm { font-size: 20px; color: var(--white); letter-spacing: .01em; white-space: nowrap; }
+.snote .nm.long { font-size: 15px; }
+.snote .ct { display: flex; align-items: center; font: 600 11px/1 var(--body); color: #5A3A1E; }
+.snote .modes { display: inline-flex; gap: 4px; margin-left: 8px; }
+.snote .modes i { width: 12px; height: 6px; transform: skewX(calc(var(--rake) * -1)); box-shadow: 0 0 0 1.5px var(--gk); }
+.snote .flag { width: 40px; height: 27px; box-shadow: 0 0 0 2.5px var(--gk), 1.5px 1.5px 0 2.5px var(--gk); }
+.snote:hover, .snote:focus-visible { transform: translateX(0) rotate(0deg); z-index: 30 !important; box-shadow: var(--g-line), 16px 4px 0 3px rgb(14 8 34 / .3); outline: none; }
+.snote:focus-visible { box-shadow: var(--g-line), 0 0 0 7px var(--green); }
+/* the picked country sticks out a little further, a red bar beside its flag */
+.snote.on { transform: translateX(-166px) rotate(0deg); background: linear-gradient(90deg, transparent 0 170px, var(--gk) 170px 171.5px, var(--red) 171.5px 182px, var(--gk) 182px 183.5px, transparent 183.5px), linear-gradient(180deg, var(--n) 0 72%, var(--n2) 72%); }
+.snote.on:hover, .snote.on:focus-visible { transform: translateX(0) rotate(0deg); background: linear-gradient(180deg, var(--n) 0 72%, var(--n2) 72%); }
+@media (hover: none) { .snote.on { transform: translateX(-166px) rotate(0deg); } }
+
+/* ---------- phones: the notes stay on the left edge, the map sits beside them, two panels wide ---------- */
+@media (max-width: 759px) {
+  .gl-stage { --ml: 66px; --mt: 76px; }
+  .gl-hint { top: 236px; }
+  .gl-notes { top: 258px; }
+  .snote { top: calc(var(--i) * 58px); height: 52px; }
+  .gl-sun { display: none; }
+}
+
+/* ---------- reduced motion: folds, flips and notes cut ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .gl-atlas .pnl.c, .gl-atlas .row.r, .gl-atlas .face.front::after, .gl-edge, .gl-shadow, .snote, .gl-lbl { transition: none !important; }
+}
+
+/* ---------- every trip, plainly ---------- */
+.gl-index { max-width: 1312px; margin: 0 auto; padding: clamp(56px, 8vw, 104px) 5vw 64px; }
+.gl-index h2 { margin: 0; font-size: clamp(2.75rem, 5.5vw, 5.5rem); color: var(--white); }
+.gl-index .lede { margin: 18px 0 40px; max-width: 58ch; font: 500 1.0625rem/1.55 var(--body); color: #D9D3EA; }
+.gl-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 28px 24px; }
+.gl-group { background: var(--paper); color: var(--navy); padding: 18px 18px 14px; box-shadow: var(--g-line), 12px 3px 0 3px rgb(5 3 16 / .45); }
+.gl-group h3 { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; font: 400 italic 24px/1 var(--display); text-transform: uppercase; color: var(--navy); }
+.gl-group h3 .flag { width: 36px; height: 24px; flex: none; box-shadow: 0 0 0 2px var(--gk); }
+.gl-group ul { margin: 0; padding: 0; list-style: none; }
+.gl-group li { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "nm go" "ty go"; column-gap: 12px; padding: 9px 0; border-top: 1px dashed rgb(19 37 79 / .3); }
+.gl-group .nm { grid-area: nm; font: 650 1rem/1.3 var(--body); }
+.gl-group .ty { grid-area: ty; font: 500 .875rem/1.3 var(--body); color: var(--paper-ink-2); }
+.gl-go { grid-area: go; align-self: center; min-height: 36px; padding: 0 12px; border: 0; cursor: pointer; background: var(--navy); color: var(--white) !important; font: 400 italic 11.5px/1 var(--display) !important; letter-spacing: .07em; text-transform: uppercase; box-shadow: 0 0 0 2px var(--gk); }
+.gl-go:hover { background: var(--red); }
+.gl-go:focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.gl-stage.no-gl ~ .gl-index .gl-go { display: none; }
