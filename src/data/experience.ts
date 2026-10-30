@@ -22,8 +22,9 @@ export type Sector = {
 
 export const qualifying = {
   degree: 'Bachelor, applied computer science',
-  /** school and dates are not in the intake yet */
-  school: null as string | null,
+  title: 'Professional Bachelor Applied Computer Science',
+  school: 'KdG',
+  years: '2017–2021',
   internship: {
     client: 'Zinderlabs',
     project: 'Platform Planner',

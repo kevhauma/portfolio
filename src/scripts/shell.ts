@@ -29,13 +29,16 @@ syncNight();
 const limBtn = $('limiter');
 const limiterOn = () => root.classList.contains('limiter');
 const syncLimiter = () => limBtn.setAttribute('aria-pressed', String(limiterOn()));
-limBtn.addEventListener('click', () => {
-  root.classList.toggle('limiter');
-  store.set(local, 'kh-limiter', limiterOn() ? '1' : '0');
+function setLimiter(on: boolean) {
+  root.classList.toggle('limiter', on);
+  store.set(local, 'kh-limiter', on ? '1' : '0');
   syncLimiter();
   updateBubble();
   window.scrollTo(0, 0);
-});
+}
+limBtn.addEventListener('click', () => setLimiter(!limiterOn()));
+/* links like "View full CV" switch it on rather than toggle it */
+document.querySelectorAll('[data-limiter-on]').forEach(b => b.addEventListener('click', () => setLimiter(true)));
 syncLimiter();
 
 /* bubble: 23 on the intro, the sheet number elsewhere; the ring counts visited sheets */

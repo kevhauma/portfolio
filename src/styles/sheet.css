@@ -38,6 +38,11 @@
 .spec dd { margin: 0; }
 .spec a { text-decoration: none; }
 .spec a:hover { text-decoration: underline; }
+/* printed on the spec decal: a raked navy tab that drops the livery for the plain CV */
+.spec-cv { appearance: none; border: 0; background: none; justify-self: start; margin-top: max(8px, calc(var(--k) * .7)); padding: 0 14px; min-height: 32px; position: relative; isolation: isolate; cursor: pointer; color: #fff; font: 800 clamp(.6875rem, calc(var(--k) * .85), .8125rem)/1 var(--display); letter-spacing: .07em; text-transform: uppercase; }
+.spec-cv::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--navy); transform: skewX(calc(var(--rake) * -1)); transition: transform .2s var(--ease); }
+.spec-cv:hover::before { transform: skewX(calc(var(--rake) * -1)) translateY(-2px); }
+.spec-cv:active::before { transform: skewX(calc(var(--rake) * -1)) translateY(1px); }
 .stack .decal { text-transform: uppercase; }
 .s1 .decal { font: 900 italic 1.75rem/1 var(--display); letter-spacing: -.01em; }
 .s2 .decal { font: 900 2.25rem/1 var(--display); letter-spacing: .02em; }
@@ -100,14 +105,20 @@
   .s2 .decal { font-size: calc(var(--k) * 4.4); }
   .s3 { left: calc(var(--k) * 5); top: calc(var(--k) * 38.5); width: calc(var(--k) * 13); height: calc(var(--k) * 13); }
   .s3 .decal { font-size: calc(var(--k) * 2.2); }
-  .s4 { left: calc(var(--k) * 66); top: calc(var(--k) * 40.8); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
+  .s4 { left: calc(var(--k) * 66); top: calc(var(--k) * 45.8); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
   .s4 .decal { font-size: calc(var(--k) * 1.7); }
-  .s5 { left: calc(var(--k) * 81.5); top: calc(var(--k) * 40.8); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
+  .s5 { left: calc(var(--k) * 81.5); top: calc(var(--k) * 45.8); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
   .s5 .decal { font-size: calc(var(--k) * 1.7); }
-  .s6 { left: calc(var(--k) * 66); top: calc(var(--k) * 45.2); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
+  .s6 { left: calc(var(--k) * 66); top: calc(var(--k) * 50.2); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
   .s6 .decal { font-size: calc(var(--k) * 1.6); }
-  .s7 { left: calc(var(--k) * 81.5); top: calc(var(--k) * 45.2); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
+  .s7 { left: calc(var(--k) * 81.5); top: calc(var(--k) * 50.2); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
   .s7 .decal { font-size: calc(var(--k) * 1.7); }
+  /* the spec's text stops shrinking on small sheets, so the 2 by 2 hangs off the spec's real bottom edge where it can */
+  .d-spec { anchor-name: --spec; }
+  @supports (top: anchor(--spec bottom)) {
+    :is(.s4, .s5) { top: calc(anchor(--spec bottom) + var(--k) * 1); }
+    :is(.s6, .s7) { top: calc(anchor(--spec bottom) + var(--k) * 5.4); }
+  }
   .s8 { left: calc(var(--k) * 52); top: calc(var(--k) * 41.5); width: calc(var(--k) * 10.5); height: calc(var(--k) * 4.5); }
   .s8 .decal { font-size: calc(var(--k) * 1.8); }
   /* TypeScript and Three.js are cut along the rake; their lettering is set back upright */

@@ -1,22 +1,25 @@
 ---
 import { github, stack } from '../data/site';
 import { chapters, supplement, projectHref, period, duration } from '../data/projects';
+import { team, since, qualifying, sectors } from '../data/experience';
+
+const q = qualifying.internship;
+// the clients Kevin was placed with, in order, without Zinderlabs' own work or the NDA client
+const clients = [...new Set(sectors.filter(s => s.client !== team && !s.nda).map(s => s.client))];
 ---
 <main id="pit" class="pit" aria-labelledby="pit-title">
   <p class="pit-flag">Pit limiter is on: the livery is off and this is the whole site in one plain column. Switch it off at the top right for the full version.</p>
   <h1 id="pit-title">Kevin</h1>
-  <p class="pit-lede">Frontend developer. Bachelor in applied computer science, five years of consultancy work.</p>
+  <p class="pit-lede">Frontend developer at {team} since {since.slice(0, 4)}. {qualifying.title}, {qualifying.school} {qualifying.years}.</p>
   <p>Code on <a href={github.href}>{github.label}</a>.</p>
 
   <h2 id="pit-stack">Stack</h2>
   <ul class="pit-stack">{stack.map(s => <li>{s.name}</li>)}</ul>
 
-  <h2 id="pit-experience">Experience <span class="ph">placeholder</span></h2>
+  <h2 id="pit-experience">Experience</h2>
   <ol class="pit-rows">
-    <li><span class="when">20XX – now</span><b>Client name</b><span class="d">Role · stack · what shipped</span></li>
-    <li><span class="when">20XX – 20XX</span><b>Client name</b><span class="d">Role · stack · what shipped</span></li>
-    <li><span class="when">20XX – 20XX</span><b>Client name</b><span class="d">Role · stack · what shipped</span></li>
-    <li><span class="when">20XX</span><b>Bachelor, applied computer science</b><span class="d">School name</span></li>
+    <li><span class="when">{since.slice(0, 4)} – now</span><b>{team}</b><span class="d">Consultant, frontend and full-stack · clients include {clients.join(', ')}</span></li>
+    <li><span class="when">{qualifying.years}</span><b>{qualifying.title}</b><span class="d">{qualifying.school} · internship at {q.client} on {q.project}, {q.start.slice(0, 4)}</span></li>
   </ol>
 
   <h2 id="pit-projects">Projects</h2>
