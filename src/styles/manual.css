@@ -337,17 +337,17 @@ body:has(.desk) { background: #3A2314; }
 .cut { container: fig / inline-size; position: relative; z-index: 2; margin: 0; padding-bottom: 40px; }
 .cut .fig-t { margin-bottom: 8px; }
 .cut svg { display: block; overflow: visible; }
-:is(.cut, .yard, .km, .dba) .ink-s { fill: none; stroke: var(--pi); stroke-width: 1.6; }
-:is(.cut, .yard, .km, .dba) .thin { stroke-width: 1.1; }
-:is(.cut, .yard, .km, .dba) .hair { stroke-width: .7; }
-:is(.cut, .yard, .km, .dba) .faint { stroke-width: .6; opacity: .34; }
-:is(.cut, .yard, .km, .dba) .ink-f { fill: var(--pi); }
-:is(.cut, .yard, .km, .dba) .spot-f { fill: var(--spot); }
-:is(.cut, .yard, .km, .dba) .spot-s { fill: none; stroke: var(--spot); stroke-width: 1.7; }
-:is(.cut, .yard, .km, .dba) .head { fill: rgb(19 37 79 / .16); }
-:is(.cut, .yard, .km, .dba) .lid { fill: rgb(19 37 79 / .1); }
-:is(.cut, .yard, .km, .dba) .paper { fill: var(--paper); }
-:is(.cut, .yard, .km, .dba) .paper-s { fill: none; stroke: var(--paper); stroke-width: 2.2; }
+:is(.cut, .yard, .km, .dba, .qb) .ink-s { fill: none; stroke: var(--pi); stroke-width: 1.6; }
+:is(.cut, .yard, .km, .dba, .qb) .thin { stroke-width: 1.1; }
+:is(.cut, .yard, .km, .dba, .qb) .hair { stroke-width: .7; }
+:is(.cut, .yard, .km, .dba, .qb) .faint { stroke-width: .6; opacity: .34; }
+:is(.cut, .yard, .km, .dba, .qb) .ink-f { fill: var(--pi); }
+:is(.cut, .yard, .km, .dba, .qb) .spot-f { fill: var(--spot); }
+:is(.cut, .yard, .km, .dba, .qb) .spot-s { fill: none; stroke: var(--spot); stroke-width: 1.7; }
+:is(.cut, .yard, .km, .dba, .qb) .head { fill: rgb(19 37 79 / .16); }
+:is(.cut, .yard, .km, .dba, .qb) .lid { fill: rgb(19 37 79 / .1); }
+:is(.cut, .yard, .km, .dba, .qb) .paper { fill: var(--paper); }
+:is(.cut, .yard, .km, .dba, .qb) .paper-s { fill: none; stroke: var(--paper); stroke-width: 2.2; }
 .cut .node { fill: var(--paper); stroke: var(--pi); stroke-width: 1.5; }
 .cut .node.dropped { stroke: var(--ghost); stroke-dasharray: 2.4 2; }
 .cut .node.win { fill: var(--spot); }
@@ -804,6 +804,123 @@ body:has(.desk) { background: #3A2314; }
 }
 @media (prefers-reduced-motion: reduce) {
   .dba .fig-part { transition: none; }
+}
+
+/* ---------- a drawn figure: Quackbot, the third build of one bot (QuackbotBuilds.astro) ---------- */
+.qb { container: qb / inline-size; position: relative; z-index: 2; margin: 0; padding-bottom: 8px; }
+.qb .fig-t { margin-bottom: 0; }
+.qb .fig-part { transition: opacity .16s var(--ease); }
+.qb code, .qb pre { font-family: var(--mono); font-variant-ligatures: none; }
+.qb-sub { margin: 34px 0 0; }
+.qb-lede { margin: 8px 0 0; max-width: 60ch; font-size: .8125rem; line-height: 1.4; color: var(--pi-2); text-wrap: pretty; }
+.qb .ghost { --qb-ink: #5B636D; --qb-line: var(--ghost); }
+
+/* Fig. 5.1: the three builds side by side, one message top to bottom through each; the stages line up
+   across the columns on a shared grid. The two maddiebots are drawn in the grey ink, Quackbot in navy. */
+.qb-vers { --lead: 16px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(7, auto); gap: var(--lead) 14px; margin-top: 16px; }
+.qb-ver { --qb-ink: var(--pi); --qb-sub: var(--pi-2); display: grid; grid-row: 1 / -1; grid-template-rows: subgrid; align-content: start; color: var(--qb-ink); }
+.qb-ver.old { --qb-ink: #56606C; --qb-sub: #5F6874; }
+.qb-ver > * { position: relative; margin: 0; }
+.qb-vh { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 8px; padding-bottom: 6px; border-bottom: 2px solid var(--qb-ink); }
+.qb-vh b { font: 800 1.125rem/1 var(--m-head); font-stretch: 74%; text-transform: uppercase; letter-spacing: .01em; }
+.qb-vh span { font: 600 .625rem/1.2 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+.qb-vh i { flex-basis: 100%; font-style: normal; font-size: .75rem; line-height: 1.3; color: var(--qb-sub); }
+/* the message comes in as a chat bubble */
+.qb-in { justify-self: center; padding: 5px 10px 4px; border-radius: 10px 10px 10px 2px; background: var(--qb-ink); color: var(--paper); font: 700 .6875rem/1.2 var(--mono); }
+/* a stage, and the lead into it from the one above, with its arrowhead */
+.qb-st { padding: 6px 8px 7px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--qb-ink); font-size: .6875rem; line-height: 1.32; color: var(--qb-sub); text-wrap: pretty; }
+.qb-st::before { content: ""; position: absolute; left: calc(50% - 1px); top: calc(var(--lead) * -1); width: 2px; height: calc(var(--lead) - 4px); background: var(--qb-ink); }
+.qb-st::after { content: ""; position: absolute; left: calc(50% - 4.5px); top: -5px; border: 4.5px solid transparent; border-bottom: 0; border-top: 5px solid var(--qb-ink); }
+.qb-st > b, .qb-pair b { display: block; margin-bottom: 2px; font: 800 .8125rem/1.1 var(--m-head); font-stretch: 78%; letter-spacing: .02em; text-transform: uppercase; color: var(--qb-ink); }
+.qb-st b code { font: 700 .75rem/1.1 var(--mono); text-transform: none; letter-spacing: 0; }
+.qb-st b i { font: 600 .6875rem/1 var(--mono); font-style: normal; }
+.qb-st code { font-size: .625rem; color: var(--qb-ink); }
+.qb-red { color: var(--spot-ink) !important; font-weight: 700; }
+.qb-ver .qb-st.hot, .qb-ver.hot .qb-st { box-shadow: inset 0 0 0 3px var(--qb-ink); }
+
+/* V2: one housing, three stages deep */
+.qb-mono { grid-row: span 3; display: flex; flex-direction: column; gap: 6px; padding: 0 0 8px; box-shadow: inset 0 0 0 2.5px var(--qb-ink); }
+.qb-sn { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; margin: 0; padding: 5px 8px 4px; background: rgb(19 37 79 / .1); border-bottom: 1.5px solid var(--qb-ink); }
+.qb-sn code { font: 700 .75rem/1 var(--mono); color: var(--qb-ink); }
+.qb-sn span { font: 600 .625rem/1 var(--mono); }
+.qb-ask, .qb-chips, .qb-sx { margin: 0 8px; }
+.qb-ask { font: 800 .75rem/1 var(--m-head); font-stretch: 80%; letter-spacing: .03em; text-transform: uppercase; color: var(--qb-ink); }
+.qb-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: -2px; }
+.qb-chips span { padding: 2px 5px 1px; box-shadow: inset 0 0 0 1px var(--qb-ink); font: 600 .5625rem/1.2 var(--mono); }
+.qb-sx { padding-top: 6px; border-top: 1px dashed var(--qb-ink); }
+.qb-sx b { color: var(--spot-ink); }
+/* where it keeps its data: a file with a turned corner, or a drum */
+.qb-ver:first-child .qb-out { clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%); background: linear-gradient(225deg, var(--qb-ink) 0 7px, var(--paper) 7px); }
+.qb-ver:nth-child(2) .qb-out { border-radius: 50% / 9px; box-shadow: inset 0 0 0 1.5px var(--qb-ink), inset 0 6px 0 -4.5px var(--qb-ink); text-align: center; padding: 10px 8px 9px; }
+
+/* V3: the lead into the handlers is broken: the entry file never calls them */
+.qb-cut::before { background: repeating-linear-gradient(var(--spot) 0 3px, transparent 3px 6px); }
+.qb-cut::after { border-top-color: var(--spot); }
+.qb-stamp { display: inline-block; margin-top: 3px; padding: 2px 5px 1px; background: var(--paper); box-shadow: inset 0 0 0 1.4px var(--spot); color: var(--spot-ink); font: 800 .5625rem/1 var(--m-head); font-stretch: 80%; letter-spacing: .05em; text-transform: uppercase; transform: rotate(-4deg); white-space: nowrap; }
+.qb-pair { display: flex; flex-direction: column; gap: 4px; padding: 0; box-shadow: none; background: none; }
+.qb-pair p { margin: 0; padding: 6px 8px 7px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--qb-ink); }
+.qb-ver.hot .qb-pair { box-shadow: none; }
+.qb-why { font-size: .6875rem; line-height: 1.32; color: var(--spot-ink); text-wrap: pretty; }
+
+/* Quackbot: three plugs on the module, and the answer going back out as a bubble */
+.qb-plugs { list-style: none; display: flex; flex-direction: column; gap: 4px; padding: 6px; }
+.qb-plugs li { display: flex; flex-direction: column; gap: 1px; padding: 4px 6px 5px 10px; border-left: 3px solid var(--spot); background: rgb(19 37 79 / .05); }
+.qb-plugs code { font: 700 .6875rem/1.2 var(--mono); color: var(--pi); }
+.qb-plugs li.hot { box-shadow: inset 0 0 0 2px var(--pi); }
+.qb-ver:last-child .qb-out { border-radius: 10px 10px 2px 10px; }
+
+/* Fig. 5.2: the pinout of a command */
+.qb-sig { margin: 16px 0 8px; font-size: .75rem; line-height: 1.45; }
+.qb-sig-l { font: 800 .75rem/1 var(--m-head); font-stretch: 82%; letter-spacing: .04em; text-transform: uppercase; color: var(--qb-ink, var(--pi)); }
+.qb-sig code { font-size: .6875rem; color: var(--qb-ink, var(--pi)); overflow-wrap: anywhere; }
+.qb-plug { color: var(--qb-ink); }
+.qb-pins { border-collapse: collapse; font: 600 .6875rem/1 var(--mono); color: var(--qb-ink); font-variant-numeric: tabular-nums; }
+.qb-pins th, .qb-pins td { padding: 0; }
+.qb-pins thead th { height: 6.6rem; vertical-align: bottom; padding-bottom: 6px; }
+.qb-pins thead th span { display: inline-block; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 600; letter-spacing: .02em; }
+.qb-pins tbody th, .qb-pins tfoot th { padding-right: 10px; text-align: right; font-weight: 600; white-space: nowrap; }
+.qb-pins td { width: 22px; text-align: center; }
+.qb-pins tbody td { height: 17px; border-left: 1px dashed var(--rule); }
+.qb-pins tbody tr:first-child td { border-top: 1.4px dashed var(--qb-line); }
+.qb-pins tfoot th, .qb-pins tfoot td { padding-top: 7px; border-top: 1.4px dashed var(--qb-line); font-weight: 700; }
+.qb-pins tfoot th { font-family: var(--m-head); font-stretch: 82%; letter-spacing: .04em; text-transform: uppercase; }
+.qb-pin { display: inline-block; width: 8px; height: 8px; border-radius: 50%; box-shadow: inset 0 0 0 1.2px currentColor; vertical-align: middle; opacity: .55; }
+.qb-pin.on { background: currentColor; opacity: 1; }
+.qb-key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin: 10px 0 0; font-size: .6875rem; color: var(--qb-ink); }
+.qb-key > span { display: inline-flex; align-items: center; gap: 6px; }
+.qb-sum { font: 600 .6875rem/1 var(--mono); }
+.qb-sum b { font: 800 1.125rem/1 var(--m-head); font-stretch: 74%; color: var(--spot-ink); }
+
+.qb-new { margin-top: 26px; }
+.qb-code { margin: 12px 0 0; padding: 10px 12px; overflow-x: auto; background: rgb(19 37 79 / .06); border-left: 3px solid var(--pi); font-size: .6875rem; line-height: 1.55; color: var(--pi); white-space: pre; }
+.qb-code .c { color: var(--pi-2); opacity: .8; }
+.qb-notes { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; max-width: 62ch; font-size: .8125rem; line-height: 1.4; color: var(--pi-2); }
+.qb-notes li { position: relative; padding-left: 14px; }
+.qb-notes li::before { content: ""; position: absolute; left: 0; top: .45em; width: 6px; height: 6px; background: var(--spot); }
+.qb-notes b { color: var(--pi); }
+.qb-notes code { font-size: .6875rem; color: var(--pi); }
+
+/* Fig. 5.3: the deploy, one chain from the tag to the running bot */
+.qb-chain { --qb-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 8'%3E%3Cpath d='M0 4H9' stroke='black' stroke-width='2'/%3E%3Cpath d='M8 0 14 4 8 8Z'/%3E%3C/svg%3E"); list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; margin: 14px 0 0; padding: 0; }
+.qb-chain li { position: relative; padding: 5px 8px 4px; box-shadow: inset 0 0 0 1.5px var(--pi); font: 800 .75rem/1.1 var(--m-head); font-stretch: 80%; letter-spacing: .03em; text-transform: uppercase; color: var(--pi); }
+.qb-chain li + li::before { content: ""; position: absolute; right: 100%; top: 50%; width: 22px; height: 10px; translate: 0 -50%; background: var(--pi); mask: var(--qb-arrow) center / 14px 8px no-repeat; }
+.qb-chain .qb-push { display: flex; align-items: baseline; gap: 6px; background: var(--pi); color: var(--paper); text-transform: none; }
+.qb-push code { font: 700 .75rem/1 var(--mono); }
+.qb-push span { font: 600 .625rem/1 var(--mono); opacity: .85; }
+.qb-push span code { font-size: .625rem; }
+.qb-chain li.hot { box-shadow: inset 0 0 0 3px var(--pi); }
+
+/* a narrow figure: the three builds stack, one after the other */
+@container qb (max-width: 400px) {
+  .qb-vers { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; row-gap: 30px; }
+  .qb-ver { grid-row: auto; grid-template-rows: none; row-gap: var(--lead); }
+  .qb-mono { grid-row: auto; }
+}
+@container qb (max-width: 360px) {
+  .qb-pins td { width: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .qb .fig-part { transition: none; }
 }
 
 @media (max-width: 1099px) {

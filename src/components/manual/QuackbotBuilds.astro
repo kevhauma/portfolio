@@ -1,0 +1,137 @@
+---
+/* Figs. 5.1–5.3 for the Discord bot, built three times. 5.1 draws how a message runs through each build,
+   side by side, stage for stage: V1 is one housing that does everything, V2 splits it into handlers that
+   the entry file never wires in, V3 is a router, a module and plug-in commands.
+   5.2 is the pinout of a command: in V1 the router hands every command the same eight arguments, and the
+   chart marks which ones each command actually uses; in V3 every command is run with the message and
+   its details, parsed once. 5.3 is the deploy, Kevin's first GitHub Actions workflow. Every count is read
+   off the three public repos. The parts light with the wiring key. */
+interface Props { n: string }
+const { n } = Astro.props;
+
+/* Fig. 5.2: V1's command signature, and where each command's run uses an argument */
+const args = ['Discord', 'client', 'message', 'words', 'currencyMembers', 'axios', 'cleverbot', 'he'];
+const used: [string, string][] = [
+  ['ask', 'D·mw··c·'], ['color', 'D·mw·a··'], ['currency', '··m·$···'], ['gamble', '··mw$···'],
+  ['give', '··mw$···'], ['hangman', 'D·m·$···'], ['highlow', 'D·mw$···'], ['iam', '··mw····'],
+  ['iamnot', '··mw····'], ['leaderboard', 'D·m·$···'], ['quiz', 'D·m··a·h'], ['slots', 'D·mw$···'],
+  ['snowball', '··m·····'], ['stats', 'DCm·$···'], ['time', 'D·m·····'], ['timeout', 'D·mw····'],
+  ['toptalkers', 'D·m·$···']
+];
+const pin = (row: string, i: number) => row[i] !== '·';
+const perArg = args.map((_, i) => used.filter(([, r]) => pin(r, i)).length);
+const pinsUsed = perArg.reduce((a, b) => a + b, 0);
+const pinsAll = used.length * args.length;
+
+/* Fig. 5.1: V3's three commands, and where each gets its answer */
+const cmds = [
+  { c: 'explain', x: 'dictionaryapi.dev, or jisho.org for Japanese', feeds: 'scrape dict' },
+  { c: 'urban', x: 'The Urban Dictionary page, scraped', feeds: 'scrape' },
+  { c: 'wotd', x: 'Dictionary.com’s word of the day, scraped', feeds: 'scrape' }
+];
+
+/* Fig. 5.3: the deploy, as manual.yml runs it */
+const chain = [
+  { t: 'Stop the old container', feeds: 'docker' },
+  { t: 'Clone the repo', feeds: 'actions' },
+  { t: 'Secrets into .env', feeds: 'actions' },
+  { t: 'docker build', feeds: 'docker' },
+  { t: 'docker run', feeds: 'docker discord' }
+];
+---
+<figure class="qb" aria-labelledby="qb-t">
+  <figcaption id="qb-t" class="fig fig-t">Fig. {n}.1 · One message, three builds</figcaption>
+  <p class="qb-lede">How a message runs through each build of the bot, stage for stage.</p>
+  <p class="sr">Three diagrams side by side, one per build, each following a Discord message from top to bottom. V1, April 2018: the message goes into one entry file, which does everything in one housing: it checks which channel the message is in, picks a command from three lists, runs it with the same eight arguments as every other command, and also gives points, reacts and tells dad jokes; after every message it writes the members file back to disk. V2, late 2018: the work is split into a message handler, a command handler that reads each server's prefix from the database, and a function handler; commands are moving to run with only the message, 12 of 17 done; members move to MongoDB, one database per server. But the lead from Discord into the handlers is broken: the entry file never wires them in, 133 of its 162 lines are commented out. V3, 2021 to 2022: index.js parses the message once into details, the dictionary module matches the prefix d!, the matching command of three runs with the message and its details and fetches its own answer, and the answer goes back by direct message while the command is deleted from the channel. Nothing is stored.</p>
+
+  <div class="qb-vers" aria-hidden="true">
+    <section class="qb-ver old fig-part" data-feeds="v1">
+      <header class="qb-vh"><b>V1</b><span>Apr 2018</span><i>One file does everything</i></header>
+      <p class="qb-in">Discord message</p>
+      <div class="qb-st qb-mono">
+        <p class="qb-sn"><code>Entry file</code><span>118 lines</span></p>
+        <p class="qb-ask">Which channel?</p>
+        <p class="qb-chips"><span>DM</span><span>general</span><span>bot spam</span><span>art</span></p>
+        <p class="qb-sx">Commands sorted by a flag into three lists: general, spam, reaction</p>
+        <p class="qb-sx">Every command run with the same <b>eight arguments</b> (Fig. {n}.2)</p>
+        <p class="qb-sx">And on every message: points, reactions, dad jokes; Cleverbot answers DMs</p>
+      </div>
+      <p class="qb-st qb-out"><b>members.json</b><span>Held in memory, written back to disk after every message</span></p>
+    </section>
+
+    <section class="qb-ver old fig-part" data-feeds="v2">
+      <header class="qb-vh"><b>V2</b><span>Nov–Dec 2018</span><i>Split up, never wired in</i></header>
+      <p class="qb-in">Discord message</p>
+      <div class="qb-st qb-cut"><b>messageHandler</b><span class="qb-stamp">Never wired in</span></div>
+      <div class="qb-st qb-pair">
+        <p><b>commandHandler</b><span>Prefix and spam channel per server, from the database</span></p>
+        <p><b>functionHandler</b><span>Points, reactions</span></p>
+      </div>
+      <p class="qb-st"><b>commands/ <i>× 18</i></b><span>Moving to <code>run(message)</code>: 12 of 17 done</span></p>
+      <p class="qb-st qb-out"><b>MongoDB</b><span>One database per server</span></p>
+      <p class="qb-why">The entry file never calls the handlers: 133 of its 162 lines are commented out</p>
+    </section>
+
+    <section class="qb-ver">
+      <header class="qb-vh"><b>V3</b><span>2021–2022</span><i>A router and plug-in commands</i></header>
+      <p class="qb-in">Discord message</p>
+      <p class="qb-st fig-part" data-feeds="discord"><b><code>index.js</code></b><span>48 lines. Parses the message once into <code>details</code>, then asks each module</span></p>
+      <p class="qb-st fig-part" data-feeds="discord"><b>dictionary module</b><span>Prefix <code class="qb-red">d!</code>: finds the command by name</span></p>
+      <ol class="qb-st qb-plugs">
+        {cmds.map(c => <li class="fig-part" data-feeds={c.feeds}><code>d!{c.c}</code><span>{c.x}</span></li>)}
+      </ol>
+      <p class="qb-st qb-out fig-part" data-feeds="discord"><b>Reply by DM</b><span>To you or the member you mention; the command is deleted. Nothing stored</span></p>
+    </section>
+  </div>
+
+  <figure class="qb-sub">
+    <figcaption class="fig">Fig. {n}.2 · One plug for every command</figcaption>
+    <p class="qb-lede">A command is the same shape every time, so the router never needs to know one. In V1 that shape was a run function with eight pins, all of them wired whether the command used them or not.</p>
+
+    <div class="qb-plug ghost fig-part" data-feeds="v1">
+      <p class="qb-sig"><span class="qb-sig-l">V1, every command:</span> <code>run(Discord, client, message, words, currencyMembers, axios, cleverbot, he)</code></p>
+      <table class="qb-pins">
+        <caption class="sr">V1: for each of its 17 working commands, which of the eight arguments the router hands it are used by its run function. {pinsUsed} of {pinsAll} are used.</caption>
+        <thead>
+          <tr><th scope="col"><span class="sr">Command</span></th>{args.map(a => <th scope="col"><span>{a}</span></th>)}</tr>
+        </thead>
+        <tbody>
+          {used.map(([name, row]) => (
+            <tr>
+              <th scope="row">{name}</th>
+              {args.map((a, i) => <td><span class:list={['qb-pin', { on: pin(row, i) }]} aria-label={pin(row, i) ? `uses ${a}` : 'unused'}></span></td>)}
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr><th scope="row">Used by</th>{perArg.map(c => <td>{c}</td>)}</tr>
+        </tfoot>
+      </table>
+      <p class="qb-key"><span><span class="qb-pin on" aria-hidden="true"></span> used</span><span><span class="qb-pin" aria-hidden="true"></span> handed over, unused</span><span class="qb-sum"><b>{pinsUsed}</b> of {pinsAll} pins used</span></p>
+    </div>
+
+    <div class="qb-new">
+      <p class="qb-sig"><span class="qb-sig-l">V3, every command:</span> <code>{'{'} name, run(msg, details), help {'}'}</code></p>
+      <pre class="qb-code fig-part" data-feeds="discord" aria-label="The router in index.js, shortened"><code><span class="c">// index.js, shortened</span>
+modules.forEach(mod =&gt; mod.commands.forEach(command =&gt; {'{'}
+  if (mod.prefix + command.name !== details.firstWord) return;
+  command.run(msg, details);
+{'}'}));</code></pre>
+      <ul class="qb-notes">
+        <li><b>details</b> is parsed once, before any command runs: <code>args</code>, <code>firstWord</code>, <code>mentionOrAuthor</code>, <code>isOwner</code>, <code>hasMentions</code>.</li>
+        <li>A command imports what it needs itself, axios or the HTML parser, instead of being handed everything.</li>
+        <li>A new command is one file, and one line in its module’s list.</li>
+      </ul>
+    </div>
+  </figure>
+
+  <figure class="qb-sub">
+    <figcaption class="fig">Fig. {n}.3 · Deploy by version tag</figcaption>
+    <p class="qb-lede">Kevin’s first GitHub Actions workflow. The result: pushing a version tag rebuilds and restarts the bot on a self-hosted runner.</p>
+    <p class="sr">Pushing a tag starting with v starts the workflow on a self-hosted runner. It stops the old container, clones the repo, writes the bot token from the repository's secrets into a .env file, builds the Docker image tagged with the version, and runs it.</p>
+    <ol class="qb-chain" aria-hidden="true">
+      <li class="qb-push fig-part" data-feeds="actions"><code>git push</code><span>tag <code>v*</code></span></li>
+      {chain.map(c => <li class="fig-part" data-feeds={c.feeds}>{c.t}</li>)}
+    </ol>
+  </figure>
+</figure>

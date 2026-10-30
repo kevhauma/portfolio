@@ -32,7 +32,7 @@ The site can launch on the **essentials**: intro, experience, projects, contact 
 
 ### Projects (02)
 - The page is a **workshop manual on a desk** (decided 2026-10-13; surface brief `.impeccable/surfaces/src-pages-projects-index-astro.md`). `/projects/` is the contents spread; every project has its own page with a wiring diagram drawn from `src/data/projects.ts`.
-- **Chapters 1–6**: money-mosaic-v2, Aurubis scrap yard, Aurubis kiosk, ArCom DBA tool, Quackbot (retired), CommonGround.
+- **Chapters 1–6**: money-mosaic-v2, Aurubis scrap yard, Aurubis kiosk, ArCom DBA tool, Discord bot (retired; V1 to V3, V3 is the Quackbot repo), CommonGround.
 - **Supplement F1–F7, the fuse box**: the other work-experience projects (Clearmedia, publiq, Jumperke, VG Computers, Platform Blog, Platform Planner upgrade, the NDA construction client). Personal side projects are not in the fuse box; they stay on the Workbench shelf.
 - **No demos.** No live apps, no demo instance; each project is explained by its wiring diagram.
 - **NDA**: the construction client is listed anonymised, with a warning triangle and a Warning box on its page; never a chapter.
@@ -94,5 +94,5 @@ Everything else is typed into `content-intake.yaml`.
 - **Prints**: later.
 - **Projects desk and pens**: the walnut desk and the pens on the Projects page are drawn in code (procedural texture, vector pens) and read as imitation. Either allow a sourced CC0 walnut photo and pen cut-outs, or keep them as they are.
 - **CommonGround or CommonGrounds**: the page uses "CommonGround" (the repo and GitHub org name); the intake key and the Projects brief say "CommonGrounds". Pick one and every source gets aligned.
-- **Quackbot years**: the page shows 2017–2020 from the intake, but the public repo was created in 2021. Confirm the years.
+- **Quackbot years**: Quackbot is the rework of maddiebot, so chapter 5, "Discord bot", covers all three repos as V1 to V3: maddiebotV2 (Apr 2018), maddieBotV3 (Nov–Dec 2018) and Quackbot (May 2021 to the last deploy in Feb 2022). The page shows 2017–2022. 2017 still comes only from the intake, since no repo goes back that far. Confirm the start year.
 - **DESIGN.md for Projects**: once the two Projects items above are settled, DESIGN.md gets the Projects page's own look (paper, desk, Archivo) alongside the livery.

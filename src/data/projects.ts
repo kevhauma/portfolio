@@ -181,29 +181,33 @@ export const projects: Project[] = [
   },
   {
     slug: 'quackbot', n: '5', kind: 'chapter', wire: 'S',
-    title: 'Quackbot', client: 'Own build', own: true, start: '2017-01', end: '2020-12', status: 'Retired',
-    line: 'A dictionary bot for one Discord community of about 2,000 members',
+    title: 'Discord bot', client: 'Own build', own: true, start: '2017-01', end: '2022-02', status: 'Retired',
+    line: 'One Discord bot, built three times, down to one shape for every command',
     summary: [
-      'A Discord bot for one community of about 2,000 members. Three dictionary commands, each a different way of getting a definition: an API, and two scraped web pages.',
-      'Answers go by direct message, to you or to the member you mention, and the command itself is removed from the channel. Retired now, kept here as it was.'
+      'A Discord bot for one community of about 2,000 members, built three times. V1 ran games, a points economy and roles; V3 is the rework, a small dictionary bot built to get the structure right.',
+      'What changed most is the shape of a command. In V1 every command was handed the same eight arguments, used or not; in V3 a command is one object with a name, a run and its help, and the router hands each the message, parsed once.',
+      'It was also Kevin\'s first GitHub Actions workflow: pushing a version tag rebuilds and restarts the bot on a self-hosted runner. Retired now, kept here as it was.'
     ],
-    figure: 'Command circuits',
+    figure: 'Three builds of one bot',
     keys: [
-      { id: 'discord', code: 'U', label: 'discord.js · d! prefix router' },
-      { id: 'axios', code: 'G', label: 'axios' },
-      { id: 'dictapi', code: 'Y', label: 'dictionaryapi.dev, 13 languages' },
-      { id: 'parse', code: 'N', label: 'node-html-parser · he' },
-      { id: 'docker', code: 'B', label: 'Docker · GitHub Actions, self-hosted runner' }
+      { id: 'v1', code: 'S', label: 'V1 · discord.js 11, a JSON file', legacy: true },
+      { id: 'v2', code: 'N', label: 'V2 · MongoDB, a database per server', legacy: true },
+      { id: 'discord', code: 'U', label: 'V3 · discord.js 13, a d! module router' },
+      { id: 'scrape', code: 'G', label: 'axios · node-html-parser · he' },
+      { id: 'dict', code: 'Y', label: 'dictionaryapi.dev · jisho.org' },
+      { id: 'docker', code: 'B', label: 'Docker' },
+      { id: 'actions', code: 'R', label: 'GitHub Actions, self-hosted runner' }
     ],
     parts: [
+      { id: 'old', title: 'V1 and V2', text: 'One file that did everything, then handlers, left halfway', feeds: ['v1', 'v2'], legacy: true },
       { id: 'router', title: 'Message router', text: 'Matches d! plus a command name and hands the message over', feeds: ['discord'], href: gh('Quackbot', 'index.js'), hrefLabel: 'index.js' },
-      { id: 'explain', title: 'd!explain', text: 'Asks dictionaryapi.dev, in one of 13 languages, with its own path for Japanese', feeds: ['axios', 'dictapi'], href: gh('Quackbot', 'modules/dictionary/explain.js'), hrefLabel: 'explain.js' },
-      { id: 'urban', title: 'd!urban', text: 'Fetches the Urban Dictionary page, keeps exact matches, sends the top five', feeds: ['axios', 'parse'], href: gh('Quackbot', 'modules/dictionary/urban.js'), hrefLabel: 'urban.js' },
-      { id: 'wotd', title: 'd!wotd', text: 'Reads the word of the day off Dictionary.com: word, pronunciation, meaning', feeds: ['axios', 'parse'], href: gh('Quackbot', 'modules/dictionary/wotd.js'), hrefLabel: 'wotd.js' },
-      { id: 'dm', title: 'Reply by DM', text: 'To you, or to the member you mention; the command message is deleted', feeds: ['discord'], href: gh('Quackbot', 'modules/common.js'), hrefLabel: 'common.js' },
-      { id: 'deploy', title: 'Deploy', text: 'A version tag builds and restarts the container on a self-hosted runner', feeds: ['docker'] }
+      { id: 'explain', title: 'd!explain', text: 'Asks dictionaryapi.dev, in one of 13 languages, or jisho.org for Japanese', feeds: ['scrape', 'dict'], href: gh('Quackbot', 'modules/dictionary/explain.js'), hrefLabel: 'explain.js' },
+      { id: 'urban', title: 'd!urban', text: 'Fetches the Urban Dictionary page, keeps exact matches, sends the top five', feeds: ['scrape'], href: gh('Quackbot', 'modules/dictionary/urban.js'), hrefLabel: 'urban.js' },
+      { id: 'wotd', title: 'd!wotd', text: 'Reads the word of the day off Dictionary.com: word, pronunciation, meaning', feeds: ['scrape'], href: gh('Quackbot', 'modules/dictionary/wotd.js'), hrefLabel: 'wotd.js' },
+      { id: 'deploy', title: 'Deploy', text: 'A version tag builds and restarts the container on a self-hosted runner', feeds: ['actions', 'docker'], href: gh('Quackbot', '.github/workflows/manual.yml'), hrefLabel: 'manual.yml' }
     ],
-    source: { label: 'github.com/kevhauma/Quackbot', href: gh('Quackbot') }
+    notes: ['Every count on these pages is read off the public repos of the three builds.'],
+    source: { label: 'V3, on GitHub', href: gh('Quackbot') }
   },
   {
     slug: 'commonground', n: '6', kind: 'chapter', wire: 'W',
