@@ -53,7 +53,7 @@ const finishes = ['gloss', 'holo', 'holo', 'gloss', 'gloss', 'chrome', 'gloss', 
       <ul class="stack" aria-label="Favourite stack">
         {stack.map((s, i) => (
           <Decal as="li" class={`s${i + 1} ${tones[i]}`} round={i === 2} finish={finishes[i]}>
-            {s.name}
+            <span>{s.name}</span>
           </Decal>
         ))}
       </ul>

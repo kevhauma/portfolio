@@ -11,6 +11,8 @@
 .slot::before { content: ""; position: absolute; inset: max(-6px, calc(var(--k) * -.7)); border: 1.5px dashed var(--cut); border-radius: var(--r, 0); pointer-events: none; transition: border-color .3s; }
 .decal { position: relative; border-radius: var(--r, 0); background: var(--bg); color: var(--fg); display: grid; place-items: center; transition: background-color .3s; }
 .slot.round { --r: 50%; }
+/* the Node.js decal is cut as a pill; its sun shadow follows the shape */
+.stack .s2 { --r: 999px; --cast-shape: inset(0 round 999px); }
 
 /* tones */
 .t-navy { --bg: var(--navy); --fg: var(--white); }
@@ -86,26 +88,31 @@
   .car { position: absolute; left: calc(var(--k) * 48.3); top: calc(var(--k) * 8.09); width: calc(var(--k) * 51); height: calc(var(--k) * 15.31); }
   .d-num { left: calc(var(--k) * 73.3); top: calc(var(--k) * 14.22); width: calc(var(--k) * 6.6); height: calc(var(--k) * 6.6); }
   .d-num .decal span { font-size: calc(var(--k) * 3.45); }
-  .d-spec { left: calc(var(--k) * 5); top: calc(var(--k) * 27.4); width: calc(var(--k) * 30); height: auto; }
+  /* the stack is laid out like the sponsors on a race car: TypeScript is the primary sponsor, a big band under the name
+     cut along the rake; React's roundel, the Node.js pill and Three.js under it; the small sponsors in a 2 by 2 block under the spec */
+  .d-spec { left: calc(var(--k) * 66); top: calc(var(--k) * 26); width: calc(var(--k) * 30); height: auto; }
   .plate .d-spec .decal { position: relative; inset: auto; }
   .d-spec .decal { padding: calc(var(--k) * 1.4) calc(var(--k) * 1.8); }
   .spec { gap: calc(var(--k) * .45) calc(var(--k) * 1.6); }
-  .s1 { left: calc(var(--k) * 40); top: calc(var(--k) * 33); width: calc(var(--k) * 28); height: calc(var(--k) * 7.4); }
-  .s1 .decal { font-size: calc(var(--k) * 3.5); }
-  .s2 { left: calc(var(--k) * 5); top: calc(var(--k) * 45); width: calc(var(--k) * 22.6); height: calc(var(--k) * 7.4); }
-  .s2 .decal { font-size: calc(var(--k) * 4.2); }
-  .s3 { left: calc(var(--k) * 30.2); top: calc(var(--k) * 45); width: calc(var(--k) * 11); height: calc(var(--k) * 11); }
-  .s3 .decal { font-size: calc(var(--k) * 1.9); }
-  .s4 { left: calc(var(--k) * 44.4); top: calc(var(--k) * 45); width: calc(var(--k) * 15); height: calc(var(--k) * 5); }
-  .s4 .decal { font-size: calc(var(--k) * 2.6); }
-  .s5 { left: calc(var(--k) * 62.2); top: calc(var(--k) * 45); width: calc(var(--k) * 17); height: calc(var(--k) * 5); }
-  .s5 .decal { font-size: calc(var(--k) * 2.6); }
-  .s6 { left: calc(var(--k) * 44.4); top: calc(var(--k) * 52.6); width: calc(var(--k) * 10.6); height: calc(var(--k) * 3.6); }
+  .s1 { left: calc(var(--k) * 4); top: calc(var(--k) * 26.5); width: calc(var(--k) * 58); height: calc(var(--k) * 8.5); }
+  .s1 .decal { font-size: calc(var(--k) * 6.4); }
+  .s2 { left: calc(var(--k) * 21); top: calc(var(--k) * 40); width: calc(var(--k) * 29); height: calc(var(--k) * 7.5); }
+  .s2 .decal { font-size: calc(var(--k) * 4.4); }
+  .s3 { left: calc(var(--k) * 5); top: calc(var(--k) * 38.5); width: calc(var(--k) * 13); height: calc(var(--k) * 13); }
+  .s3 .decal { font-size: calc(var(--k) * 2.2); }
+  .s4 { left: calc(var(--k) * 66); top: calc(var(--k) * 40.8); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
+  .s4 .decal { font-size: calc(var(--k) * 1.7); }
+  .s5 { left: calc(var(--k) * 81.5); top: calc(var(--k) * 40.8); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
+  .s5 .decal { font-size: calc(var(--k) * 1.7); }
+  .s6 { left: calc(var(--k) * 66); top: calc(var(--k) * 45.2); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
   .s6 .decal { font-size: calc(var(--k) * 1.6); }
-  .s7 { left: calc(var(--k) * 57.8); top: calc(var(--k) * 52.6); width: calc(var(--k) * 9.8); height: calc(var(--k) * 3.6); }
+  .s7 { left: calc(var(--k) * 81.5); top: calc(var(--k) * 45.2); width: calc(var(--k) * 14.5); height: calc(var(--k) * 3.6); }
   .s7 .decal { font-size: calc(var(--k) * 1.7); }
-  .s8 { left: calc(var(--k) * 71); top: calc(var(--k) * 34.9); width: calc(var(--k) * 10.6); height: calc(var(--k) * 3.6); }
-  .s8 .decal { font-size: calc(var(--k) * 1.6); }
+  .s8 { left: calc(var(--k) * 52); top: calc(var(--k) * 41.5); width: calc(var(--k) * 10.5); height: calc(var(--k) * 4.5); }
+  .s8 .decal { font-size: calc(var(--k) * 1.8); }
+  /* TypeScript and Three.js are cut along the rake; their lettering is set back upright */
+  .stack :is(.s1, .s8) { transform: skewX(calc(var(--rake) * -1)); }
+  .stack :is(.s1, .s8) .decal > span { display: inline-block; transform: skewX(var(--rake)); }
 }
 
 /* ---------- stickers: gloss vinyl and foil that catch the light, drawn as a cel ---------- */
