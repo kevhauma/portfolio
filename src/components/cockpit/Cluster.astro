@@ -1,0 +1,129 @@
+---
+/* The driver's side of the dash, after the real AE86: a wide, shallow hooded binnacle with a flat black face behind
+   a lens. The hood's upper edge throws a hard shadow band across the top of the face. Left to right: temperature and
+   fuel stacked, the speedometer, the tachometer, oil and charge stacked; a row of warning lamps under the big dials.
+   Thin white numerals and ticks, white needles with an orange tip. To the left, an eyeball vent and a knob.
+   The needles are drawn at idle; the deck script turns them. */
+const INK = '#0A1330';
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const P = (cx: number, cy: number, r: number, th: number): [number, number] => [r2(cx + r * Math.sin(th * Math.PI / 180)), r2(cy - r * Math.cos(th * Math.PI / 180))];
+const band = (cx: number, cy: number, r0: number, r1: number, a0: number, a1: number) => {
+  const [ax, ay] = P(cx, cy, r1, a0), [bx, by] = P(cx, cy, r1, a1), [qx, qy] = P(cx, cy, r0, a1), [dx, dy] = P(cx, cy, r0, a0), L = a1 - a0 > 180 ? 1 : 0;
+  return `M${ax} ${ay}A${r1} ${r1} 0 ${L} 1 ${bx} ${by}L${qx} ${qy}A${r0} ${r0} 0 ${L} 0 ${dx} ${dy}Z`;
+};
+const NUM = `font-family="Hanken Grotesk Variable, Hanken Grotesk, sans-serif" font-weight="500" text-anchor="middle"`;
+const MONO = `font-family="JetBrains Mono Variable, JetBrains Mono, monospace" font-weight="600" text-anchor="middle"`;
+const WHITE = '#F2EEE6', RED = '#FF4A36';
+
+type Dial = { id: string; min: number; max: number; a0: number; a1: number; idle: number };
+const dials: Dial[] = [];
+
+/* a needle: white, tapered, the last third orange; it sits in a group turned about the dial centre */
+const needle = (d: Dial, cx: number, cy: number, L: number, w: number) => {
+  const a = d.a0 + (d.idle - d.min) / (d.max - d.min) * (d.a1 - d.a0);
+  return `<g transform="translate(${cx} ${cy})"><g data-needle="${d.id}" data-min="${d.min}" data-max="${d.max}" data-a0="${d.a0}" data-a1="${d.a1}" transform="rotate(${r2(a)})">`
+    + `<path d="M${-w} ${L * .18}L${-w * .4} ${-L}L${w * .4} ${-L}L${w} ${L * .18}Z" fill="${WHITE}" stroke="${INK}" stroke-width="1.2"/>`
+    + `<path d="M${-w * .62} ${-L * .64}L${-w * .4} ${-L}L${w * .4} ${-L}L${w * .62} ${-L * .64}Z" fill="#FF7A1A"/>`
+    + `</g></g>`;
+};
+const cap = (cx: number, cy: number, r: number) =>
+  `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#15161D" stroke="#3A3D4A" stroke-width="1.6"/><path d="M${r2(cx - r * .55)} ${r2(cy - r * .1)}A${r * .55} ${r * .55} 0 0 1 ${r2(cx - r * .1)} ${r2(cy - r * .55)}" stroke="#9AA0B0" stroke-width="1.4" fill="none"/>`;
+
+/* a big dial: a 240° sweep with 0 at the lower left, printed straight on the black face */
+const big = (id: string, cx: number, cy: number, R: number, o: { max: number; major: number; minor: number; red?: number; nums: number[]; fmt?: (v: number) => string; label: string; odo?: string; idle: number; shift?: boolean }) => {
+  const d: Dial = { id, min: 0, max: o.max, a0: -120, a1: 120, idle: o.idle };
+  dials.push(d);
+  const A = (v: number) => -120 + v / o.max * 240;
+  let s = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#1B1D27" stroke="#2C2F3A" stroke-width="1.5"/>`;
+  if (o.red != null) s += `<path d="${band(cx, cy, R - 9, R - 3, A(o.red), 120)}" fill="#E2001A"/>`;
+  for (let v = 0; v <= o.max + 1e-6; v += o.minor) {
+    const maj = Math.abs(v / o.major - Math.round(v / o.major)) < 1e-6, a = A(v);
+    const [x0, y0] = P(cx, cy, R - 3, a), [x1, y1] = P(cx, cy, R - (maj ? 12 : 8), a);
+    s += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${o.red != null && v >= o.red ? RED : WHITE}" stroke-width="${maj ? 1.8 : 1}"/>`;
+  }
+  o.nums.forEach(v => {
+    const [x, y] = P(cx, cy, R - 22, A(v));
+    s += `<text x="${x}" y="${r2(y + 3.6)}" ${NUM} font-size="10.5" fill="${o.red != null && v >= o.red ? RED : WHITE}">${o.fmt ? o.fmt(v) : v}</text>`;
+  });
+  s += `<text x="${cx}" y="${cy + 21}" ${MONO} font-size="6.5" letter-spacing=".08em" fill="#B9BEC6">${o.label}</text>`;
+  if (o.odo) {
+    s += `<rect x="${cx - 22}" y="${cy + 26}" width="44" height="11" fill="#020306" stroke="#2C2F3A" stroke-width="1"/>`;
+    [...o.odo].forEach((c, i) => { s += `<text x="${r2(cx - 17.6 + i * 8.8)}" y="${cy + 34.6}" ${MONO} font-size="8" fill="${i === 4 ? '#FF9A3A' : WHITE}">${c}</text>`; });
+  }
+  if (o.shift) s += `<circle data-shift cx="${cx}" cy="${cy - 30}" r="4" fill="#3A1410" stroke="${INK}" stroke-width="1.2"/>`;
+  s += needle(d, cx, cy, R - 6, 2.4) + cap(cx, cy, 7);
+  return s;
+};
+
+/* a small dial: a 100° sweep across the top, two end marks */
+const small = (id: string, cx: number, cy: number, R: number, lo: string, hi: string, label: string, idle: number, hot = false) => {
+  const d: Dial = { id, min: 0, max: 1, a0: -50, a1: 50, idle };
+  dials.push(d);
+  let s = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#1B1D27" stroke="#2C2F3A" stroke-width="1.2"/>`;
+  for (let k = 0; k <= 4; k++) {
+    const a = -50 + k * 25, [x0, y0] = P(cx, cy, R - 3, a), [x1, y1] = P(cx, cy, R - (k % 2 ? 7 : 10), a);
+    s += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${hot && k === 4 ? RED : WHITE}" stroke-width="${k % 2 ? 1 : 1.6}"/>`;
+  }
+  const [lx, ly] = P(cx, cy, R - 10, -76), [hx, hy] = P(cx, cy, R - 10, 76);
+  s += `<text x="${r2(lx + 2)}" y="${r2(ly + 3)}" ${NUM} font-size="7.5" fill="${WHITE}">${lo}</text>`;
+  s += `<text x="${r2(hx - 2)}" y="${r2(hy + 3)}" ${NUM} font-size="7.5" fill="${hot ? RED : WHITE}">${hi}</text>`;
+  s += `<text x="${cx}" y="${cy + 12}" ${MONO} font-size="5.5" letter-spacing=".08em" fill="#B9BEC6">${label}</text>`;
+  s += needle(d, cx, cy, R - 4, 1.7) + cap(cx, cy, 4);
+  return s;
+};
+
+const gauges = [
+  small('temp', 1048, 390, 24, 'C', 'H', 'TEMP', .42, true),
+  small('fuel', 1048, 462, 24, 'E', 'F', 'FUEL', .72),
+  big('speedo', 1150, 428, 72, { max: 180, major: 20, minor: 10, nums: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180], label: 'km/h', odo: '08623', idle: 0 }),
+  big('tach', 1310, 428, 72, { max: 9000, major: 1000, minor: 500, red: 7500, nums: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(v => v * 1000), fmt: v => String(v / 1000), label: 'x1000 r/min', idle: 880, shift: true }),
+  small('oil', 1398, 390, 22, 'L', 'H', 'OIL', .3),
+  small('volt', 1398, 462, 22, '8', '16', 'VOLT', .55)
+].join('');
+
+/* warning lamps under the big dials, drawn shapes: turn left, high beam, oil, brake (lit red while parked), charge, turn right */
+const lamp = (x: number, body: string, fill: string, extra = '') =>
+  `<rect x="${x}" y="514" width="20" height="13" rx="2.5" fill="#101219" stroke="#4A4E5C" stroke-width="1.2"/><g fill="${fill}" ${extra}>${body}</g>`;
+const lamps = [
+  lamp(1150, '<path d="M1154 520.5L1159.5 516.5V524.5Z M1159.5 519H1166V522H1159.5Z"/>', '#3E8A50'),
+  lamp(1174, '<path d="M1186 516.2A4.3 4.3 0 0 1 1186 524.8Z M1178 517.3H1184V518.5H1178Z M1178 519.9H1184V521.1H1178Z M1178 522.5H1184V523.7H1178Z"/>', '#4A62C8'),
+  lamp(1198, '<path d="M1202 524H1213L1216 518.5H1210L1208 516.5H1205V518.5H1202Z"/>', '#A8742A'),
+  lamp(1222, '<path fill-rule="evenodd" d="M1232 515.8A4.7 4.7 0 1 1 1231.99 515.8ZM1231.2 517.6H1232.8V521.4H1231.2ZM1231.2 522.2H1232.8V523.6H1231.2Z"/>', '#FF3A2E', 'data-brake'),
+  lamp(1246, '<path fill-rule="evenodd" d="M1250 517.5H1262V524.5H1250ZM1252 516H1254.5V517.5H1252ZM1257.5 516H1260V517.5H1257.5ZM1251.8 520.4H1254.6V521.4H1251.8ZM1257.4 520.4H1260.2V521.4H1257.4ZM1258.3 519.5H1259.3V522.3H1258.3Z"/>', '#8A3A3E'),
+  lamp(1270, '<path d="M1286 520.5L1280.5 516.5V524.5Z M1280.5 519H1274V522H1280.5Z"/>', '#3E8A50')
+].join('');
+---
+<svg class="ck-abs ck-cluster" width="1440" height="900" viewBox="0 0 1440 900" aria-hidden="true">
+  <!-- the eyeball vent and the knob between the centre stack and the cluster -->
+  <circle cx="971" cy="389" r="27" fill={INK} />
+  <circle cx="968" cy="386" r="27" fill="#3A3B47" stroke={INK} stroke-width="2.5" />
+  <path d="M948.9 366.9A27 27 0 0 1 987.1 405.1Z" fill="#4C4D5B" />
+  <circle cx="968" cy="386" r="19" fill="#17181F" stroke={INK} stroke-width="2" />
+  <g stroke="#3E404C" stroke-width="2.4"><path d="M952 379H984M950.5 386H985.5M952 393H984" /></g>
+  <rect x="964" y="371" width="8" height="30" rx="2" fill="#5A5C69" stroke={INK} stroke-width="1.5" />
+  <rect x="965" y="372" width="3" height="28" fill="#8D92A3" />
+  <path d="M953 371L959 366L955 376L950 379Z" fill="#fff" opacity=".55" />
+  <circle cx="970.5" cy="466.5" r="19" fill={INK} />
+  <circle cx="968" cy="464" r="19" fill="#2C2D36" stroke={INK} stroke-width="2.5" />
+  <path d="M954.6 450.6A19 19 0 0 1 981.4 477.4Z" fill="#454754" />
+  <circle cx="968" cy="464" r="11" fill="#1C1D25" stroke={INK} stroke-width="1.8" />
+  <rect x="966.6" y="448" width="2.8" height="9" fill="#E6E8EE" />
+  <g fill="#8D92A3"><rect x="944" y="463" width="4" height="2" /><rect x="988" y="463" width="4" height="2" /></g>
+
+  <!-- the hooded binnacle: hood, recessed face, lens -->
+  <path d="M1012 290H1436V560H996V306Q996 290 1012 290Z" fill="#24232D" />
+  <path d="M1012 290H1436V302H1010Q1006 302 1006 306V560H996V306Q996 290 1012 290Z" fill="#3B3848" />
+  <path d="M1016 296H1210" stroke="#57536A" stroke-width="3" />
+  <rect x="1010" y="326" width="418" height="226" rx="3" fill="#22242E" stroke={INK} stroke-width="2.5" />
+  <Fragment set:html={gauges} />
+  <Fragment set:html={lamps} />
+  <!-- the hood's hard shadow across the top of the face, raked with the light from the left -->
+  <path d="M1011.5 327.5H1426.5V373H1022L1011.5 415Z" fill="#020206" opacity=".78" />
+  <path d="M1011.5 327.5H1426.5V352H1017L1011.5 374Z" fill="#020206" opacity=".55" />
+  <!-- one highlight on the lens -->
+  <path d="M1066 356H1080L1052 548H1038Z" fill="#fff" opacity=".07" />
+  <path d="M1086 356H1091L1063 548H1058Z" fill="#fff" opacity=".07" />
+  <path d="M996 560V306Q996 290 1012 290H1436V560" fill="none" stroke={INK} stroke-width="3" />
+  <rect x="996" y="550" width="440" height="12" fill="#2E2F3B" stroke={INK} stroke-width="2.5" />
+  <rect x="1012" y="551" width="200" height="2.5" fill="#4A4B5A" />
+</svg>

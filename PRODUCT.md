@@ -27,7 +27,7 @@ Success: a recruiter gets the essentials within seconds (or via recruiter mode),
 
 ## Positioning
 
-"One person, many interfaces." Each section borrows the interface language of its subject: a code inspector for the intro, a race timing screen for experience, a camera viewfinder for photos, a map for travel, a tour poster for music, and a WLED strip plus a slicer preview on the personal-projects workbench. His real trip archive, real projects and real hobbies make it something a template portfolio could not honestly copy.
+"One person, many interfaces." Each section borrows the interface language of its subject: a code inspector for the intro, a race timing screen for experience, a camera viewfinder for photos, a map for travel, the cassette deck in his AE86 for music, and a WLED strip plus a slicer preview on the personal-projects workbench. His real trip archive, real projects and real hobbies make it something a template portfolio could not honestly copy.
 
 ## Operating Context
 
@@ -66,8 +66,11 @@ Success: a recruiter gets the essentials within seconds (or via recruiter mode),
 - **Navy + orange is rejected**: it reads as Max Verstappen. The palette must be Kevin's own and stay clear of current F1 and MotoGP team liveries. The new palette is **inspired by the Castrol livery** (Castrol red, green and white) adapted with a navy, without any Castrol logo or wordmark. Navy carries the big panels, Castrol red is the signal, Castrol green is the second stripe. Exact values live in `docs/design-direction.md`.
 
 **Decided (2026-10-13)**
-- Section 05 is **Music**, borrowing a **tour poster / setlist**: the concerts and festivals Kevin has been to as tour dates, and what he is listening to as the setlist. Music here means listening and live shows, not playing or producing.
+- ~~Section 05 is **Music**, borrowing a **tour poster / setlist**: the concerts and festivals Kevin has been to as tour dates, and what he is listening to as the setlist. Music here means listening and live shows, not playing or producing.~~ Superseded 2026-10-30.
 - **3D printing moves into the workbench** (06), next to the WLED strip and side projects; its slicer preview stays as planned.
+
+**Decided (2026-10-30)**
+- Section 05 **Music** is **the touge tape**: Kevin's AE86 cabin on a mountain pass, seen from the right-hand driver's seat. His four loves are four handwritten mixtapes in cassette cases on the console: folk & power metal, Eurobeat, J-pop, and the classics (70s–90s rock and pop). Loading one plays it on the deck: its case opens on the track list, and the windshield view, the gauges and a cup of water answer the track. Gig stubs live in the sun visor and the vent. Music still means listening and live shows, not playing.
 
 **Open product decisions**
 - Deploy target.

@@ -1,0 +1,13 @@
+---
+/* One gig stub: a coloured header band, the name, where, and a stamped date. */
+import type { Gig } from '../../data/music';
+interface Props { gig: Gig }
+const { gig } = Astro.props;
+const visor = gig.at === 'visor';
+---
+<div class={`ck-stub ${visor ? 'ck-vs' : 'ck-vt'}`} style={`left:${gig.x}px;--r:${gig.r}deg;--c:${gig.color}`}>
+  <span class="ck-hd">{gig.header}</span>
+  <h3>{gig.name}</h3>
+  {visor ? <><span class="ck-pl">{gig.place}</span><span class="ck-dt">{gig.date}</span></> : <><span class="ck-dt">{gig.date}</span><span class="ck-pl">{gig.place}</span></>}
+  {gig.note && <span class="ck-pn">{gig.note}</span>}
+</div>

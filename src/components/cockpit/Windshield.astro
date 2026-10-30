@@ -1,0 +1,69 @@
+---
+/* The top of the cabin: the glass (the dusk pass at rest; a track's view cuts in over it), the headliner and the
+   A-pillars, the rear-view mirror, and the driver's sun visor with three gig stubs under its strap. */
+import { gigs } from '../../data/music';
+import Stub from './Stub.astro';
+const visor = gigs.filter(g => g.at === 'visor');
+---
+<div class="ck-glass" aria-hidden="true">
+  <div class="ck-pane" data-pane="a">
+    <svg width="1440" height="330" viewBox="0 0 1440 330">
+      <rect width="1440" height="330" fill="#FFD068" />
+      <rect width="1440" height="205" fill="#F49A3A" />
+      <rect width="1440" height="184" fill="#D9583E" />
+      <rect width="1440" height="164" fill="#9A3466" />
+      <rect width="1440" height="138" fill="#5A2168" />
+      <rect width="1440" height="105" fill="#34175A" />
+      <rect width="1440" height="70" fill="#1E1046" />
+      <g fill="#F6E9FF"><circle cx="420" cy="48" r="1.6" /><circle cx="560" cy="62" r="1.2" /><circle cx="930" cy="44" r="1.8" /><circle cx="1010" cy="74" r="1.2" /><circle cx="300" cy="80" r="1.4" /></g>
+      <circle cx="272" cy="198" r="56" fill="#FFC062" />
+      <path d="M216 198A56 56 0 0 1 328 198Z" fill="#FFE29A" />
+      <rect x="200" y="204" width="140" height="4" fill="#F49A3A" />
+      <rect x="200" y="213" width="140" height="6" fill="#F49A3A" />
+      <path d="M0 214L70 196L140 206L206 188L252 203L320 210L380 198L450 212L540 200L620 214L720 206L820 218L1440 222V330H0Z" fill="#7A3264" />
+      <path d="M0 240L50 222L120 232L190 214L260 230L330 224L400 238L480 232L560 246L660 252V330H0Z" fill="#B4455F" />
+      <path d="M0 244L52 227L122 237L192 219L262 235L332 229L402 243L482 237L562 251L662 257V330H0Z" fill="#4A1D52" />
+      <path d="M620 330L690 262L770 232L850 206L940 176L1030 150L1130 124L1240 104L1350 90L1440 86V330Z" fill="#6B2858" />
+      <path d="M626 330L696 266L776 237L856 211L946 181L1036 156L1136 130L1246 110L1356 96L1440 92V330Z" fill="#2E1444" />
+      <path d="M800 330L880 270L1010 222L1180 180L1440 150V330Z" fill="#251038" />
+      <g fill="#1C0B2E">
+        <path d="M1100 136L1110 112L1120 136Z" /><path d="M1124 132L1136 104L1148 132Z" /><path d="M1180 120L1190 98L1200 120Z" />
+        <path d="M1260 106L1272 80L1284 106Z" /><path d="M1290 104L1300 84L1310 104Z" /><path d="M960 176L970 154L980 176Z" /><path d="M984 170L996 146L1008 170Z" />
+      </g>
+      <path d="M220 312C500 278 800 246 1010 188L1032 184C980 226 930 268 900 312Z" fill="#3A2C52" />
+      <path d="M220 312C500 278 800 246 1010 188L1016 187C850 236 640 270 520 312Z" fill="#46365F" />
+      <path d="M570 312C700 286 900 250 1021 186" fill="none" stroke="#F2D27A" stroke-width="3" stroke-dasharray="22 18" />
+      <g fill="#8D82AA">
+        <rect x="319" y="283" width="6" height="15" /><rect x="408" y="273" width="5.5" height="14" /><rect x="499" y="263" width="5" height="13" />
+        <rect x="592" y="253" width="4.5" height="12" /><rect x="686" y="242" width="4" height="11" /><rect x="780" y="230" width="3.5" height="10" />
+        <rect x="874" y="216" width="3" height="9" /><rect x="967" y="201" width="2.5" height="7" /><rect x="1059" y="185" width="2" height="5" />
+      </g>
+      <path d="M232 278C512 248 852 222 1146 160L1150 166C856 232 516 260 236 292Z" fill="#8F84B0" />
+      <path d="M232 278C512 248 852 222 1146 160L1148 163C854 227 514 254 234 285Z" fill="#ECE6F4" />
+    </svg>
+  </div>
+  <div class="ck-pane" data-pane="b"></div>
+  <i class="ck-cut" data-cut></i>
+</div>
+
+<svg class="ck-abs ck-frame-top" width="1440" height="330" viewBox="0 0 1440 330" aria-hidden="true">
+  <defs>
+    <clipPath id="ck-glass-clip"><path d="M126 26H1342L1428 304H34Z" /></clipPath>
+  </defs>
+  <path d="M500 26H548L480 304H432Z" fill="#fff" opacity=".07" />
+  <path d="M566 26H578L510 304H498Z" fill="#fff" opacity=".07" />
+  <path d="M0 0H1440V26H0Z" fill="#24212E" />
+  <path d="M0 22H1440V26H0Z" fill="#33303F" />
+  <path d="M0 0H130L36 304H0Z" fill="#1B1824" />
+  <path d="M126 26L34 304H52L140 26Z" fill="#3A3448" />
+  <path d="M1336 0H1440V304H1428L1342 26Z" fill="#1B1824" />
+  <path d="M1342 26L1428 304H1440V296L1356 26Z" fill="#2A2635" />
+  <path d="M126 26H1342L1428 304M34 304L126 26" fill="none" stroke="#0A1330" stroke-width="3" />
+</svg>
+<div class="ck-abs ck-stalk" aria-hidden="true"></div>
+<div class="ck-abs ck-mirror" data-mirror aria-hidden="true"></div>
+
+<div class="ck-abs ck-rod" aria-hidden="true"></div>
+<div class="ck-abs ck-visor" aria-hidden="true"></div>
+{visor.map(g => <Stub gig={g} />)}
+<div class="ck-abs ck-strap" aria-hidden="true"></div>

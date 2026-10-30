@@ -1,0 +1,45 @@
+---
+/* Everything in the cabin, plainly: the four tapes with both sides, the six gigs, and the placeholder line.
+   For recruiters, phones and anyone who would rather read than sit in the car. */
+import { tapes, gigs, placeholder } from '../../data/music';
+---
+<section class="ck-index" id="music-list" aria-labelledby="ck-idx-title">
+  <h2 id="ck-idx-title">Every tape and every stub</h2>
+  <p class="ck-idx-lede">The same four mixtapes and six gigs as the cabin above, in plain words. Music here means listening and live shows, not playing.</p>
+  {placeholder.on && <p class="ck-idx-tbc"><span class="ph">Placeholder</span> {placeholder.line}</p>}
+
+  <ul class="ck-tapes">
+    {tapes.map(t => (
+      <li id={`tape-${t.id}`} style={`--acc:${t.accent}`}>
+        <div class="ck-tape-h">
+          <h3>{t.name}</h3>
+          <p class="ck-tape-line">{t.line}</p>
+          <p class="ck-tape-meta">Tape {t.no} · {t.length}{t.foot && <> · {t.foot}</>}</p>
+        </div>
+        <div class="ck-tape-sides">
+          {[0, 1].map(side => (
+            <div>
+              <h4>Side {side ? 'B' : 'A'}</h4>
+              <ol>{t.tracks.slice(side * 4, side * 4 + 4).map(k => <li><span class="ck-tt">{k.title}</span> <span class="ck-ta">{k.artist}</span></li>)}</ol>
+            </div>
+          ))}
+        </div>
+        <button class="ck-go" type="button" data-go={t.id} aria-label={`Play the ${t.name} tape in the car`}>
+          <svg viewBox="0 0 10 12" aria-hidden="true"><path d="M1 1l8 5-8 5z" /></svg>Play it in the car
+        </button>
+      </li>
+    ))}
+  </ul>
+
+  <h3 class="ck-gigs-h">Gigs</h3>
+  <ul class="ck-gigs">
+    {gigs.map(g => (
+      <li style={`--c:${g.color}`}>
+        <span class="ck-gig-n">{g.name}</span>
+        <span class="ck-gig-p">{g.place}</span>
+        <span class="ck-gig-d">{g.date}</span>
+        <span class="ck-gig-w">{g.header}, in the {g.at === 'visor' ? 'sun visor' : 'passenger vent'}</span>
+      </li>
+    ))}
+  </ul>
+</section>

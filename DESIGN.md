@@ -127,7 +127,7 @@ Every page is a sheet in a race-livery decal kit. The ground is a white backing 
 
 Lettering is all Sakana, a single-weight racing face slanted onto the rake, the way race numbers and sponsor names are cut. Body copy is Hanken Grotesk, set plainly; JetBrains Mono is reserved for what a plotter or a compiler would print (labels, spec terms, the kit footer). Density is poster-scale on the intro sheet and editorial on stub and kit panels. Two geometric laws: the rake and the swoop. Lettering, LEDs, the page wipe, the masking tape and the kit ladder lean at 14 degrees (tan 0.2493); the livery stripes do not rule straight but swoop, as one constant-width ribbon bent into an S with a big red disc setting behind it (the sunset swoop, after the Castrol Celica GT-Four and the GT86 swoop poster).
 
-The kit is drawn like the workbench garage, as a late-90s anime cel: every object has a heavy ink line that thickens on its shade side, paint is flat and steps from light to shade in hard bands, a lit surface carries one painted highlight, and the low sun setting on the left (the swoop's disc) throws every object's shadow long to the right, along the rake. Each sheet keeps its own world and palette (the decal sheet, the pit wall, the walnut desk); the cel is how all of them are drawn.
+The kit is drawn like the workbench garage, as a late-90s anime cel: every object has a heavy ink line that thickens on its shade side, paint is flat and steps from light to shade in hard bands, a lit surface carries one painted highlight, and the low sun setting on the left (the swoop's disc) throws every object's shadow long to the right, along the rake. Each sheet keeps its own world and palette (the decal sheet, the pit wall, the walnut desk, the AE86 cabin at dusk); the cel is how all of them are drawn.
 
 Motion is earned and visitor-owned: one arrival per visit (raw HTML, masking tape snaps at the rake, paint fills), then only visitor-triggered motion. Page switches pass through a raked paint wipe under 600ms. Reduced motion makes all of it instant. A recruiter mode (the pit limiter) replaces the livery with one plain, complete page.
 
@@ -177,6 +177,7 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 **Display Font:** Sakana, self-hosted from `public/fonts/sakana.woff` (Hanken Grotesk fallback, which also supplies the middle dot Sakana lacks). 1001fonts personal-use licence.
 **Body Font:** Hanken Grotesk Variable (with system-ui)
 **Label/Mono Font:** JetBrains Mono Variable (with ui-monospace)
+**Sheet accent faces:** Dela Gothic One for the workbench garage's own titles (`--g-title`); Kalam 400/700 (`@fontsource/kalam`, Hanken and cursive fallback, `--ck-hand`) for the handwriting on the music cabin's paper.
 
 **Character:** Sakana is one cut, one weight, with its own 8-degree lean. Display rules ask for italic and the browser adds a 14-degree oblique on top (`font-synthesis: style` on the root), so lettering sits on the rake; weight is never synthesised (no `weight` in `font-synthesis`), so 800/900 in the CSS render Sakana's true weight. The `@font-face` overrides Sakana's vertical metrics (ascent 86%, descent 14%) so uppercase lettering centres in any line box without padding hacks, and centred italic lettering is moved back by `--lean` (.15em, the oblique's overhang) so the ink, not the advance box, sits centred. A sheet of decals reads as one sponsor set; variety comes from size and colour. Hanken Grotesk is the quiet reading face beside it.
 
@@ -190,7 +191,9 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 - **Mono** (JetBrains 600, 0.6875rem, letter-spacing 0.03-0.04em, uppercase for print): stack label, kit footer, spec terms.
 
 ### Named Rules
-**The One Family Rule.** All lettering (names, numbers, titles, switches, stack decals) is Sakana; variety comes from size, colour and case, never from a second display face.
+**The One Family Rule.** All livery lettering (names, numbers, titles, switches, stack decals, the sheet sticker, the kit panel, the fan, the plain-list headings) is Sakana; variety comes from size, colour and case, never from a second display face. A sheet's own world may carry one accent face, and only on the objects that belong to that world: Dela Gothic One on the garage's titles, Kalam on the cabin's J-cards, cassette labels and pencilled notes. An accent face never sets livery chrome or a sheet's page title.
+
+**The Hand Rule.** Kalam is handwriting, so it appears only where a person would write with a pen: the tape names and track lists on the J-cards, the cassette labels, the side letter, the pencilled notes on stubs, and each tape's one-line note in the plain list. Printed matter on the same paper (artist names, ticket headers, the case length) stays Hanken.
 
 **The Print Rule.** Mono appears only where a machine would print: component names, dimensions and plate footers. It is never a decorative label above a heading.
 
@@ -202,11 +205,13 @@ The intro sheet is a plotted plate measured in a sheet unit, k = min(1vw, 1.62sv
 
 Every sheet ends on the sunset swoop: sheets pad their bottom by the drop (`--drop`, 15vw), and the navy kit panel overlaps that band with an SVG top edge in a 1000 by 150 viewBox (uniform scale, since the drop is a share of the width): an S that runs low on the left and high on the right, the ribbon under it and the disc setting behind it on the left. Stub sheets add only 48-72px below their content, so the swoop sits close under it. Content containers cap at 1312px with 5vw gutters (16px on phones); the pit limiter caps at 46rem.
 
+The music sheet is a fixed scene rather than a plate: the cabin is authored in a 1440 by 900 frame and scaled as one piece by `--s` (the lesser of the container width and 160svh, over 1440px), so the first screen is the whole cabin; the letterbox around it is painted as more cabin (pillars, dash pad, dash), never page ground. At 820px and below a 72px band carries the sheet sticker, the frame scales to fit the deck and all four cases (`--s` clamped .45 to 1) and the visitor looks round with native sideways scroll, with a one-line hint and the lede under the stage. Under the cabin, the plain list (every tape and every gig) follows the site container (1312px, 5vw gutters, 16px on phones) and the site's ground and ink, day and night, and ends on the swoop like every sheet.
+
 Spacing runs on an 8px unit with 4px half-steps for tight pairs: 4, 8, 12, 16, 24, 40 and 64px are the reused steps; large section gaps are fluid clamps (72-128px). Fixed chrome sits 16px from the viewport edges (12px for switches on phones). Breakpoints: 420, 640, 760 (bubble moves bottom-right), 820/821 (plate vs stacked).
 
 ## Elevation & Depth: the Cel
 
-Every built sheet (intro, experience, projects, workbench) and the shared chrome are drawn as an anime cel, after the garage (`src/styles/garage.css`, `src/garage/toon.ts`). The stub sheets keep flat, unshaded decals until they are painted.
+Every built sheet (intro, experience, projects, workbench, music) and the shared chrome are drawn as an anime cel, after the garage (`src/styles/garage.css`, `src/garage/toon.ts`). The stub sheets keep flat, unshaded decals until they are painted.
 
 - **Weighted ink line.** Every object has a heavy dark outline that runs thicker on its shade side, down and right: `box-shadow: var(--cel-ink-line)` (a 3px ring plus the same ring nudged 1.5px down and right). Clip-path shapes (kit ladder links, fan panels, the monitor body, the pens) can't carry a box-shadow, so their parent takes `filter: var(--cel-outline)`, the same weighted line in zero-blur drop shadows.
 - **Bands, not ramps.** Light steps into shade in two or three flat bands: gradients with doubled stop positions (`a 0 40%, b 40% 72%, c 72%`), never a smooth ramp. Metal, cloth, carbon, concrete, sky and paper all follow this.
@@ -255,6 +260,18 @@ Die-cut vinyl in its slot, the unit of the whole system.
 ### Stub Sheet
 A sheet masked off but not yet painted: a headline decal, a race-number decal, and a large text decal (the paint shop) listing what will be painted, with skewed bar bullets. Same vinyl and cut line rules as the intro.
 
+### Cabin (sheet 05, signature)
+Kevin's AE86 at dusk from the right-hand driver's seat (`src/components/cockpit/`, `src/styles/cockpit.css`, `src/cockpit/`). Its own palette, drawn in the shared cel with the shared ink `#0A1330`, the weighted ink line (`3px` plus `1.5px` down and right) and a raked cast `16px 4px` in near-black at 46% (cases `15px 3.7px`, small chips `6-8px 1.5-2px`).
+- **Cabin plastics:** dark plum-greys in hard bands, `#17151E` ground through `#1B1824`, `#24212E`, `#2C2A33`, `#37343F`, `#3A3346`, `#45414F`. Cabin text is `#EDE6F2`. The cabin stays dark in both themes; only the plain list under it takes night race.
+- **Windshield:** a background painting with no ink lines, hard sky bands per tape (dusk purples to `#FFD068` gold), horizon, road. The rear-view mirror repeats the current sky in three bands.
+- **Deck:** a pull-out cassette head unit. The display is an amber VFD (`#FFB547` lit, `#3B2810` unlit segments, on `#120C05`) in JetBrains Mono; its track rows become buttons once a tape is in (current row full amber with a play triangle). Keys are two-band grey caps with a 4px ink underside that press 3px; Eject is the red cap.
+- **Gauges:** white numerals (Hanken 500) on black, mono labels, a Castrol red zone; needles settle with the ease curve.
+- **Paper:** cream `#F4EFE2` with a `#E4DCC8` fold band; ink on paper is `#1A1A2A`, pencil `#5E574A`. J-cards carry Kalam, a 4px accent spine in the tape's colour and a highlighter swipe behind the title. Gig stubs carry a coloured header band (Hanken 800, tracked caps, the printed ticket header), the act in Hanken 750, and a red stamped date box rotated -4deg.
+- **Mixtape case:** a closed clear case (a pale translucent lid with one raked glint bar) over a shell in the tape's colours; closed, only the J-card front reads. Hover lifts the case 4px. Focus is a dashed amber outline (`3px`, offset 7px); everywhere in the cabin focus is dashed amber.
+- **Sheet sticker:** the one vinyl decal in the cabin, the "05 Music" sticker on the dash: white in two bands, navy Sakana with the cel ink stroke, red number, a red-over-green stripe along its foot, tilted -2.5deg.
+- **Loading a case** (the sheet's signature motion): the lid swings open (`.62s`, ease), the J-card unfolds over the console, the tape flies into the deck slot (840ms in, 780ms out), the windshield cuts to the track's view behind a 14° raked edge (660ms, ease), the needles settle (1100ms, staggered 240ms) and the water in the cup ripples once. Eject reverses it. Nothing moves until the visitor picks; reduced motion cuts every step; nothing makes a sound.
+- **Plain list:** each tape as a Sakana heading over a raked accent bar, its Kalam line, a mono meta line and two sides of tracks; a navy Sakana "Play it in the car" button (ink line plus a short rake shadow that lengthens on hover, red on hover) sends the visitor back up into the cabin with that tape loaded. Gigs are rows with a skewed colour tab.
+
 ### Page Wipe and Arrival
 - **Wipe:** every sheet switch reveals the new page through a raked clip with a red/navy/green stripe band crossing at the rake (0.52s, ease out).
 - **Arrival:** once per visit on the intro: the unstyled page, masking-tape strips snapping in at the rake, then the livery paints in.
@@ -275,6 +292,6 @@ A sheet masked off but not yet painted: a headline decal, a race-number decal, a
 - **Don't** use blurred shadows, soft glows or smooth gradient ramps on drawn things; the cel steps in hard bands and casts hard shadows.
 - **Don't** put noise textures on drawn surfaces; noise is only for print grain (the car on the liner).
 - **Don't** give the liner, the cut lines or the car any sheen; they are printed matte.
-- **Don't** introduce a second display face or set display lettering in Hanken or mono.
+- **Don't** introduce a second display face for livery lettering or set display lettering in Hanken or mono; a sheet's accent face (Dela Gothic One, Kalam) stays on its own world's objects.
 - **Don't** use mono as a decorative kicker above headings; it is print, not a label system.
 - **Don't** animate anything on load beyond the single per-visit arrival.

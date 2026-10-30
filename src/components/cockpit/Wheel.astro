@@ -1,0 +1,59 @@
+---
+/* The steering wheel, after the real AE86: three wide, flat, brushed-silver spokes (two out to the sides, dipping
+   slightly, one straight down), a very thick black leather rim with stitching and one highlight streak, and a big
+   dark pad over the hub with small gold lettering. Centre 1215,790; cropped by the frame's bottom and right edges. */
+const cx = 1215, cy = 790, RO = 322, RI = 280;
+const ring = (ro: number, ri: number, x = cx, y = cy) => `M${x - ro} ${y}A${ro} ${ro} 0 1 0 ${x + ro} ${y}A${ro} ${ro} 0 1 0 ${x - ro} ${y}ZM${x - ri} ${y}A${ri} ${ri} 0 1 1 ${x + ri} ${y}A${ri} ${ri} 0 1 1 ${x - ri} ${y}Z`;
+const r2 = (n: number) => Math.round(n * 10) / 10;
+const P = (r: number, th: number) => `${r2(cx + r * Math.sin(th * Math.PI / 180))} ${r2(cy - r * Math.cos(th * Math.PI / 180))}`;
+/* an arc band between two radii, angles clockwise from the top */
+const arcBand = (r0: number, r1: number, a0: number, a1: number) => `M${P(r1, a0)}A${r1} ${r1} 0 0 1 ${P(r1, a1)}L${P(r0, a1)}A${r0} ${r0} 0 0 0 ${P(r0, a0)}Z`;
+const pad = 'M1122 710H1308Q1342 710 1338 744L1318 846Q1312 874 1284 874H1146Q1118 874 1112 846L1092 744Q1088 710 1122 710Z';
+---
+<svg class="ck-abs ck-wheel" width="1440" height="900" viewBox="0 0 1440 900" aria-hidden="true">
+  <!-- the long shadow, raked right -->
+  <g transform="translate(16 4)" fill="rgb(6 3 16/.42)">
+    <path fill-rule="evenodd" d={ring(RO, RI)} />
+    <path d="M1215 760L935 792V838L1215 826Z" /><path d="M1215 760L1495 792V838L1215 826Z" /><path d={pad} />
+  </g>
+
+  <!-- side spokes: wide flat brushed metal, lit top band, shade bottom band, dipping a little toward the rim -->
+  <path d="M1215 760L935 794V838L1215 826Z" fill="#8C93A3" />
+  <path d="M1215 760L935 794V814L1215 792Z" fill="#D3D8E1" />
+  <path d="M1215 760L1495 794V838L1215 826Z" fill="#7E8596" />
+  <path d="M1215 760L1495 794V814L1215 792Z" fill="#B9BFCB" />
+  <g stroke-width="1.2" fill="none">
+    <path d="M1080 783L960 798M1070 790L950 804" stroke="#BCC2CD" />
+    <path d="M1080 812L960 824M1060 820L950 830" stroke="#7A8192" />
+    <path d="M1350 783L1440 794M1360 790L1440 800" stroke="#A4AAB7" />
+    <path d="M1350 812L1440 821" stroke="#6E7586" />
+  </g>
+  <path d="M1215 760L935 794V838L1215 826M1215 760L1495 794V838L1215 826" fill="none" stroke="#0A1330" stroke-width="2.5" />
+  <path d="M935 839.5L1215 827.5L1495 839.5" fill="none" stroke="#0A1330" stroke-width="2" />
+  <path d="M968 793L1046 784L1042 789L964 798Z" fill="#fff" opacity=".85" />
+
+  <!-- the bottom spoke, straight down -->
+  <path d="M1168 846H1262L1254 904H1176Z" fill="#7E8596" />
+  <path d="M1168 846H1215V904H1176Z" fill="#C3C8D2" />
+  <path d="M1192 852V900M1200 852V900" stroke="#D8DDE5" stroke-width="1.2" />
+  <path d="M1168 846L1176 904M1262 846L1254 904" fill="none" stroke="#0A1330" stroke-width="2.5" />
+
+  <!-- the rim: thick black leather in three hard bands, stitching, one highlight streak -->
+  <path fill-rule="evenodd" d={ring(RO, RI)} fill="#1C1A21" />
+  <path d={arcBand(RI + 2, RO, -118, 20)} fill="#2C2933" />
+  <path d={arcBand(RI, RO - 26, 24, 80)} fill="#121016" />
+  <circle cx={cx} cy={cy} r={RI + 7} fill="none" stroke="#4E4958" stroke-width="1.4" stroke-dasharray="4 5" />
+  <path d={`M${P(RO - 12, -62)}A${RO - 12} ${RO - 12} 0 0 1 ${P(RO - 12, -36)}`} fill="none" stroke="#F4ECF6" stroke-width="5" stroke-linecap="butt" />
+  <circle cx={cx} cy={cy} r={RO} fill="none" stroke="#0A1330" stroke-width="3" />
+  <circle cx={cx} cy={cy} r={RI} fill="none" stroke="#0A1330" stroke-width="3" />
+  <path d={`M${P(RO, 30)}A${RO} ${RO} 0 0 1 ${P(RO, 70)}`} fill="none" stroke="#0A1330" stroke-width="6" />
+
+  <!-- the pad over the hub: a soft rounded trapezoid, small gold lettering, no maker's mark -->
+  <path d={pad} fill="#0A1330" transform="translate(3 3)" />
+  <path d={pad} fill="#34333D" />
+  <path d="M1122 710H1308Q1342 710 1338 744L1335 760H1095L1092 744Q1088 710 1122 710Z" fill="#45444F" />
+  <path d="M1113 850H1317Q1310 874 1284 874H1146Q1120 874 1113 850Z" fill="#26252D" />
+  <path d={pad} fill="none" stroke="#0A1330" stroke-width="2.5" />
+  <path d="M1106 734Q1110 720 1128 718L1124 726Q1114 728 1112 738Z" fill="#fff" opacity=".5" />
+  <text x="1215" y="800" text-anchor="middle" font-family="Hanken Grotesk Variable, Hanken Grotesk, sans-serif" font-weight="700" font-size="13" letter-spacing="2.2" fill="#D9AE52">TWIN CAM 23</text>
+</svg>

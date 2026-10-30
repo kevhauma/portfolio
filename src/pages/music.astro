@@ -1,9 +1,17 @@
 ---
-import StubSheet from '../components/StubSheet.astro';
+/* 05 Music: the touge tape. Kevin's AE86 cabin on a mountain pass at dusk, from the right-hand driver's seat.
+   Four mixtapes in their cases on the console; load one and the deck plays it, the windshield cuts to the track's
+   view, the needles settle and the cup of water ripples. Gig stubs ride in the visor and the vent.
+   Everything in the cabin is listed plainly under it. */
+import Livery from '../layouts/Livery.astro';
+import Cockpit from '../components/cockpit/Cockpit.astro';
+import Kit from '../components/Kit.astro';
+import '@fontsource/kalam/latin-400.css';
+import '@fontsource/kalam/latin-700.css';
+import '../styles/sheet.css';
+import '../styles/cockpit.css';
 ---
-<StubSheet sec="05" description="Kevin's music, shown as a tour poster: the gigs he went to and what is on rotation."
-  lede="A tour poster: the concerts and festivals Kevin has been to run down it as tour dates, and what is on rotation is the setlist."
-  plans={[
-    'Real gigs, dates and venues, once the list is in.',
-    'The setlist: what is on repeat right now, from his own listening history.'
-  ]} />
+<Livery title="Music · Kevin" description="Kevin's music as four handwritten mixtapes in his AE86 at dusk: folk and power metal, Eurobeat, J-pop and the classics, plus the gigs he has been to." sec="05">
+  <Cockpit />
+  <Kit current="05" heading="Pull over, pick another sheet." />
+</Livery>

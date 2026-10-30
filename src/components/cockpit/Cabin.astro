@@ -1,0 +1,144 @@
+---
+/* The dash and the console, flat cel bands with ink #0A1330: the dash top pad, the passenger side (the sheet's
+   sticker, the vent with three gig stubs, the glovebox lid with the lede), the centre stack behind the deck and the
+   climate strip, the console with the gear lever and a cup of water, and the knee panel and column under the cluster. */
+import { gigs, lede, placeholder } from '../../data/music';
+import Stub from './Stub.astro';
+const vent = gigs.filter(g => g.at === 'vent');
+---
+<svg class="ck-abs ck-cabin" width="1440" height="900" viewBox="0 0 1440 900" aria-hidden="true">
+  <path d="M0 302Q720 280 1440 302V900H0Z" fill="#1E1F28" />
+  <!-- dash top pad: lit top strip, body, shade lip; the low sun spills warm across it from the left in two hard steps -->
+  <path d="M0 302Q720 280 1440 302V336Q720 316 0 336Z" fill="#3A3346" />
+  <path d="M0 302Q720 280 1440 302V311Q720 290 0 311Z" fill="#4A4258" />
+  <path d="M0 327Q720 307 1440 327V336Q720 316 0 336Z" fill="#2C2838" />
+  <path d="M0 303Q300 293 620 289L611 325Q300 327 0 335Z" fill="#6A3A4A" />
+  <path d="M0 304Q170 298 340 294L331 328Q160 330 0 333Z" fill="#8E4A52" />
+  <path d="M0 305Q90 302 170 300L163 329Q80 331 0 332Z" fill="#B0605A" />
+  <path d="M0 336Q720 316 1440 336V344Q720 324 0 344Z" fill="#191A22" />
+  <path d="M0 302Q720 280 1440 302" fill="none" stroke="#0A1330" stroke-width="3" />
+  <path d="M120 306Q300 298 470 295L466 300Q300 303 118 311Z" fill="#fff" opacity=".22" />
+
+  <path d="M0 344Q200 337 392 334V794H0Z" fill="#24232E" />
+  <path d="M0 344Q200 337 392 334V346Q200 349 0 356Z" fill="#17161E" />
+  <path d="M0 356Q200 349 392 346V356Q200 359 0 366Z" fill="#2F2D3A" />
+  <path d="M0 700H392V794H0Z" fill="#1F1E28" />
+  <path d="M0 794H392" stroke="#0A1330" stroke-width="3" />
+  <path d="M0 796H392V900H0Z" fill="#111117" />
+  <path d="M0 796H392V808H0Z" fill="#191920" />
+  <rect x="27" y="593" width="362" height="190" rx="6" fill="#0A1330" />
+  <rect x="24" y="590" width="362" height="190" rx="6" fill="#2F2E3A" />
+  <path d="M30 590H380Q386 590 386 596V604H24V596Q24 590 30 590Z" fill="#433F50" />
+  <path d="M24 676H386V742H24Z" fill="#2B2A36" />
+  <path d="M24 742H386V774Q386 780 380 780H30Q24 780 24 774Z" fill="#232230" />
+  <rect x="24" y="590" width="362" height="190" rx="6" fill="none" stroke="#0A1330" stroke-width="3" />
+  <rect x="172" y="592" width="66" height="9" rx="2" fill="#8D92A3" stroke="#0A1330" stroke-width="2" />
+  <rect x="174" y="593" width="62" height="3" fill="#E6E8EE" />
+  <path d="M60 778H360" stroke="#3E3C4C" stroke-width="2" stroke-dasharray="5 5" />
+
+  <path d="M392 330H938V600H392Z" fill="#1A1B23" />
+  <path d="M392 330H404V600H392Z" fill="#2B2C38" />
+  <path d="M392 330V600M938 330V600" stroke="#0A1330" stroke-width="3" />
+  <rect x="418" y="560" width="494" height="32" rx="3" fill="#2A2C37" stroke="#0A1330" stroke-width="2.5" />
+  <rect x="418" y="560" width="494" height="6" rx="2" fill="#383A47" />
+  <g fill="#0A0B10"><rect x="446" y="573" width="128" height="4" /><rect x="600" y="573" width="128" height="4" /><rect x="754" y="573" width="128" height="4" /></g>
+  <g stroke="#0A1330" stroke-width="1.5"><rect x="482" y="567" width="14" height="16" fill="#8D92A3" /><rect x="684" y="567" width="14" height="16" fill="#8D92A3" /><rect x="790" y="567" width="14" height="16" fill="#8D92A3" /></g>
+  <g fill="#D4D8E0"><rect x="483" y="568" width="12" height="6" /><rect x="685" y="568" width="12" height="6" /><rect x="791" y="568" width="12" height="6" /></g>
+  <g font-family="Hanken Grotesk Variable, Hanken Grotesk, sans-serif" font-size="7.5" font-weight="800" letter-spacing=".1em" fill="#A3A8BA"><text x="446" y="589">TEMP</text><text x="600" y="589">FAN</text><text x="754" y="589">AIR</text></g>
+
+  <path d="M392 600H938L996 900H236V810L392 778Z" fill="#282936" />
+  <path d="M392 600H412V776L392 778Z" fill="#363746" />
+  <path d="M236 810L392 778V792L236 824Z" fill="#363746" />
+  <path d="M902 600H938L996 900H958Z" fill="#1C1D26" />
+  <path d="M392 600H938V612H392Z" fill="#33343F" />
+  <path d="M236 842H985L996 900H236Z" fill="#22232E" />
+  <path d="M412 612H600L580 690H412Z" fill="#2D2D3B" />
+  <path d="M424 616V768M914 616L966 900" stroke="#4C4D5E" stroke-width="2" stroke-dasharray="7 5" />
+  <!-- hard raked casts: the deck and the climate strip throw their shadows right along the rake -->
+  <path d="M920 330L936 334V560H416L400 556H920Z" fill="rgb(6 3 16/.42)" />
+  <path d="M912 560L928 564V596H434L418 592H912Z" fill="rgb(6 3 16/.36)" />
+  <path d="M392 600H938L996 900M392 600V778L236 810V900" fill="none" stroke="#0A1330" stroke-width="3" />
+  <rect x="440" y="624" width="132" height="32" rx="3" fill="#34364A" stroke="#0A1330" stroke-width="2.5" />
+  <rect x="441" y="625" width="130" height="6" fill="#4A4D63" />
+  <rect x="492" y="646" width="28" height="5" fill="#8D92A3" stroke="#0A1330" stroke-width="1.5" />
+  <path d="M572 627L580 629V658H448L440 656H572Z" fill="rgb(6 3 16/.4)" />
+  <!-- cigarette lighter -->
+  <circle cx="620" cy="642" r="15" fill="rgb(6 3 16/.4)" transform="translate(6 1.5)" />
+  <circle cx="620" cy="642" r="15" fill="#4A4C5C" stroke="#0A1330" stroke-width="2.5" />
+  <path d="M609.4 631.4A15 15 0 0 1 630.6 652.6Z" fill="#6A6D7E" />
+  <circle cx="620" cy="642" r="9" fill="#1A1B22" stroke="#0A1330" stroke-width="2" />
+  <circle cx="620" cy="642" r="4" fill="#8D92A3" />
+  <path d="M609 636L613 632L612 638Z" fill="#fff" opacity=".6" />
+  <!-- hazard switch -->
+  <rect x="662" y="628" width="48" height="30" rx="3" fill="rgb(6 3 16/.4)" transform="translate(6 1.5)" />
+  <rect x="662" y="628" width="48" height="30" rx="3" fill="#2A2C37" stroke="#0A1330" stroke-width="2.5" />
+  <rect x="671" y="633" width="30" height="20" rx="2" fill="#C3001A" stroke="#0A1330" stroke-width="2" />
+  <rect x="672" y="634" width="28" height="8" fill="#F23A4C" />
+  <path d="M686 637L694 650H678Z" fill="none" stroke="#F7F8FA" stroke-width="1.8" stroke-linejoin="round" />
+  <!-- the coin tray under them -->
+  <path d="M446 684H720L712 760H454Z" fill="rgb(6 3 16/.4)" transform="translate(8 2)" />
+  <path d="M446 684H720L712 760H454Z" fill="#15161D" stroke="#0A1330" stroke-width="2.5" />
+  <path d="M446 684H720L719 693H447Z" fill="#3A3B48" />
+  <path d="M447 693H719L717 712H496L452 740Z" fill="#0C0C11" />
+  <g fill="#23242E" stroke="#0A1330" stroke-width="1.5"><rect x="520" y="722" width="40" height="22" rx="10" /><rect x="574" y="722" width="40" height="22" rx="10" /><rect x="628" y="722" width="40" height="22" rx="10" /></g>
+  <path d="M526 726H540" stroke="#4A4C5C" stroke-width="2" /><path d="M580 726H594" stroke="#4A4C5C" stroke-width="2" /><path d="M634 726H648" stroke="#4A4C5C" stroke-width="2" />
+
+  <path d="M938 552H1440V900H938Z" fill="#1A1B22" />
+  <path d="M1168 596H1262L1286 770H1144Z" fill="#23242D" stroke="#0A1330" stroke-width="2.5" />
+  <path d="M1168 596H1184L1162 770H1144Z" fill="#33343F" />
+  <path d="M1170 640L1086 624L1082 635L1170 654Z" fill="#30313C" stroke="#0A1330" stroke-width="2" />
+  <circle cx="1084" cy="629" r="7" fill="#3E3F4C" stroke="#0A1330" stroke-width="2" />
+  <path d="M1260 640L1346 624L1350 635L1260 654Z" fill="#26272F" stroke="#0A1330" stroke-width="2" />
+  <circle cx="1348" cy="629" r="7" fill="#30313C" stroke="#0A1330" stroke-width="2" />
+
+  <g transform="translate(16 4)" fill="rgb(6 3 16/.42)"><path d="M818 722Q824 690 850 652H866Q890 690 894 722Z" /><circle cx="860" cy="612" r="28" /></g>
+  <ellipse cx="856" cy="724" rx="42" ry="13" fill="#121218" stroke="#0A1330" stroke-width="2.5" />
+  <path d="M818 722Q824 690 850 652H866Q890 690 894 722Z" fill="#26272F" />
+  <path d="M818 722Q824 690 850 652H856Q836 690 834 722Z" fill="#383944" />
+  <path d="M826 712Q856 702 888 712M834 694Q858 686 882 694M842 676Q858 670 874 676M848 662Q858 658 868 662" fill="none" stroke="#15161C" stroke-width="2" />
+  <path d="M828 708Q840 703 852 702M836 690Q846 686 856 685M844 673Q851 670 858 669" fill="none" stroke="#4A4B58" stroke-width="1.5" />
+  <path d="M818 722Q824 690 850 652H866Q890 690 894 722" fill="none" stroke="#0A1330" stroke-width="2.5" />
+  <rect x="853" y="626" width="10" height="30" fill="#8D92A3" stroke="#0A1330" stroke-width="2" />
+  <rect x="854" y="627" width="4" height="28" fill="#D4D8E0" />
+  <circle cx="862.5" cy="614.5" r="28" fill="#0A1330" />
+  <circle cx="860" cy="612" r="28" fill="#16161C" stroke="#0A1330" stroke-width="2.5" />
+  <path d="M840.2 631.8A28 28 0 0 1 879.8 592.2Z" fill="#2A2A35" />
+  <path d="M848 600V624M860 600V624M872 600V624M848 612H872" stroke="#F2EEE6" stroke-width="1.8" fill="none" />
+  <g font-family="Hanken Grotesk Variable, Hanken Grotesk, sans-serif" font-size="7" font-weight="800" fill="#F2EEE6" text-anchor="middle"><text x="848" y="597">1</text><text x="860" y="597">3</text><text x="872" y="597">5</text><text x="848" y="633">2</text><text x="860" y="633">4</text><text x="872" y="633">R</text></g>
+  <path d="M840 598L849 591L845 603L837 608Z" fill="#fff" opacity=".8" />
+
+  <ellipse cx="790" cy="770" rx="46" ry="16" fill="#4A4C5C" stroke="#0A1330" stroke-width="2.5" />
+  <ellipse cx="790" cy="772" rx="38" ry="12" fill="#09090E" />
+  <g transform="translate(16 4)" fill="rgb(6 3 16/.38)"><path d="M752 680L760 768A30 9 0 0 0 820 768L828 680Z" /></g>
+  <path d="M752 680L760 768A30 9 0 0 0 820 768L828 680Z" fill="#9FB4CE" opacity=".2" />
+  <path d="M755 704L760.5 768A29.5 8.5 0 0 0 819.5 768L825 704Z" fill="#5A8CC0" opacity=".55" />
+  <path d="M806 704H825L819.5 768L808 775Z" fill="#2E5A8E" opacity=".5" />
+  <ellipse cx="790" cy="704" rx="35" ry="10" fill="#CDE6F8" />
+  <path d="M755 704A35 10 0 0 0 825 704A35 6 0 0 1 755 704Z" fill="#94C2EA" />
+  <ellipse class="ck-rip" data-rip cx="790" cy="704" rx="24" ry="6.6" fill="none" stroke="#FFFFFF" stroke-width="1.8" />
+  <ellipse class="ck-rip" data-rip cx="790" cy="704" rx="24" ry="6.6" fill="none" stroke="#FFFFFF" stroke-width="1.4" />
+  <ellipse cx="790" cy="680" rx="35" ry="9.5" fill="none" stroke="#DDE8F4" stroke-width="1.5" />
+  <ellipse cx="790" cy="680" rx="38" ry="11" fill="none" stroke="#0A1330" stroke-width="2.5" />
+  <path d="M752 680L760 768A30 9 0 0 0 820 768L828 680" fill="none" stroke="#0A1330" stroke-width="2.5" />
+  <path d="M829 681L821 769" stroke="#0A1330" stroke-width="4" />
+  <path d="M762 690H770L776 760H768Z" fill="#fff" opacity=".75" />
+</svg>
+
+<div class="ck-abs ck-sticker"><span class="ck-no ck-ink" aria-hidden="true">05</span><h1 class="ck-ink">Music</h1></div>
+
+<div class="ck-abs ck-ventback" aria-hidden="true"></div>
+{vent.map(g => <Stub gig={g} />)}
+<svg class="ck-abs ck-ventfront" width="344" height="70" viewBox="0 0 344 70" aria-hidden="true">
+  <rect x="1.5" y="1.5" width="341" height="67" rx="4" fill="#0C0C11" />
+  <g stroke="#0A1330" stroke-width="2.5">
+    <rect x="8" y="8" width="328" height="13" fill="#3E4050" /><rect x="8" y="15" width="328" height="6" fill="#2A2B35" stroke="none" />
+    <rect x="8" y="28" width="328" height="13" fill="#3E4050" /><rect x="8" y="35" width="328" height="6" fill="#2A2B35" stroke="none" />
+    <rect x="8" y="48" width="328" height="13" fill="#3E4050" /><rect x="8" y="55" width="328" height="6" fill="#2A2B35" stroke="none" />
+    <rect x="166" y="3" width="12" height="64" fill="#4A4C5C" />
+  </g>
+  <rect x="1.5" y="1.5" width="341" height="67" rx="4" fill="none" stroke="#0A1330" stroke-width="3" />
+  <path d="M20 10H90L86 13H18Z" fill="#fff" opacity=".35" />
+</svg>
+
+<p class="ck-abs ck-lede">{lede}</p>
+{placeholder.on && <p class="ck-abs ck-tbc">{placeholder.line}</p>}

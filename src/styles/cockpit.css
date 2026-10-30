@@ -1,0 +1,267 @@
+/* Sheet 05, the touge tape: Kevin's AE86 cabin at dusk, drawn as a late-90s cel. Ink #0A1330, hard 2-3 band paint,
+   one highlight, the low sun on the left throwing 14° raked shadows. Dark cabin plastics, an amber VFD on the deck,
+   white-on-black gauges, J-cards in Kalam on cream paper. The cabin is authored in a 1440 by 900 frame and scaled as
+   one piece; the plain list under it follows the site's ground and ink, day and night. */
+
+.ck {
+  --ck-ink: #0A1330;
+  --ck-line: 0 0 0 3px var(--ck-ink), 1.5px 1.5px 0 3px var(--ck-ink);
+  --ck-cast: 16px 4px 0 3px rgb(6 3 16 / .46);
+  --ck-amber: #FFB547; --ck-ghost: #3B2810; --ck-lcd: #120C05;
+  --ck-paper: #F4EFE2; --ck-paper2: #E4DCC8;
+  --ck-hand: 'Kalam', 'Hanken Grotesk Variable', cursive;
+  --ck-plastic: #17151E;
+  /* desktop: the frame fits the width and the height of the viewport */
+  --s: tan(atan2(min(100cqw, 160svh), 1440px));
+  container-type: inline-size;
+  position: relative;
+  background: var(--ck-plastic);
+  color: #EDE6F2;
+  color-scheme: dark;
+}
+.ck ::selection { background: var(--red); color: var(--white); }
+.ck :focus-visible { outline: 2px dashed var(--ck-amber); outline-offset: 4px; }
+.ck button { font: inherit; color: inherit; }
+.ck h1, .ck h3, .ck h4, .ck p, .ck ol { margin: 0; }
+.ck ol { padding: 0; list-style: none; }
+.ck-abs { position: absolute; }
+.ck-defs { position: absolute; }
+.ck-vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.ck-ink { -webkit-text-stroke: .07em var(--ck-ink); paint-order: stroke fill; text-shadow: .05em .03em 0 var(--ck-ink); }
+.ck-still *, .ck-still *::before, .ck-still *::after { transition: none !important; }
+
+/* ---------- the stage: the frame scaled as one piece, the cabin's plastics round it ---------- */
+.ck-stage {
+  position: relative;
+  /* letterboxing reads as cabin: the pillars down to the dash line, the dash pad, the dash */
+  background: linear-gradient(180deg, #1B1824 0 calc(302px * var(--s)), #3A3346 0 calc(336px * var(--s)), #1E1F28 0);
+}
+.ck-sizer { position: relative; width: calc(1440px * var(--s)); height: calc(900px * var(--s)); margin: 0 auto; overflow: clip; }
+.ck-frame { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; transform: scale(var(--s)); transform-origin: 0 0; font: 400 17px/1.55 var(--body); }
+.ck-hint, .ck-ph, .ck-ph-lede { display: none; }
+
+/* phones and narrow tablets: a band for the chrome and the sheet's sticker on top, then the frame scaled so the whole
+   deck and all four cases fit the width (and the height), looked round with native sideways scroll */
+@media (max-width: 820px) {
+  .ck { --s: clamp(.45, min(tan(atan2(100cqw - 24px, 676px)), tan(atan2(100svh - 150px, 900px))), 1); }
+  .ck-ph { display: flex; align-items: center; height: 72px; padding: 0 16px; background: #1B1824; }
+  .ck-ph-in { position: relative; display: inline-flex; align-items: baseline; gap: 7px; padding: 9px 14px 8px 11px; white-space: nowrap; background: linear-gradient(170deg, var(--white) 0 70%, #DCE0E8 70%); transform: rotate(-2.5deg); box-shadow: var(--ck-line), 8px 2px 0 3px rgb(6 3 16 / .46); }
+  .ck-ph-in::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 6px; background: linear-gradient(180deg, var(--red) 0 4px, var(--green) 4px); box-shadow: 0 0 0 1.5px var(--ck-ink); }
+  .ck-ph-in span { font: 400 italic 30px/.86 var(--display); text-transform: uppercase; color: var(--navy); -webkit-text-stroke: .06em var(--ck-ink); paint-order: stroke fill; }
+  .ck-ph-in .ck-ph-no { font-size: 15px; color: var(--red); letter-spacing: -.04em; }
+  .ck-stage { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #5A5468 var(--ck-plastic); }
+  .ck-sizer { margin: 0; }
+  .ck-hint { display: flex; align-items: center; gap: 12px; margin: 0; min-height: 76px; padding: 12px 96px 14px 16px; font: 600 .9375rem/1.4 var(--body); color: #D8D1E4; }
+  .ck-hint svg { flex: none; width: 34px; height: 14px; }
+  /* the glovebox words sit off the left edge of the first view, so phones read them under the stage instead;
+     the frame's own copies stay in the accessibility tree */
+  .ck-sticker, .ck-lede, .ck-tbc { opacity: 0; }
+  .ck-ph-lede { display: block; padding: 0 16px 20px; max-width: 46ch; font: 500 1rem/1.5 var(--body); color: #ECE6F2; }
+  .ck-ph-lede p { margin: 0; }
+  .ck-ph-tbc { display: inline-block; margin-top: 12px !important; padding: 4px 10px 3px; background: var(--primer); color: var(--navy); font: 600 .8125rem/1.3 var(--body); box-shadow: 0 0 0 2px var(--ck-ink), 6px 1.5px 0 2px rgb(6 3 16 / .4); }
+}
+
+/* ---------- the windshield ---------- */
+.ck-glass { position: absolute; left: 0; top: 0; width: 1440px; height: 330px; z-index: 0; clip-path: url(#ck-glass-clip); background: var(--ck-plastic); }
+.ck-pane { position: absolute; left: 0; top: 0; width: 1440px; height: 330px; }
+.ck-pane > svg { display: block; }
+.ck-pane[data-pane="b"] { clip-path: polygon(-100px 0px, -18px 0px, -100px 330px, -100px 330px); }
+.ck-cut { position: absolute; left: 0; top: -10px; width: 12px; height: 350px; opacity: 0; pointer-events: none; background: linear-gradient(90deg, rgb(255 255 255 / .22) 0 58%, rgb(255 255 255 / .85) 58%); }
+.ck-frame-top { left: 0; top: 0; z-index: 1; }
+
+/* the placeholder chip, stuck on the inside of the glass with two bits of clear tape */
+.ck-chip { position: absolute; left: 452px; top: 104px; max-width: 470px; display: flex; flex-direction: column; gap: 5px; padding: 9px 14px 9px; background: var(--primer); color: var(--navy); transform: rotate(-1.5deg); box-shadow: 0 0 0 2px var(--ck-ink), 7px 1.75px 0 2px rgb(6 3 16 / .4); }
+.ck-chip::before, .ck-chip::after { content: ""; position: absolute; top: -9px; width: 42px; height: 16px; background: rgb(236 242 250 / .38); box-shadow: 0 0 0 1px rgb(236 242 250 / .55); }
+.ck-chip::before { left: -12px; transform: rotate(-24deg); }
+.ck-chip::after { right: -12px; transform: rotate(18deg); }
+.ck-chip-t { font: 800 12.5px/1.25 var(--body); letter-spacing: .1em; text-transform: uppercase; }
+.ck-chip-v { font: 600 15px/1.3 var(--body); color: #26324F; }
+
+.ck-mirror { left: 612px; top: 24px; width: 216px; height: 56px; z-index: 3; background: #24212E; border-radius: 7px; box-shadow: var(--ck-line), 12px 3px 0 3px rgb(6 3 16 / .35); --m1: #4A1D58; --m2: #9A3466; --m3: #E06A42; }
+.ck-mirror::before { content: ""; position: absolute; inset: 7px; border-radius: 3px; background: linear-gradient(180deg, var(--m1) 0 38%, var(--m2) 38% 66%, var(--m3) 66% 100%); box-shadow: inset 0 0 0 2px var(--ck-ink); }
+.ck-mirror::after { content: ""; position: absolute; left: 40px; top: 7px; width: 14px; height: 42px; background: rgb(255 255 255 / .28); transform: skewX(-14deg); }
+.ck-stalk { left: 712px; top: 8px; width: 16px; height: 20px; background: #2C2937; z-index: 2; box-shadow: var(--ck-line); }
+
+/* the driver's sun visor (right-hand drive), three stubs under its strap */
+.ck-visor { left: 1050px; top: 60px; width: 362px; height: 112px; z-index: 4; border-radius: 4px 4px 20px 20px; background: linear-gradient(180deg, #45414F 0 9px, #37343F 9px 58%, #2C2A33 58% 100%); box-shadow: var(--ck-line), var(--ck-cast); }
+.ck-visor::before { content: ""; position: absolute; inset: 9px 9px 9px; border: 1.5px dashed #5E5970; border-radius: 2px 2px 14px 14px; }
+.ck-rod { left: 1040px; top: 56px; width: 382px; height: 8px; z-index: 5; background: linear-gradient(180deg, #E6E8EE 0 3px, #8D92A3 3px); box-shadow: 0 0 0 2px var(--ck-ink); }
+.ck-strap { left: 1044px; top: 80px; width: 374px; height: 18px; z-index: 7; background: repeating-linear-gradient(90deg, #1B1A22 0 5px, #26242E 5px 7px); box-shadow: 0 0 0 2.5px var(--ck-ink), 1.5px 1.5px 0 2.5px var(--ck-ink); }
+
+/* gig stubs */
+.ck-stub { position: absolute; width: 122px; padding: 0 10px 10px 10px; background: linear-gradient(90deg, var(--ck-paper) 0 86%, var(--ck-paper2) 86%); color: var(--navy); transform: rotate(var(--r)); box-shadow: var(--ck-line), 12px 3px 0 3px rgb(6 3 16 / .42); }
+.ck-stub::after { content: ""; position: absolute; right: 15px; top: 0; bottom: 0; border-right: 2px dotted #A79D88; }
+.ck-hd { display: block; margin: 0 -10px 6px; padding: 5px 10px 4px; background: var(--c); color: var(--white); font: 800 8.5px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; }
+.ck-stub h3 { font: 750 12.5px/1.12 var(--body); letter-spacing: -.005em; padding-right: 12px; }
+.ck-pl { display: block; font: 500 10.5px/1.3 var(--body); color: #3B4A6B; }
+.ck-dt { display: inline-block; margin-top: 3px; font: 800 9.5px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; font-variant-numeric: tabular-nums; color: var(--red); border: 1.5px solid var(--red); padding: 3px 4px 2px; transform: rotate(-4deg); }
+.ck-pn { display: block; margin-top: 3px; font: 400 12px/1.1 var(--ck-hand); color: #5E574A; transform: rotate(-3deg); }
+/* the visor stubs are tucked under the strap by their header band: only its colour shows above the strap */
+.ck-vs { top: 70px; z-index: 6; }
+.ck-vs .ck-hd { margin-bottom: 24px; color: transparent; }
+/* the vent stubs are wedged into the louvres: every visible line sits whole above them, the rest is behind */
+.ck-vt { top: 428px; z-index: 12; padding-bottom: 44px; }
+.ck-vt .ck-pl { visibility: hidden; }
+
+/* ---------- the cabin ---------- */
+.ck-cabin { left: 0; top: 0; z-index: 10; }
+.ck-cluster { left: 0; top: 0; z-index: 11; }
+.ck-wheel { left: 0; top: 0; z-index: 30; pointer-events: none; }
+.ck-rip { transform-box: fill-box; transform-origin: center; opacity: 0; }
+[data-shift], [data-brake] { transition: fill .25s; }
+
+.ck-sticker { left: 30px; top: 306px; z-index: 12; display: flex; align-items: baseline; gap: 10px; padding: 18px 20px 14px 18px; white-space: nowrap; background: linear-gradient(170deg, var(--white) 0 70%, #DCE0E8 70%); transform: rotate(-2.5deg); box-shadow: var(--ck-line), var(--ck-cast); }
+.ck-sticker::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 9px; background: linear-gradient(180deg, var(--red) 0 6px, var(--green) 6px); box-shadow: 0 0 0 2px var(--ck-ink); }
+.ck-sticker .ck-no, .ck-sticker h1 { font-family: var(--display); font-style: italic; font-weight: 400; text-transform: uppercase; line-height: .86; }
+.ck-sticker .ck-no { font-size: 34px; color: var(--red); letter-spacing: -.04em; }
+.ck-sticker h1 { font-size: 76px; letter-spacing: .005em; color: var(--navy); }
+.ck-ventback { left: 36px; top: 510px; width: 344px; height: 70px; z-index: 11; background: #0C0C11; border-radius: 4px; box-shadow: var(--ck-line); }
+.ck-ventfront { left: 36px; top: 510px; z-index: 13; }
+.ck-lede { left: 44px; top: 612px; width: 332px; z-index: 12; font: 500 14.5px/1.45 var(--body); color: #ECE6F2; }
+.ck-tbc { left: 44px; top: 740px; z-index: 12; padding: 4px 10px 3px; background: var(--primer); color: var(--navy); font: 600 12.5px/1.3 var(--body); box-shadow: 0 0 0 2px var(--ck-ink), 6px 1.5px 0 2px rgb(6 3 16 / .4); }
+
+/* ---------- the deck: a period pull-out cassette head unit, scaled into the stack ---------- */
+.ck-deck { left: 410px; top: 340px; width: 588px; height: 242px; z-index: 14; transform: scale(.85); transform-origin: 0 0; }
+.ck-deck::before { content: ""; position: absolute; inset: -12px; background: #0E0E13; border-radius: 5px; box-shadow: 0 0 0 3px var(--ck-ink); }
+.ck-face { position: absolute; inset: 0; border-radius: 3px; background: linear-gradient(180deg, #E4E7EE 0 4px, #9EA3B2 4px 9px, #2F3039 9px 61%, #25262E 61% 100%); box-shadow: var(--ck-line), 12px 3px 0 3px rgb(0 0 0 / .5); }
+.ck-face::after { content: ""; position: absolute; left: 60px; top: 1px; width: 90px; height: 4px; background: var(--white); transform: skewX(-40deg); }
+.ck-brand { left: 20px; top: 16px; font: 400 italic 15px/.86 var(--display); text-transform: uppercase; letter-spacing: .06em; color: #F2EDE4; }
+.ck-model { right: 16px; top: 15px; font: 500 9.5px/1 var(--mono); letter-spacing: .12em; color: #9CA1B4; }
+.ck-vol { left: 16px; top: 38px; }
+.ck-knlab { left: 20px; top: 136px; width: 94px; text-align: center; font: 500 8.5px/1.2 var(--mono); letter-spacing: .1em; color: #9CA1B4; }
+.ck-tone { left: 42px; top: 162px; }
+
+.ck-disp { left: 124px; top: 34px; width: 340px; height: 124px; border-radius: 3px; padding: 9px 12px 8px; color: var(--ck-amber); overflow: hidden; background: linear-gradient(180deg, #1C140A 0 22%, var(--ck-lcd) 22%); box-shadow: inset 0 0 0 3px var(--ck-ink), inset 0 0 0 5px #3A3B46; font-family: var(--mono); }
+.ck-disp::after { content: ""; position: absolute; right: 58px; top: 0; width: 22px; height: 100%; background: rgb(255 255 255 / .06); transform: skewX(-14deg); pointer-events: none; }
+.ck-r1 { display: flex; align-items: center; gap: 6px; font: 700 8.5px/1 var(--mono); letter-spacing: .08em; }
+.ck-ind { padding: 3px 4px 2px; border: 1.5px solid currentColor; color: var(--ck-ghost); text-transform: uppercase; }
+.ck-ind.on { color: var(--ck-amber); }
+.ck-side { display: flex; align-items: center; gap: 4px; border: 0; padding: 0 2px; font-size: 11px; }
+.ck-tri { display: inline-block; width: 8px; height: 9px; background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.ck-ctr { margin-left: auto; font: 700 19px/1 var(--mono); letter-spacing: .08em; color: var(--ck-amber); font-variant-numeric: tabular-nums; }
+.ck-ctr small { font-size: 8px; letter-spacing: .1em; margin-right: 6px; color: #A77A30; vertical-align: 3px; }
+.ck-ttl { margin: 6px 0 4px; font: 700 17px/1 var(--mono); letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
+.ck-trk li { font: 600 12.5px/1.3 var(--mono); letter-spacing: .03em; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
+.ck-trk li.ck-dim { color: #D8A250; }
+.ck-tb { display: flex; align-items: center; gap: 6px; width: 100%; margin: 0; padding: 0; border: 0; background: none; color: #CC9748 !important; font: inherit !important; letter-spacing: inherit; text-transform: inherit; text-align: left; white-space: nowrap; overflow: hidden; cursor: pointer; }
+.ck-tb .ck-tri { flex: none; width: 6px; height: 7px; visibility: hidden; }
+.ck-tb b { color: #E0A650; }
+.ck-tb:hover { color: #F2B45A !important; }
+.ck-tb[aria-current] { color: var(--ck-amber) !important; }
+.ck-tb[aria-current] .ck-tri { visibility: visible; }
+.ck-tb[aria-current] b { color: #E39A2E; }
+.ck .ck-tb:focus-visible { outline: 1.5px dashed var(--ck-amber); outline-offset: -1px; }
+
+.ck-eq { left: 476px; top: 34px; width: 96px; height: 124px; border-radius: 3px; padding: 9px 9px 6px; background: var(--ck-lcd); box-shadow: inset 0 0 0 3px var(--ck-ink), inset 0 0 0 5px #3A3B46; }
+.ck-eqh { font: 700 8px/1 var(--mono); letter-spacing: .1em; color: #A77A30; display: flex; justify-content: space-between; }
+.ck-bands { display: flex; gap: 4px; margin-top: 6px; height: 80px; align-items: flex-end; }
+.ck-band { flex: 1; display: flex; flex-direction: column-reverse; gap: 2px; }
+.ck-band i { display: block; height: 8px; background: var(--ck-ghost); }
+.ck-band i.on { background: var(--ck-amber); }
+.ck-band i.on.pk { background: #7BE08E; }
+.ck-eqf { display: flex; justify-content: space-between; margin-top: 4px; font: 600 6.5px/1 var(--mono); color: #8F6A2C; }
+
+.ck-slot { left: 176px; top: 168px; width: 236px; height: 22px; background: #060608; box-shadow: 0 0 0 3px var(--ck-ink), 0 -3px 0 3px #4A4C58; overflow: hidden; }
+.ck-door { position: absolute; inset: 0; background: linear-gradient(180deg, #5B5E6C 0 50%, #3C3E49 50%); transition: transform .32s var(--ease); transform-origin: 50% 0; }
+.ck-door::after { content: ""; position: absolute; left: 14px; top: 3px; width: 36px; height: 3px; background: rgb(255 255 255 / .5); transform: skewX(-40deg); }
+.ck-slot.full .ck-door { transform: scaleY(0); }
+.ck-intape { position: absolute; inset: 4px 0 0; display: flex; align-items: center; padding: 0 14px; background: var(--t, #333); color: var(--tc, #fff); font: 700 12px/1 var(--ck-hand); white-space: nowrap; box-shadow: inset 0 3px 0 rgb(255 255 255 / .25); }
+.ck-intape:empty { display: none; }
+
+.ck-keys { left: 124px; top: 202px; display: flex; gap: 8px; }
+.ck-key { height: 28px; padding: 0 11px; display: inline-flex; align-items: center; gap: 7px; background: linear-gradient(180deg, #5A5C68 0 46%, #41434E 46%); color: #E8E9EE !important; font: 700 9.5px/1 var(--body) !important; letter-spacing: .12em; text-transform: uppercase; border: 0; border-radius: 2px; box-shadow: 0 0 0 2.5px var(--ck-ink), 0 4px 0 2.5px var(--ck-ink); }
+button.ck-key { cursor: pointer; transition: transform .12s var(--ease); }
+button.ck-key:active:not(:disabled) { transform: translateY(3px); }
+button.ck-key:disabled { cursor: default; color: #9496A2 !important; }
+.ck-ej { background: linear-gradient(180deg, #F23A4C 0 46%, #C3001A 46%); margin-left: 4px; padding: 0 13px; }
+.ck-ej:disabled { background: linear-gradient(180deg, #6A3640 0 46%, #4E2630 46%); color: #B89AA2 !important; }
+.ck-ejico { width: 12px; height: 11px; position: relative; }
+.ck-ejico::before { content: ""; position: absolute; left: 0; top: 0; width: 12px; height: 7px; background: currentColor; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.ck-ejico::after { content: ""; position: absolute; left: 0; bottom: 0; width: 12px; height: 2.5px; background: currentColor; }
+.ck-grip { left: 476px; top: 168px; width: 96px; height: 62px; border-radius: 2px; background: repeating-linear-gradient(90deg, #3A3C47 0 4px, #24252D 4px 7px); box-shadow: 0 0 0 2.5px var(--ck-ink); display: grid; place-items: end center; padding-bottom: 5px; }
+.ck-grip span { font: 800 7.5px/1 var(--body); letter-spacing: .16em; color: #C9CCD6; background: #24252D; padding: 2px 4px; }
+
+/* ---------- the four cases on the console ---------- */
+.ck-case { position: absolute; width: 150px; height: 96px; z-index: 20; transform: rotate(var(--r)); }
+.ck-tape { position: absolute; inset: 0; display: block; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
+.ck .ck-tape:focus-visible { outline: 3px dashed var(--ck-amber); outline-offset: 7px; }
+.ck-cs { position: absolute; inset: 0; transition: transform .3s var(--ease); filter: drop-shadow(15px 3.7px 0 rgb(6 3 16 / .5)); }
+.ck-tape:hover .ck-cs { transform: translateY(-4px); }
+.ck-base { position: absolute; inset: 0; border-radius: 4px; background: linear-gradient(180deg, #2E3040 0 54%, #20222D 54%); box-shadow: var(--ck-line); }
+.ck-base::before, .ck-base::after { content: ""; position: absolute; top: 36px; width: 12px; height: 12px; border-radius: 50%; background: #9AA0B0; box-shadow: 0 0 0 2px var(--ck-ink); }
+.ck-base::before { left: 52px; }
+.ck-base::after { left: 86px; }
+.ck-base svg { position: absolute; left: 7px; top: 6px; width: 136px; height: 85px; z-index: 1; display: block; transition: opacity .15s; }
+.ck-tape.out .ck-base svg { opacity: 0; }
+.ck-lid { position: absolute; inset: 0; z-index: 2; border-radius: 4px; transform-origin: 50% 0; transform: perspective(520px) rotateX(0deg); background: linear-gradient(180deg, rgb(222 232 246 / .34) 0 7px, rgb(196 212 234 / .13) 7px 100%); box-shadow: var(--ck-line); transition: transform .4s cubic-bezier(.5, 0, .75, 0); }
+.ck-lid::after { content: ""; position: absolute; left: 22px; top: 0; width: 11px; height: 100%; background: rgb(255 255 255 / .34); transform: skewX(-14deg); pointer-events: none; }
+.ck-case.open .ck-lid { transform: perspective(520px) rotateX(-104deg); transition: transform .62s var(--ease); }
+.ck-jf { position: absolute; left: 7px; right: 7px; top: 8px; height: 60px; padding: 5px 8px 0 10px; color: #1A1A2A; transition: visibility 0s .22s; background: linear-gradient(90deg, var(--ck-paper) 0 90%, var(--ck-paper2) 90%); box-shadow: 0 0 0 1.5px rgb(10 19 48 / .6); }
+.ck-jf::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--acc); }
+.ck-case.open .ck-jf { visibility: hidden; transition: visibility 0s .1s; }
+.ck-jf b { display: block; font: 700 14.5px/1.02 var(--ck-hand); }
+.ck-jf i { display: block; margin-top: 3px; font: 400 12px/1.15 var(--ck-hand); font-style: normal; color: #5E574A; }
+.ck-tape .ck-shell { display: none; }
+.ck-shell { position: absolute; inset: 0; filter: drop-shadow(1.5px 1.5px 0 var(--ck-ink)) drop-shadow(15px 3.7px 0 rgb(6 3 16 / .5)); }
+.ck-shell svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.ck-lab { position: absolute; left: 22px; right: 22px; top: 12px; font: 700 15.5px/1.2 var(--ck-hand); color: #1A1A2A; text-align: left; white-space: nowrap; }
+.ck-sa { position: absolute; left: 22px; top: 46px; width: 26px; height: 28px; display: grid; place-items: center; font: 700 19px/1 var(--ck-hand); color: #1A1A2A; border: 2px solid #1A1A2A; border-radius: 3px; }
+.ck-len { position: absolute; right: 20px; top: 52px; font: 700 10px/1 var(--body); letter-spacing: .06em; color: #1A1A2A; }
+.ck-fly { position: absolute; z-index: 50; width: 224px; height: 140px; pointer-events: none; transform-origin: 50% 50%; }
+
+/* the open case's J-card, unfolded over the console */
+.ck-jcard { position: absolute; left: 404px; top: 602px; width: 330px; height: 186px; z-index: 22; padding: 9px 14px 0 16px; color: #1E2233; background: linear-gradient(180deg, #F1EBDB 0 86%, #E2D9C3 86%); box-shadow: var(--ck-line), var(--ck-cast); transform-origin: 50% 100%; transform: perspective(900px) rotateX(-90deg); visibility: hidden; pointer-events: none; transition: transform .3s cubic-bezier(.5, 0, .75, 0), visibility 0s .3s; }
+.ck-jcard.on { transform: perspective(900px) rotateX(0deg); visibility: visible; transition: transform .62s var(--ease), visibility 0s; }
+.ck-jcard::after { content: ""; position: absolute; left: 0; right: 0; bottom: 26px; border-top: 1.5px dashed #B3A990; }
+.ck-jh { display: flex; align-items: baseline; gap: 10px; padding-bottom: 4px; }
+.ck-jh h3 { font: 700 19px/1.05 var(--ck-hand); background: linear-gradient(180deg, transparent 58%, var(--hl) 58% 92%, transparent 92%); }
+.ck-jh span { margin-left: auto; font: 400 12px/1 var(--ck-hand); color: #5E574A; white-space: nowrap; }
+.ck-jsides { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ck-jsides h4 { margin: 0 0 3px; font: 700 13px/1 var(--ck-hand); color: var(--acc); }
+.ck-jsides li { margin-bottom: 2px; }
+.ck-jsides li span { display: block; font: 400 13px/1.05 var(--ck-hand); white-space: nowrap; }
+.ck-jsides li small { display: block; font: 650 8.5px/1.2 var(--body); letter-spacing: .06em; text-transform: uppercase; color: #565B6C; }
+.ck-jfoot { position: absolute; left: 16px; right: 14px; bottom: 7px; display: flex; justify-content: space-between; font: 400 11.5px/1 var(--ck-hand); color: #6A6355; }
+
+/* ---------- every tape and every stub, plainly ---------- */
+.ck-index { max-width: 1312px; margin: 0 auto; padding: clamp(64px, 8vw, 104px) 5vw calc(var(--drop) + 56px); color: var(--ink); }
+.ck-index h2 { margin: 0; font: 400 italic clamp(2.5rem, 5vw, 4.5rem)/.9 var(--display); letter-spacing: -.02em; text-transform: uppercase; translate: calc(var(--lean) * -.5) 0; text-wrap: balance; }
+.ck-idx-lede { margin: 20px 0 10px; max-width: 60ch; font: 500 1.125rem/1.5 var(--body); color: var(--ink-2); }
+.ck-idx-tbc { margin: 0 0 48px; font: 600 .9375rem/1.5 var(--body); color: var(--ink-2); }
+.ck-idx-tbc .ph { margin-right: 6px; }
+.ck-tapes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); gap: 48px 56px; }
+.ck-tapes > li { position: relative; padding-top: 22px; display: grid; gap: 16px; align-content: start; }
+.ck-tapes > li::before { content: ""; position: absolute; left: 0; top: 0; width: 72px; height: 8px; background: var(--acc); transform: skewX(calc(var(--rake) * -1)); transform-origin: 0 100%; }
+.ck-tape-h h3 { margin: 0; font: 400 italic clamp(1.5rem, 2.4vw, 2rem)/1 var(--display); text-transform: uppercase; letter-spacing: .01em; }
+.ck-tape-line { margin: 6px 0 0; font: 400 1.1875rem/1.3 var(--ck-hand, 'Kalam', cursive); color: var(--ink-2); }
+.ck-tape-meta { margin: 6px 0 0; font: 600 .6875rem/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
+.ck-tape-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px; }
+.ck-tape-sides h4 { margin: 0 0 8px; font: 700 .8125rem/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.ck-tape-sides ol { margin: 0; padding: 0 0 0 1.4em; }
+.ck-tape-sides li { margin: 0 0 7px; padding-left: 2px; line-height: 1.3; }
+.ck-tape-sides li::marker { font: 600 .8125rem var(--mono); color: var(--ink-2); }
+.ck-tt { font-weight: 650; }
+.ck-ta { display: block; font-size: .9375rem; color: var(--ink-2); }
+.ck-go { justify-self: start; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px; border: 0; cursor: pointer; background: var(--navy); color: var(--white); font: 400 italic .8125rem/1 var(--display); letter-spacing: .07em; text-transform: uppercase; box-shadow: 0 0 0 2px var(--cel-ink), 6px 1.5px 0 2px var(--cel-shade); transition: background-color .2s, box-shadow .2s var(--ease); }
+.ck-go svg { width: 9px; height: 11px; fill: currentColor; }
+.ck-go:hover { background: var(--red); box-shadow: 0 0 0 2px var(--cel-ink), 9px 2.25px 0 2px var(--cel-shade); }
+.ck-gigs-h { margin: 72px 0 8px; font: 400 italic clamp(1.5rem, 2.4vw, 2rem)/1 var(--display); text-transform: uppercase; letter-spacing: .01em; }
+.ck-gigs { list-style: none; margin: 0; padding: 0; }
+.ck-gigs li { display: grid; grid-template-columns: minmax(200px, 1.4fr) 1fr .8fr 1.4fr; gap: 4px 24px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--cut); }
+.ck-gig-n { font-weight: 700; display: flex; align-items: baseline; gap: 12px; }
+.ck-gig-n::before { content: ""; flex: none; width: 18px; height: 8px; background: var(--c); transform: skewX(calc(var(--rake) * -1)); box-shadow: 0 0 0 1.5px var(--ink); }
+.ck-gig-p, .ck-gig-w { color: var(--ink-2); }
+.ck-gig-d { font: 600 .8125rem/1.4 var(--mono); letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+@media (max-width: 720px) {
+  .ck-index { padding: 56px 16px calc(var(--drop) + 48px); }
+  .ck-tape-sides { gap: 12px 20px; }
+  .ck-gigs li { grid-template-columns: 1fr auto; }
+  .ck-gig-p, .ck-gig-w { grid-column: 1 / -1; }
+  .ck-gig-n { grid-column: 1; }
+  .ck-gig-d { grid-column: 2; grid-row: 1; }
+}
+@media (max-width: 420px) { .ck-tape-sides { grid-template-columns: 1fr; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ck *, .ck *::before, .ck *::after, .ck-go { transition: none !important; animation: none !important; }
+}

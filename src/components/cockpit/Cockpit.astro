@@ -1,0 +1,37 @@
+---
+/* Sheet 05: Kevin's AE86 cabin on a mountain pass at dusk, from the right-hand driver's seat, drawn as a late-90s
+   cel in a 1440 by 900 frame that scales as one piece. Phones look around it with native sideways scroll.
+   The words live in src/data/music.ts; the behaviour in src/cockpit/. The same content is listed plainly below. */
+import Windshield from './Windshield.astro';
+import Cabin from './Cabin.astro';
+import Cluster from './Cluster.astro';
+import Cases from './Cases.astro';
+import Deck from './Deck.astro';
+import Wheel from './Wheel.astro';
+import MusicList from './MusicList.astro';
+import { lede, placeholder } from '../../data/music';
+---
+<div class="ck" data-cockpit>
+  <div class="ck-ph" aria-hidden="true"><span class="ck-ph-in"><span class="ck-ph-no">05</span><span>Music</span></span></div>
+  <section class="ck-stage" data-stage aria-label="The cabin: four mixtapes on the console, the cassette deck, and gig stubs in the visor and the vent">
+    <div class="ck-sizer">
+      <div class="ck-frame" data-frame>
+        <Windshield />
+        <Cabin />
+        <Cluster />
+        <Cases />
+        <Deck />
+        <Wheel />
+      </div>
+    </div>
+  </section>
+  <p class="ck-hint">The wheel and the gauges are off to the right: swipe sideways to look round the cabin.<svg viewBox="0 0 34 14" aria-hidden="true"><path d="M2 5H24V1L33 7L24 13V9H2Z" fill="#FFB547" stroke="#0A1330" stroke-width="1.5" stroke-linejoin="round" /></svg></p>
+  <div class="ck-ph-lede" aria-hidden="true"><p>{lede}</p><p class="ck-ph-tbc">{placeholder.line}</p></div>
+</div>
+<MusicList />
+
+<script>
+  import { boot } from '../../cockpit/boot';
+  const root = document.querySelector<HTMLElement>('[data-cockpit]');
+  if (root) boot(root);
+</script>

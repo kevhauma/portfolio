@@ -1,0 +1,61 @@
+---
+/* The head unit in the centre stack: a period pull-out cassette deck with an amber VFD. The display's track rows
+   become buttons once a tape is in; Rew, FF, A / B and Eject are real buttons. Only the title row is a live region. */
+---
+<section class="ck-abs ck-deck" aria-label="Cassette deck">
+  <div class="ck-face">
+    <span class="ck-abs ck-brand">Touge tape</span>
+    <span class="ck-abs ck-model" aria-hidden="true">KH-86 · Auto reverse · Pull-out</span>
+    <svg class="ck-abs ck-vol" width="100" height="100" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="54" cy="54" r="42" fill="#0A0B0F" />
+      <circle cx="50" cy="50" r="42" fill="#7E8394" stroke="#0A1330" stroke-width="3" />
+      <path d="M50 8A42 42 0 0 0 8 50H92A42 42 0 0 0 50 8Z" fill="#B9BEC6" />
+      <circle cx="50" cy="50" r="28" fill="#2C2D35" stroke="#0A1330" stroke-width="2.5" />
+      <path d="M50 22A28 28 0 0 0 22 50H78A28 28 0 0 0 50 22Z" fill="#3E404A" />
+      <rect x="48" y="25" width="4" height="13" fill="#FFB547" />
+      <path d="M26 20L36 14L22 40L14 44Z" fill="#fff" opacity=".7" />
+    </svg>
+    <span class="ck-abs ck-knlab" aria-hidden="true">VOL · PUSH ON</span>
+    <svg class="ck-abs ck-tone" width="44" height="44" viewBox="0 0 44 44" aria-hidden="true">
+      <circle cx="24" cy="24" r="17" fill="#0A0B0F" />
+      <circle cx="22" cy="22" r="17" fill="#3E404A" stroke="#0A1330" stroke-width="2.5" />
+      <path d="M22 5A17 17 0 0 0 5 22H39A17 17 0 0 0 22 5Z" fill="#555866" />
+      <rect x="21" y="8" width="2.5" height="8" fill="#C9CCD6" />
+    </svg>
+
+    <div class="ck-abs ck-disp">
+      <div class="ck-r1" aria-hidden="true">
+        <span class="ck-ind" data-dolby>Dolby B NR</span>
+        <span class="ck-ind" data-formula>Type</span>
+        <span class="ck-ind ck-side" data-side><i class="ck-tri"></i><span>A</span></span>
+        <span class="ck-ctr"><small>CNT</small><span data-ctr>---</span></span>
+      </div>
+      <div class="ck-ttl" data-ttl role="status" aria-live="polite">No tape</div>
+      <ol class="ck-trk" data-trk aria-label="Tracks on this side">
+        <li>Open a case on the console</li>
+        <li class="ck-dim">Click it, or Tab to it and press Enter</li>
+        <li class="ck-dim">4 tapes · hand-labelled · no audio</li>
+        <li class="ck-dim">&nbsp;</li>
+      </ol>
+    </div>
+
+    <div class="ck-abs ck-eq" aria-hidden="true">
+      <div class="ck-eqh"><span>EQ</span><span>PRESET</span></div>
+      <div class="ck-bands" data-bands>
+        {[0, 1, 2, 3, 4].map(() => <div class="ck-band">{[0, 1, 2, 3, 4, 5, 6, 7].map(() => <i />)}</div>)}
+      </div>
+      <div class="ck-eqf"><span>60</span><span>250</span><span>1K</span><span>4K</span><span>12K</span></div>
+    </div>
+
+    <div class="ck-abs ck-slot" data-slot aria-hidden="true"><div class="ck-intape" data-intape></div><div class="ck-door"></div></div>
+
+    <div class="ck-abs ck-keys">
+      <button class="ck-key" type="button" data-rew aria-label="Rew: previous track" disabled>Rew</button>
+      <button class="ck-key" type="button" data-ff aria-label="FF: next track" disabled>FF</button>
+      <span class="ck-key" aria-hidden="true">Dolby</span>
+      <button class="ck-key" type="button" data-ab aria-label="A / B: flip to side B" disabled>A / B</button>
+      <button class="ck-key ck-ej" type="button" data-eject aria-label="Eject the tape and close its case" disabled><i class="ck-ejico" aria-hidden="true"></i>Eject</button>
+    </div>
+    <div class="ck-abs ck-grip" aria-hidden="true"><span>PULL OUT</span></div>
+  </div>
+</section>

@@ -1,0 +1,64 @@
+---
+/* The four mixtapes, closed in clear cases along the console. Closed, each shows only its J-card front; the tape's
+   colour shows through the clear plastic under it. Opening one unfolds its J-card over the console: the only place
+   in the cabin where the whole track list lives. */
+import { tapes } from '../../data/music';
+const shellVars = (s: (typeof tapes)[number]['shell']) => `--s0:${s.lip};--s1:${s.body};--s2:${s.shade};--lab:${s.paper};--acc:${s.stripe}`;
+---
+<svg class="ck-defs" width="0" height="0" aria-hidden="true">
+  <defs>
+    <clipPath id="ck-sb"><rect x="2" y="2" width="220" height="136" rx="9" /></clipPath>
+    <clipPath id="ck-win"><rect x="58" y="42" width="108" height="36" rx="5" /></clipPath>
+    <symbol id="ck-shell" viewBox="0 0 224 140">
+      <rect x="2" y="2" width="220" height="136" rx="9" style="fill:var(--s1)" />
+      <g clip-path="url(#ck-sb)">
+        <rect x="0" y="100" width="224" height="40" style="fill:var(--s2)" />
+        <rect x="204" y="0" width="20" height="140" style="fill:var(--s2)" />
+        <rect x="0" y="0" width="224" height="6" style="fill:var(--s0)" />
+      </g>
+      <path d="M50 138L62 106H162L174 138" style="fill:var(--s2)" stroke="#0A1330" stroke-width="2.5" />
+      <rect x="70" y="122" width="9" height="9" fill="#0B0B10" /><rect x="100" y="116" width="24" height="15" fill="#0B0B10" /><rect x="145" y="122" width="9" height="9" fill="#0B0B10" />
+      <rect x="14" y="10" width="196" height="84" rx="3" style="fill:var(--lab)" stroke="#0A1330" stroke-width="2" />
+      <rect x="20" y="34" width="184" height="2.5" style="fill:var(--acc)" />
+      <rect x="58" y="42" width="108" height="36" rx="5" fill="#1C1724" />
+      <g clip-path="url(#ck-win)">
+        <circle cx="84" cy="60" r="27" fill="#5A3A2A" /><circle cx="84" cy="60" r="27" fill="none" stroke="#3E271C" stroke-width="2" />
+        <circle cx="140" cy="60" r="17" fill="#5A3A2A" />
+        <path d="M64 44H74L66 76H56Z" fill="#fff" opacity=".22" />
+      </g>
+      <g stroke="#0A1330" stroke-width="2"><circle cx="84" cy="60" r="10" fill="#F2EEE6" /><circle cx="140" cy="60" r="10" fill="#F2EEE6" /></g>
+      <g fill="#1C1724"><circle cx="84" cy="60" r="4.5" /><circle cx="140" cy="60" r="4.5" /></g>
+      <rect x="58" y="42" width="108" height="36" rx="5" fill="none" stroke="#0A1330" stroke-width="2.5" />
+      <g style="fill:var(--s2)" stroke="#0A1330" stroke-width="1.2"><circle cx="8" cy="8" r="2.6" /><circle cx="216" cy="8" r="2.6" /><circle cx="8" cy="132" r="2.6" /><circle cx="216" cy="132" r="2.6" /><circle cx="112" cy="99" r="2.6" /></g>
+      <path d="M22 100H34L24 134H12Z" fill="#fff" opacity=".38" />
+      <rect x="2" y="2" width="220" height="136" rx="9" fill="none" stroke="#0A1330" stroke-width="3" />
+    </symbol>
+  </defs>
+</svg>
+
+{tapes.map(t => (
+  <div class="ck-case" data-case={t.id} style={`left:${t.at.x}px;top:${t.at.y}px;--r:${t.at.r}deg;--acc:${t.accent}`}>
+    <button class="ck-tape" type="button" data-tape={t.id} aria-pressed="false" aria-label={`Open the ${t.name} case and load its tape into the deck`}>
+      <span class="ck-cs">
+        <span class="ck-base"><svg viewBox="0 0 224 140" style={shellVars(t.shell)}><use href="#ck-shell" /></svg></span>
+        <span class="ck-lid"><span class="ck-jf"><b>{t.name}</b><i>{t.line}</i></span></span>
+      </span>
+      <span class="ck-shell" style={shellVars(t.shell)}><svg viewBox="0 0 224 140"><use href="#ck-shell" /></svg><span class="ck-lab">{t.label}</span><span class="ck-sa">A</span><span class="ck-len">{t.length}</span></span>
+    </button>
+  </div>
+))}
+
+{tapes.map(t => (
+  <div class="ck-jcard" data-jcard={t.id} aria-hidden="true" style={`--acc:${t.accent};--hl:${t.highlight}`}>
+    <div class="ck-jh"><h3>{t.name}</h3><span>Tape {t.no} · {t.length}</span></div>
+    <div class="ck-jsides">
+      {[0, 1].map(side => (
+        <div>
+          <h4>Side {side ? 'B' : 'A'}</h4>
+          <ol>{t.tracks.slice(side * 4, side * 4 + 4).map(k => <li><span>{k.title}</span><small>{k.artist}</small></li>)}</ol>
+        </div>
+      ))}
+    </div>
+    <p class="ck-jfoot"><span>{t.foot ?? t.line}</span><span>pencilled in · TBC</span></p>
+  </div>
+))}
