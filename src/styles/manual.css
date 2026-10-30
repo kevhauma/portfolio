@@ -923,6 +923,143 @@ body:has(.desk) { background: #3A2314; }
   .qb .fig-part { transition: none; }
 }
 
+/* ---------- a drawn figure: CommonGround, one feature with two doors (CommonGroundDoors.astro) ---------- */
+.cg { container: cg / inline-size; position: relative; z-index: 2; margin: 0; padding-bottom: 8px; }
+.cg .fig-t { margin-bottom: 0; }
+.cg .fig-part { transition: opacity .16s var(--ease); }
+.cg code { font-family: var(--mono); font-variant-ligatures: none; }
+.cg-sub { margin: 34px 0 0; }
+.cg-lede { margin: 8px 0 0; max-width: 60ch; font-size: .8125rem; line-height: 1.4; color: var(--pi-2); text-wrap: pretty; }
+.cg-sn { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin: 0; padding: 5px 9px 4px; background: rgb(19 37 79 / .1); border-bottom: 1.5px solid var(--pi); }
+.cg-sn b { font: 800 .875rem/1 var(--m-head); font-stretch: 76%; letter-spacing: .02em; text-transform: uppercase; }
+.cg-sn code { font: 600 .625rem/1 var(--mono); color: var(--pi); }
+:is(.cg-st, .cg-db, .cg-room) b { display: block; font: 800 .8125rem/1.1 var(--m-head); font-stretch: 78%; letter-spacing: .02em; text-transform: uppercase; color: var(--pi); }
+.cg-st b code { font: 700 .75rem/1.1 var(--mono); text-transform: none; letter-spacing: 0; }
+
+/* Fig. 6.1: two columns, each a lead running down through its stages, meeting at the service.
+   The red dashed lead round the left is the household's room telling the open page. */
+.cg-doors { --lead: 14px; --cgap: 16px; position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--cgap); margin-top: 16px; padding-left: 26px; }
+.cg-door { display: contents; }
+.cg-door > .cg-dh { grid-row: 1; }
+.cg-door > .cg-col { grid-row: 2; }
+.cg-door:first-of-type > * { grid-column: 1; }
+.cg-door:last-of-type > * { grid-column: 2; }
+.cg-dh { margin-bottom: var(--lead); padding-bottom: 6px; border-bottom: 2px solid var(--pi); }
+.cg-dh b { font: 800 1.125rem/1 var(--m-head); font-stretch: 74%; text-transform: uppercase; letter-spacing: .01em; }
+.cg-col { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: var(--lead); padding-bottom: 18px; }
+.cg-col::before { content: ""; position: absolute; left: calc(50% - 1px); top: 0; bottom: 0; width: 2px; background: var(--pi); }
+.cg-col > * { position: relative; z-index: 1; margin: 0; }
+.cg-col > * + *::after, .cg-db::after { content: ""; position: absolute; left: calc(50% - 4.5px); top: -5px; border: 4.5px solid transparent; border-bottom: 0; border-top: 5px solid var(--pi); }
+.cg-st { padding: 6px 8px 7px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--pi); font-size: .6875rem; line-height: 1.32; color: var(--pi-2); }
+.cg-st span { display: block; }
+.cg-st.hot, .cg-svc.hot, .cg-db.hot { box-shadow: inset 0 0 0 3px var(--pi); }
+/* the assistant comes in as a chat bubble */
+.cg-in { align-self: center; padding: 5px 10px 4px; border-radius: 10px 10px 10px 2px; background: var(--pi); color: var(--paper); font: 700 .6875rem/1.2 var(--mono); }
+/* the pipeline every tool call runs, in order */
+.cg-pipe { list-style: none; padding: 2px 0; counter-reset: cg; }
+.cg-pipe li { counter-increment: cg; position: relative; padding: 4px 8px 4px 28px; border-top: 1px dashed var(--rule); font: 800 .75rem/1.2 var(--m-head); font-stretch: 78%; letter-spacing: .02em; text-transform: uppercase; color: var(--pi); }
+.cg-pipe li:first-child { border-top: 0; }
+.cg-pipe li::before { content: counter(cg); position: absolute; left: 7px; top: 4px; width: 14px; height: 14px; box-shadow: inset 0 0 0 1.2px var(--pi); font: 700 .5625rem/14px var(--mono); text-align: center; }
+.cg-pipe li.on { background: rgb(19 37 79 / .08); }
+.cg-pipe li.red { color: var(--spot-ink); }
+.cg-pipe li.red::before { background: var(--spot); box-shadow: none; color: var(--paper); }
+/* the service: both leads end in it, one arrowhead over each column's centre */
+.cg-svc { grid-column: 1 / -1; position: relative; padding-bottom: 8px; background: var(--paper); box-shadow: inset 0 0 0 2.5px var(--pi); }
+.cg-svc::before, .cg-svc::after { content: ""; position: absolute; top: -5px; border: 4.5px solid transparent; border-bottom: 0; border-top: 5px solid var(--pi); }
+.cg-svc::before { left: calc(25% - var(--cgap) / 4 - 4.5px); }
+.cg-svc::after { left: calc(75% + var(--cgap) / 4 - 4.5px); }
+.cg-svc > p:not(.cg-sn) { margin: 7px 9px 0; font-size: .6875rem; line-height: 1.4; color: var(--pi-2); }
+/* the database, as a drum under the service */
+.cg-db { grid-column: 1 / -1; position: relative; margin: var(--lead) 0 0; padding: 10px 10px 9px; border-radius: 50% / 9px; background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--pi), inset 0 6px 0 -4.5px var(--pi); text-align: center; }
+.cg-db::before { content: ""; position: absolute; left: calc(50% - 1px); top: calc(var(--lead) * -1); width: 2px; height: calc(var(--lead) - 4px); background: var(--pi); }
+/* the household's room, and the lead from it back up into the open page */
+.cg-room { grid-column: 1 / -1; position: relative; margin: 12px 0 0; padding: 6px 9px 7px; outline: 1.5px dashed var(--spot); outline-offset: -1.5px; }
+.cg-room b { color: var(--spot-ink); }
+.cg-loop { grid-column: 1; grid-row: 2 / 6; justify-self: start; position: relative; width: 22px; margin: 16px 0 12px -24px; border: 2px dashed var(--spot); border-right: 0; }
+.cg-loop::after { content: ""; position: absolute; right: -6px; top: -6px; border: 5px solid transparent; border-right: 0; border-left: 6px solid var(--spot); }
+.cg-loop i { position: absolute; left: -8px; top: 38%; padding: 6px 0; background: var(--paper); writing-mode: vertical-rl; transform: rotate(180deg); font: 700 .5625rem/1 var(--mono); font-style: normal; letter-spacing: .02em; color: var(--spot-ink); white-space: nowrap; }
+.cg-loop.hot { border-width: 3px; border-right: 0; }
+
+/* Fig. 6.2: the features as rows, their layers as columns */
+.cg-slices { width: 100%; margin-top: 14px; border-collapse: collapse; font-size: .75rem; font-variant-numeric: tabular-nums; }
+.cg-slices th, .cg-slices td { padding: 5px 6px; text-align: center; border-bottom: 1px solid var(--rule); }
+.cg-slices thead th { padding-top: 0; border-bottom: 1.5px solid var(--pi); font: 600 .5625rem/1.2 var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--pi-2); vertical-align: bottom; }
+.cg-slices th:first-child { padding-left: 0; text-align: left; }
+.cg-slices tbody th { font-weight: 600; color: var(--pi-2); }
+.cg-slices tbody tr.reach th { font: 800 .8125rem/1.1 var(--m-head); font-stretch: 78%; letter-spacing: .02em; text-transform: uppercase; color: var(--pi); }
+.cg-slices td { color: var(--pi); }
+.cg-slices td b { font: 800 1rem/1 var(--m-head); font-stretch: 74%; color: var(--spot-ink); }
+.cg-slices tfoot th, .cg-slices tfoot td { padding-top: 7px; border-bottom: 0; border-top: 1.5px solid var(--pi); }
+.cg-slices tfoot th { font-weight: 400; font-size: .6875rem; color: var(--pi-2); }
+.cg-slices tfoot code { font-size: .625rem; color: var(--pi); }
+.cg-slices tfoot b { font-size: 1.25rem; }
+.cg-slices tr.hot th, .cg-slices tr.hot td { background: rgb(19 37 79 / .07); }
+.cg-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pi); vertical-align: middle; }
+.cg-inl { font-size: .625rem; color: #5B636D; font-style: italic; }
+
+/* Fig. 6.3: a sequence chart, four lifelines and the calls between them, read top to bottom */
+.cg-seq { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: auto repeat(var(--rows), auto); margin: 16px 0 0; padding: 0; }
+.cg-lane { grid-row: 1; position: relative; z-index: 1; margin: 0 4px 4px; padding: 5px 4px 6px; box-shadow: inset 0 0 0 1.5px var(--pi); background: var(--paper); text-align: center; }
+.cg-lane b { font: 800 .8125rem/1 var(--m-head); font-stretch: 76%; letter-spacing: .02em; text-transform: uppercase; }
+.cg-life { grid-row: 2 / -1; position: relative; }
+.cg-life::before { content: ""; position: absolute; left: calc(50% - .75px); top: 0; bottom: 0; border-left: 1.5px dashed var(--ghost); }
+.cg-msg { --line: 1.5px solid var(--pi); position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 6px 4px 15px; text-align: center; }
+.cg-msg > b, .cg-msg > .cg-mx { max-width: 100%; padding: 0 3px; background: var(--paper); }
+.cg-msg > b { font: 800 .75rem/1.15 var(--m-head); font-stretch: 80%; letter-spacing: .02em; color: var(--pi); }
+.cg-msg > b.code { font: 700 .625rem/1.2 var(--mono); letter-spacing: 0; overflow-wrap: break-word; }
+.cg-mx { font-size: .625rem; line-height: 1.3; color: var(--pi-2); text-wrap: pretty; }
+.cg-who { display: none; }
+/* the call itself: from one lifeline to the other, with its arrowhead */
+.cg-msg::before { content: ""; position: absolute; left: calc(100% / var(--k) / 2); right: calc(100% / var(--k) / 2); bottom: 6px; border-top: var(--line); }
+.cg-msg::after { content: ""; position: absolute; right: calc(100% / var(--k) / 2 - 1px); bottom: 2.5px; border: 4.5px solid transparent; border-right: 0; border-left: 7px solid var(--ah, var(--pi)); }
+.cg-msg.back::after { right: auto; left: calc(100% / var(--k) / 2 - 1px); border-left: 0; border-right: 7px solid var(--ah, var(--pi)); }
+.cg-msg.write { --line: 3px solid var(--pi); }
+.cg-msg.write::before { bottom: 5px; }
+.cg-msg.push { --line: 2px dashed var(--spot); --ah: var(--spot); }
+.cg-msg.push > b { color: var(--spot-ink); }
+.cg-msg.say { --line: 2px dotted var(--pi); }
+.cg-msg.say > b { font-style: italic; }
+.cg-msg.hot > b { text-decoration: underline 2px; text-underline-offset: 3px; }
+.cg-key { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 10px 0 0; font-size: .6875rem; color: var(--pi-2); }
+.cg-key span { display: inline-flex; align-items: center; gap: 6px; }
+.cg-key i { display: inline-block; width: 24px; border-top: 1.5px solid var(--pi); }
+.cg-key i.write { border-top-width: 3px; }
+.cg-key i.push { border-top: 2px dashed var(--spot); }
+
+/* Fig. 6.4: a recipe in, four steps, two to a row */
+.cg-chain { --cg-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 8'%3E%3Cpath d='M0 4H9' stroke='black' stroke-width='2'/%3E%3Cpath d='M8 0 14 4 8 8Z'/%3E%3C/svg%3E"); list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 22px; margin: 14px 0 0; padding: 0; counter-reset: cg; }
+.cg-chain li { counter-increment: cg; position: relative; padding: 6px 8px 8px; box-shadow: inset 0 0 0 1.5px var(--pi); font-size: .6875rem; line-height: 1.35; color: var(--pi-2); }
+.cg-chain li:nth-child(2n)::before { content: ""; position: absolute; right: 100%; top: 12px; width: 22px; height: 10px; background: var(--pi); mask: var(--cg-arrow) center / 14px 8px no-repeat; }
+.cg-chain b { display: block; margin-bottom: 2px; font: 800 .8125rem/1.1 var(--m-head); font-stretch: 78%; letter-spacing: .02em; text-transform: uppercase; color: var(--pi); }
+.cg-chain b::before { content: counter(cg) " "; color: var(--spot-ink); }
+.cg-chain b.code { font: 700 .75rem/1.2 var(--mono); text-transform: none; letter-spacing: 0; }
+.cg-chain li:first-child { background: var(--pi); box-shadow: none; border-radius: 10px 10px 10px 2px; }
+.cg-chain li:first-child b, .cg-chain li:first-child b::before { color: var(--paper); }
+.cg-chain li:last-child { outline: 1.5px dashed var(--spot); outline-offset: -1.5px; box-shadow: none; }
+.cg-chain li.hot { box-shadow: inset 0 0 0 3px var(--pi); }
+
+/* a narrow figure: the doors stack, the sequence becomes a list, the chain runs down */
+@container cg (max-width: 400px) {
+  .cg-doors { display: flex; flex-direction: column; padding-left: 0; }
+  .cg-door { display: block; }
+  .cg-door:first-of-type .cg-col { padding-bottom: 0; margin-bottom: 22px; }
+  .cg-door:first-of-type .cg-col::before { bottom: 18px; }
+  .cg-loop { display: none; }
+  .cg-svc::before { display: none; }
+  .cg-svc::after { left: calc(50% - 4.5px); }
+  .cg-seq { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; row-gap: 6px; }
+  .cg-lane, .cg-life { display: none; }
+  .cg-msg { grid-column: 1 !important; grid-row: auto !important; align-items: flex-start; padding: 2px 0 4px 12px; border-left: var(--line); border-left-color: var(--ah, var(--pi)); text-align: left; }
+  .cg-msg::before, .cg-msg::after { display: none; }
+  .cg-msg > b, .cg-msg > .cg-mx { max-width: none; }
+  .cg-who { display: block; font: 600 .5625rem/1.2 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--pi-2); }
+  .cg-chain { grid-template-columns: minmax(0, 1fr); }
+  .cg-chain li::before { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cg .fig-part { transition: none; }
+}
+
 @media (max-width: 1099px) {
   .desk { padding: 76px 12px 46px; }
   .block { display: flow-root; height: max(420px, calc(100svh - 146px)); background-image: none; }

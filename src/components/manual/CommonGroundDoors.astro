@@ -1,0 +1,136 @@
+---
+/* Figs. 6.1–6.4 for CommonGround. 6.1 is how a feature is cut: the app and an AI assistant come in by two
+   doors and meet at the service. 6.2 is the features cut that way. 6.3 and 6.4 are the highlights, over
+   MCP: a week of dinners planned from the household's own data, and a recipe added from a link.
+   Every count is read off the private Commonground-nx repo. The parts light with the wiring key. */
+interface Props { n: string }
+const { n } = Astro.props;
+
+/* Fig. 6.2: endpoints are the router registrations in each back-end lib; tools are the MCP tools,
+   plus get_context, which belongs to no feature */
+const slices = [
+  { f: 'Groceries', api: 15, svc: true, tools: 10 },
+  { f: 'Meal planner', api: 9, svc: true, tools: 8 },
+  { f: 'Recipes', api: 18, svc: true, tools: 8 },
+  { f: 'Freezer', api: 5, svc: true, tools: 5 },
+  { f: 'To-do', api: 7, svc: false, tools: 0 },
+  { f: 'Calendar', api: 6, svc: false, tools: 0 },
+  { f: 'Households', api: 10, svc: false, tools: 0 },
+  { f: 'Sign-in', api: 6, svc: false, tools: 0 }
+];
+const toolCount = slices.reduce((a, s) => a + s.tools, 0) + 1;
+
+/* Fig. 6.3: the plan_this_week prompt, as the calls it makes. Lanes: 1 you, 2 the assistant, 3 CommonGround, 4 the open page */
+type Msg = { from: number; to: number; t: string; x: string; kind: 'say' | 'read' | 'write' | 'push'; feeds: string };
+const week: Msg[] = [
+  { from: 1, to: 2, t: '“Plan this week’s dinners”', x: '', kind: 'say', feeds: 'mcp' },
+  { from: 2, to: 3, t: 'get_meal_plan · get_meal_history', x: 'This week, and what you ate lately', kind: 'read', feeds: 'mcp db' },
+  { from: 2, to: 3, t: 'search_recipes', x: 'Your own recipe library', kind: 'read', feeds: 'mcp db' },
+  { from: 2, to: 1, t: 'A dinner for each empty day', x: 'Nothing is written until you agree', kind: 'say', feeds: 'mcp' },
+  { from: 2, to: 3, t: 'plan_meal', x: 'One per day, the whole recipe copied in', kind: 'write', feeds: 'mcp db' },
+  { from: 2, to: 3, t: 'send_week_ingredients_to_groceries', x: 'Shared ingredients added up', kind: 'write', feeds: 'mcp db' },
+  { from: 3, to: 4, t: 'household:changed', x: 'The week and the list update live', kind: 'push', feeds: 'api ng' }
+];
+const lanes = ['You', 'Assistant', 'CommonGround', 'Open page'];
+
+/* Fig. 6.4: a recipe in from a link */
+const recipe = [
+  { t: 'A link in the chat', feeds: 'mcp' },
+  { t: 'add_recipe', x: 'Ingredient lines parsed into amount, unit and name', feeds: 'mcp db', code: true },
+  { t: 'set_recipe_image', x: 'Downloaded and kept by the server', feeds: 'mcp db', code: true },
+  { t: 'The open page follows', feeds: 'api ng' }
+];
+---
+<figure class="cg" aria-labelledby="cg-t">
+  <figcaption id="cg-t" class="fig fig-t">Fig. {n}.1 · One feature, two doors</figcaption>
+  <p class="cg-lede">The app and an AI assistant come in separately and meet at the service, where a feature’s rules live.</p>
+  <p class="sr">Two columns that meet at the bottom. On the left, the app: an Angular page, its signal store, its API service and an Express route handler. On the right, an AI assistant such as Claude or ChatGPT reaches /api/mcp with a scoped token, and every call runs through a pipeline: a rate limit, the scope check, a confirmation gate for anything that deletes, the tool, a message to the household and an audit row. Both doors call the same service, which reads and writes through Prisma to PostgreSQL. When the assistant changes something, the household's socket.io room tells every open page, which updates on its own.</p>
+
+  <div class="cg-doors" aria-hidden="true">
+    <span class="cg-loop fig-part" data-feeds="api"><i>household:changed</i></span>
+    <section class="cg-door">
+      <header class="cg-dh"><b>The app</b></header>
+      <div class="cg-col">
+        <p class="cg-st fig-part" data-feeds="ng"><b>Page</b><span>Angular component</span></p>
+        <p class="cg-st fig-part" data-feeds="ng"><b>Store</b><span>signalStore, optimistic</span></p>
+        <p class="cg-st fig-part" data-feeds="ng"><b>API service</b><span>HttpClient</span></p>
+        <p class="cg-st fig-part" data-feeds="api"><b>Route handler</b><span>Express, one line</span></p>
+      </div>
+    </section>
+    <section class="cg-door">
+      <header class="cg-dh"><b>The assistant</b></header>
+      <div class="cg-col">
+        <p class="cg-in fig-part" data-feeds="mcp">Claude or ChatGPT</p>
+        <p class="cg-st fig-part" data-feeds="mcp"><b><code>/api/mcp</code></b><span>Scoped token or OAuth</span></p>
+        <ol class="cg-st cg-pipe fig-part" data-feeds="mcp">
+          <li>Rate limit</li>
+          <li>Scope</li>
+          <li>Confirm deletes</li>
+          <li class="on">The tool</li>
+          <li class="red">Tell the household</li>
+          <li>Audit row</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="cg-svc fig-part" data-feeds="api db" style="grid-row:3">
+      <p class="cg-sn"><b>Service</b><code>addRecipe(ctx, input)</code></p>
+      <p>Plain functions holding the rules, shared by both doors</p>
+    </div>
+    <p class="cg-db fig-part" data-feeds="db" style="grid-row:4"><b>Prisma · PostgreSQL</b></p>
+    <p class="cg-room fig-part" data-feeds="api" style="grid-row:5"><b>socket.io · the household’s room</b></p>
+  </div>
+
+  <figure class="cg-sub">
+    <figcaption class="fig">Fig. {n}.2 · Every feature, the same cut</figcaption>
+    <p class="cg-lede">Each feature is a back-end and a front-end lib in one Nx monorepo. The four the assistant can reach keep their rules in services.</p>
+    <table class="cg-slices">
+      <caption class="sr">The features: endpoints, whether the rules are in services, and how many MCP tools reach each.</caption>
+      <thead>
+        <tr><th scope="col">Feature</th><th scope="col">Endpoints</th><th scope="col">Services</th><th scope="col">MCP tools</th></tr>
+      </thead>
+      <tbody>
+        {slices.map(s => (
+          <tr class:list={['fig-part', { reach: s.tools }]} data-feeds={s.tools ? 'nx ng api mcp' : 'nx ng api'}>
+            <th scope="row">{s.f}</th>
+            <td>{s.api}</td>
+            <td>{s.svc ? <span class="cg-dot" aria-label="yes"></span> : <span class="cg-inl">not yet</span>}</td>
+            <td>{s.tools ? <b>{s.tools}</b> : '·'}</td>
+          </tr>
+        ))}
+      </tbody>
+      <tfoot>
+        <tr><th scope="row" colspan="3">Plus <code>get_context</code></th><td><b>{toolCount}</b></td></tr>
+      </tfoot>
+    </table>
+  </figure>
+</figure>
+
+<figure class="cg cg-sub" aria-labelledby="cg-t2">
+  <figcaption id="cg-t2" class="fig">Fig. {n}.3 · A week of dinners, from your own data</figcaption>
+  <p class="cg-lede">Every suggestion comes from the household’s own plan, history and recipes.</p>
+  <p class="sr">A sequence between you, the assistant, CommonGround and the open page. {week.map((m, i) => `${i + 1}. ${lanes[m.from - 1]} to ${lanes[m.to - 1]}: ${m.t}.${m.x ? ` ${m.x}.` : ''}`).join(' ')}</p>
+
+  <ol class="cg-seq" style={`--rows:${week.length}`} aria-hidden="true">
+    {lanes.map((l, i) => <li class="cg-lane" style={`grid-column:${i + 1}`}><b>{l}</b></li>)}
+    {lanes.map((_, i) => <li class="cg-life" style={`grid-column:${i + 1}`}></li>)}
+    {week.map((m, i) => {
+      const a = Math.min(m.from, m.to), b = Math.max(m.from, m.to);
+      return (
+        <li class:list={['cg-msg fig-part', m.kind, { back: m.to < m.from }]} data-feeds={m.feeds} style={`grid-row:${i + 2};grid-column:${a} / ${b + 1};--k:${b - a + 1}`}>
+          <span class="cg-who">{lanes[m.from - 1]} → {lanes[m.to - 1]}</span>
+          <b class:list={{ code: m.kind !== 'say' }}>{m.t}</b>
+          {m.x && <span class="cg-mx">{m.x}</span>}
+        </li>
+      );
+    })}
+  </ol>
+  <p class="cg-key" aria-hidden="true"><span><i class="read"></i> reads</span><span><i class="write"></i> writes</span><span><i class="push"></i> to open pages</span></p>
+
+  <figure class="cg-sub">
+    <figcaption class="fig">Fig. {n}.4 · A recipe, from a link</figcaption>
+    <ol class="cg-chain">
+      {recipe.map(r => <li class="fig-part" data-feeds={r.feeds}><b class:list={{ code: r.code }}>{r.t}</b>{r.x && <span>{r.x}</span>}</li>)}
+    </ol>
+  </figure>
+</figure>

@@ -9,6 +9,7 @@ import ScrapYardFlow from '../../components/manual/ScrapYardFlow.astro';
 import KioskMachine from '../../components/manual/KioskMachine.astro';
 import DbaRebuild from '../../components/manual/DbaRebuild.astro';
 import QuackbotBuilds from '../../components/manual/QuackbotBuilds.astro';
+import CommonGroundDoors from '../../components/manual/CommonGroundDoors.astro';
 import { projects, projectHref, period, duration, wires, type Project } from '../../data/projects';
 
 export function getStaticPaths() {
@@ -33,7 +34,7 @@ const facts: [string, string][] = [
 ];
 const legacyKeys = p.keys.some(k => k.legacy);
 /* a project with its own drawn figure shows that instead of the wired parts; the key lights its stations */
-const cutaways: Record<string, typeof MoneyMosaicCutaway> = { 'money-mosaic': MoneyMosaicCutaway, 'aurubis-scrap-yard': ScrapYardFlow, 'aurubis-kiosk': KioskMachine, 'arcom-dba-tool': DbaRebuild, quackbot: QuackbotBuilds };
+const cutaways: Record<string, typeof MoneyMosaicCutaway> = { 'money-mosaic': MoneyMosaicCutaway, 'aurubis-scrap-yard': ScrapYardFlow, 'aurubis-kiosk': KioskMachine, 'arcom-dba-tool': DbaRebuild, quackbot: QuackbotBuilds, commonground: CommonGroundDoors };
 const Cutaway = cutaways[p.slug];
 ---
 <Livery title={`${p.nda ? 'Building installation planner' : p.title} · Projects · Kevin`} description={`${p.title}: ${p.line}. A page from Kevin's workshop manual.`} sec="03" book>

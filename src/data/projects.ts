@@ -211,29 +211,27 @@ export const projects: Project[] = [
   },
   {
     slug: 'commonground', n: '6', kind: 'chapter', wire: 'W',
-    title: 'CommonGround', client: 'Own build', own: true, start: '2025-03', end: '2025-05',
-    line: 'Shared grocery lists and scheduled tasks, rebuilt as an Nx monorepo',
+    title: 'CommonGround', client: 'Own build', own: true, start: '2025-03', end: null, status: 'In use at home, self-hosted',
+    line: 'A household\'s week in one app, open to an AI assistant over MCP',
     summary: [
-      'Shared grocery lists and scheduled tasks with a history of who did what. A first version ran on Angular and Supabase; the second moves to its own back end in an Nx monorepo.'
+      'A family app for the week: groceries, dinners and recipes, the freezer, to-dos and a shared calendar. Self-hosted, built for Kevin\'s own household first.',
+      'One Nx monorepo, written mostly with Claude Code. Every feature is cut the same way, and an MCP server lets an assistant add recipes and plan the week\'s dinners from the family\'s own data.'
     ],
-    figure: 'Version 2, one monorepo',
+    figure: 'One feature, two doors',
     keys: [
-      { id: 'supabase', code: 'S', label: 'Supabase (version 1)', legacy: true },
-      { id: 'ng', code: 'U', label: 'Angular 19 · @ngrx/signals · Tailwind' },
-      { id: 'express', code: 'B', label: 'Express' },
-      { id: 'prisma', code: 'G', label: 'Prisma · PostgreSQL' },
-      { id: 'auth', code: 'R', label: 'Passport, Google sign-in' },
-      { id: 'nx', code: 'Y', label: 'Nx · Storybook' }
+      { id: 'ng', code: 'U', label: 'Angular 21 · @ngrx/signals' },
+      { id: 'api', code: 'B', label: 'Express · socket.io' },
+      { id: 'db', code: 'G', label: 'Prisma · PostgreSQL' },
+      { id: 'mcp', code: 'R', label: 'MCP server, scoped tokens' },
+      { id: 'nx', code: 'Y', label: 'Nx monorepo' }
     ],
     parts: [
-      { id: 'v1', title: 'Version 1', text: 'Angular on Supabase', feeds: ['supabase'], legacy: true },
-      { id: 'lists', title: 'Grocery lists', text: 'Lists and items, shared', feeds: ['ng'] },
-      { id: 'tasks', title: 'Scheduled tasks', text: 'Recurring tasks with their history', feeds: ['ng'] },
-      { id: 'auth', title: 'Sign-in', text: 'Google sign-in, sessions stored through Prisma', feeds: ['auth', 'prisma'] },
-      { id: 'api', title: 'API', text: 'Express, in the same workspace', feeds: ['express'] },
-      { id: 'ui', title: 'Component library', text: 'Shared components, developed in Storybook', feeds: ['nx'] }
+      { id: 'slices', title: 'Feature slices', text: 'A back-end and a front-end lib per feature', feeds: ['ng', 'api', 'nx'] },
+      { id: 'services', title: 'Services', text: 'The rules, called by the app and the assistant alike', feeds: ['api', 'db'] },
+      { id: 'mcp', title: 'MCP server', text: '32 tools for an AI assistant', feeds: ['mcp'] },
+      { id: 'live', title: 'Live pages', text: 'Open pages follow the assistant\'s changes', feeds: ['api', 'ng'] }
     ],
-    placeholder: 'Screenshots to follow'
+    notes: ['Every count on these pages is read off the private Commonground-nx repo.']
   },
 
   // supplement: the other work-experience projects

@@ -38,7 +38,7 @@ The site can launch on the **essentials**: intro, experience, projects, contact 
 - **NDA**: the construction client is listed anonymised, with a warning triangle and a Warning box on its page; never a chapter.
 - Work project visuals: no client UI. Outcome figures only when they can be sourced and published. No estimates.
 - **No GitHub contribution graph.**
-- Still to collect: two or three more facts each for Platform Blog, Jumperke and VG Computers (main parts, what talked to what, what Kevin built); CommonGround screenshots and a one-line description.
+- Still to collect: two or three more facts each for Platform Blog, Jumperke and VG Computers (main parts, what talked to what, what Kevin built). CommonGround (chapter 6) is drawn from the private Commonground-nx repo: the feature structure and the MCP highlights, no screenshots.
 
 ### The map (04)
 - Source of truth: **`Documents/TripMap/trips.gpkg`**. The other GPX folders are not used.
