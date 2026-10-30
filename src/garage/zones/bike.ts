@@ -2,19 +2,20 @@
 // The bike is a loaded model (public/garage/cb650r.glb, exported from docs/Honda CB650R web.blend, the reduced copy
 // of docs/Honda CB650R.blend: micro-triangles welded, unseen faces culled, then decimated); each of its
 // materials is repainted with the garage's cel ramp by name.
+// The file is quantized but not Draco-compressed: Draco's decoder is WebAssembly, and browsers that block it
+// would lose the whole garage. Brotli brings it to about the same transfer as Draco plus its decoder.
 // Local axes: +x forward, +y up, +z the rider's right (the camera side).
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { defineZone } from '../zone';
 import { group, proxy } from '../kit';
 import { toon, M } from '../toon';
 import { ctex } from '../paint';
 import { decal } from '../room';
 
-// start the fetch as soon as the garage loads its zones, so it runs while the rest of the room builds
-const draco = new DRACOLoader().setDecoderPath('/draco/');
-const model = new GLTFLoader().setDRACOLoader(draco).loadAsync('/garage/cb650r.glb').finally(() => draco.dispose());
+// start the fetch as soon as the garage loads its zones, so it runs while the rest of the room builds;
+// if it fails the garage still opens, just without the bike
+const model = new GLTFLoader().loadAsync('/garage/cb650r.glb').catch((e: unknown) => { console.warn('garage: the bike model did not load', e); return null; });
 
 export default defineZone({
   id: 'bike',
@@ -45,9 +46,22 @@ export default defineZone({
       CB_Lens_Red: toon(0xe0303a, { emis: 0.7 }),
       CB_Stand_Powder: toon(0x25242c, { hi: 0.55, rim: 1 })
     };
-    const bike = (await model).scene;
-    bike.traverse(o => { const m = o as THREE.Mesh; if (m.isMesh) m.material = paint[(m.material as THREE.Material).name] ?? blackP; });
+    const gltf = await model;
+    if (!gltf) return;
+    const bike = gltf.scene;
+    bike.traverse(o => { const m = o as THREE.Mesh; if (m.isMesh) { m.material = paint[(m.material as THREE.Material).name] ?? blackP; dequantize(m.geometry); } });
     B.add(bike);
     proxy(B, 2.15, 1.15, 0.9, 0, 0.58, 0);
   }
 });
+
+// the file stores positions and normals as normalized integers (KHR_mesh_quantization); the engine bakes transforms
+// into the vertices when it merges meshes, and writing those back into a normalized attribute clamps them to ±1
+function dequantize(geo: THREE.BufferGeometry) {
+  for (const [name, a] of Object.entries(geo.attributes) as [string, THREE.BufferAttribute | THREE.InterleavedBufferAttribute][]) {
+    if (a.array instanceof Float32Array) continue;
+    const f = new Float32Array(a.count * a.itemSize);
+    for (let i = 0; i < a.count; i++) for (let c = 0; c < a.itemSize; c++) f[i * a.itemSize + c] = a.getComponent(i, c);
+    geo.setAttribute(name, new THREE.BufferAttribute(f, a.itemSize));
+  }
+}

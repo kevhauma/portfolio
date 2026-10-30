@@ -71,7 +71,10 @@ import { countries } from '../../data/map';
     if (atlas.start) pending = atlas.start;
     import('../../globe/engine').then(m => m.boot(stage, { photo: id => atlas.trip(id) })).then(a => {
       api = a; a.room(room); if (off.size) a.filter(off); if (pending) a.go(pending);
-    }).catch(() => {
+    }).catch((e: unknown) => {
+      console.error('globe:', e);
+      // only blame WebGL when the browser really has none
+      if (document.createElement('canvas').getContext('webgl2')) stage.querySelector('.gl-fallback-h')!.textContent = 'The globe didn’t start in this browser.';
       stage.classList.add('no-gl'); stage.querySelector<HTMLElement>('[data-fallback]')!.hidden = false;
     });
     document.querySelectorAll<HTMLButtonElement>('[data-trip]').forEach(b => b.addEventListener('click', () => {

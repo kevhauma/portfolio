@@ -61,7 +61,10 @@ const content: Record<ZoneId, typeof Wled> = { wled: Wled, printer: Printer, she
 <script>
   // the scene is the first screen, so it loads straight away; three.js arrives as its own chunk
   const stage = document.querySelector<HTMLElement>('[data-garage]');
-  if (stage) import('../../garage/engine').then(m => m.boot(stage)).catch(() => {
+  // the engine shows the WebGL fallback itself; anything that lands here is some other failure, so say that instead
+  if (stage) import('../../garage/engine').then(m => m.boot(stage)).catch((e: unknown) => {
+    console.error('garage:', e);
+    stage.querySelector('.g-fallback-h')!.textContent = 'The garage didn’t start in this browser.';
     stage.classList.add('no-gl'); stage.querySelector<HTMLElement>('[data-fallback]')!.hidden = false;
   });
 </script>
