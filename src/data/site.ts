@@ -22,13 +22,14 @@ export const sections: Section[] = [
 export const raceNumber = 23;
 export const github = { label: 'github.com/kevhauma', href: 'https://github.com/kevhauma' };
 
-/** Stack decals, sized by how much each one is used. Weights are placeholders. */
+/** Stack decals: Kevin's favourite technologies, largest first, sized by how much he likes each one. */
 export const stack = [
-  { name: 'TypeScript', use: 0.9 },
-  { name: 'Vue', use: 0.7 },
-  { name: 'React', use: 0.6 },
-  { name: 'Astro', use: 0.5 },
-  { name: 'CSS', use: 0.5 },
-  { name: 'Node.js', use: 0.3 },
-  { name: 'C#', use: 0.2 }
+  { name: 'TypeScript', use: 1.0 },
+  { name: 'Node.js', use: 0.9 },
+  { name: 'React', use: 0.8 },
+  { name: 'Angular', use: 0.7 },
+  { name: 'Tailwind', use: 0.6 },
+  { name: 'TanStack', use: 0.5 },
+  { name: 'ECharts', use: 0.4 },
+  { name: 'Three.js', use: 0.3 }
 ];

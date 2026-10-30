@@ -60,7 +60,7 @@ The site can launch on the **essentials**: intro, experience, projects, contact 
 - **Google Hashcode 2018**: team **JustGoogleIt**, #113 of 4,852 teams (top 3%), 4th of 186 Belgian teams, 49,200,184 points. Confirmed against Google's archived ranking. Teammates agreed to be credited by first name.
 
 ### Intro (01)
-- **Seven stack decals**, because the layout is built for exactly 7. They are Kevin's **favourite** technologies, not his most used at work: TypeScript, Node.js, React, Angular, Tailwind, TanStack, ECharts, largest first. Weights step down evenly from 1.0 to 0.4.
+- **Eight stack decals**, because the layout is built for exactly 8 (Three.js replaced the note decal, 2026-10-30). They are Kevin's **favourite** technologies, not his most used at work: TypeScript, Node.js, React, Angular, Tailwind, TanStack, ECharts, Three.js, largest first. Weights step down evenly from 1.0 to 0.3.
 
 ## Already found on disk
 
@@ -88,7 +88,6 @@ Everything else is typed into `content-intake.yaml`.
 
 ## Open items
 
-- **Stack label**: the decals are favourites, not most used, so the intro label "Stack, sized by use" needs new wording.
 - **Domain**: none yet. The alias email, deploy target and launch wait on it.
 - **CV**: after launch.
 - **Prints**: later.

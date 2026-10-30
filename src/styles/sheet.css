@@ -30,15 +30,12 @@
 /* the placement guide: a faint side elevation of the car printed on the liner, 23 on its door, so the number reads as a race number */
 .car { fill: var(--ink); opacity: .2; overflow: visible; pointer-events: none; transition: fill .3s; }
 .d-spec .decal { place-items: stretch; align-content: start; text-align: left; padding: 18px 20px; }
-.note { margin: 0; }
 .spec { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; align-content: start; margin: 0; font: 500 clamp(.875rem, calc(var(--k) * 1.1), 1rem)/1.3 var(--body); }
 .spec-t { margin: 0; font: 900 italic clamp(1.125rem, calc(var(--k) * 1.62), 1.625rem)/1 var(--display); text-transform: uppercase; margin-bottom: max(4px, calc(var(--k) * .5)); color: var(--navy); }
 .spec dt { font: 700 clamp(.625rem, calc(var(--k) * .8), .75rem)/1.6 var(--mono); text-transform: uppercase; letter-spacing: .04em; color: #3B4A6B; }
 .spec dd { margin: 0; }
 .spec a { text-decoration: none; }
 .spec a:hover { text-decoration: underline; }
-.d-note .decal { padding: 14px 16px; place-items: center start; text-align: left; font: 600 clamp(.875rem, calc(var(--k) * 1.08), 1rem)/1.35 var(--body); }
-.stack-label { margin: 0; font: 600 .6875rem/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-2); }
 .stack .decal { text-transform: uppercase; }
 .s1 .decal { font: 900 italic 1.75rem/1 var(--display); letter-spacing: -.01em; }
 .s2 .decal { font: 900 2.25rem/1 var(--display); letter-spacing: .02em; }
@@ -48,6 +45,7 @@
 .s5 .decal { font: 900 1.375rem/1 var(--display); letter-spacing: .08em; }
 .s6 .decal { font: 800 1.125rem/1 var(--display); letter-spacing: .03em; }
 .s7 .decal { font: 900 italic 1rem/1 var(--display); }
+.s8 .decal { font: 900 1rem/1 var(--display); letter-spacing: .04em; }
 /* italic decals give the lean back on the right so the ink, not the advance box, sits centred */
 .stack :is(.s1, .s3, .s4, .s7) .decal { padding-right: calc(var(--lean) * 2); }
 
@@ -63,11 +61,8 @@
   .d-num { width: 17%; aspect-ratio: 1; align-self: start; margin: 16.5% 0 0 31.4%; }
   .d-num .decal { position: absolute; inset: 0; }
   .d-num .decal span { font-size: calc((100vw - 32px) * .088); }
-  .d-note { grid-column: 1 / -1; }
-  .d-note .decal { height: 100%; }
   .d-spec { grid-column: 1 / -1; }
-  .stack-label { grid-column: 1 / -1; margin-top: 8px; }
-  .stack { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 14px 14px; align-items: center; }
+  .stack { grid-column: 1 / -1; margin-top: 8px; display: flex; flex-wrap: wrap; gap: 14px 14px; align-items: center; }
   .stack .decal { padding: 0 16px; }
   .stack :is(.s1, .s4, .s7) .decal { padding: 0 calc(16px + var(--lean)) 0 calc(16px - var(--lean)); }
   .s1 .decal { height: 64px; font-size: clamp(1.75rem, 8vw, 2.75rem); }
@@ -75,7 +70,7 @@
   .s3 { width: 76px; height: 76px; }
   .s3 .decal { position: absolute; inset: 0; padding: 0; font-size: .9375rem; }
   .s4 .decal, .s5 .decal { height: 44px; }
-  .s6 .decal, .s7 .decal { height: 36px; }
+  .s6 .decal, .s7 .decal, .s8 .decal { height: 36px; }
 }
 
 /* desktop: every decal sits at its plotted position, measured in sheet units (k) */
@@ -95,23 +90,22 @@
   .plate .d-spec .decal { position: relative; inset: auto; }
   .d-spec .decal { padding: calc(var(--k) * 1.4) calc(var(--k) * 1.8); }
   .spec { gap: calc(var(--k) * .45) calc(var(--k) * 1.6); }
-  .d-note { left: calc(var(--k) * 74); top: calc(var(--k) * 30.6); width: calc(var(--k) * 21); height: calc(var(--k) * 9.6); }
-  .d-note .decal { padding: calc(var(--k) * 1.2) calc(var(--k) * 1.6); }
-  .stack-label { position: absolute; left: calc(var(--k) * 40); top: calc(var(--k) * 29.4); }
   .s1 { left: calc(var(--k) * 40); top: calc(var(--k) * 33); width: calc(var(--k) * 28); height: calc(var(--k) * 7.4); }
   .s1 .decal { font-size: calc(var(--k) * 3.5); }
-  .s2 { left: calc(var(--k) * 5); top: calc(var(--k) * 45); width: calc(var(--k) * 17); height: calc(var(--k) * 7.4); }
-  .s2 .decal { font-size: calc(var(--k) * 4.6); }
-  .s3 { left: calc(var(--k) * 24.6); top: calc(var(--k) * 45); width: calc(var(--k) * 11); height: calc(var(--k) * 11); }
+  .s2 { left: calc(var(--k) * 5); top: calc(var(--k) * 45); width: calc(var(--k) * 22.6); height: calc(var(--k) * 7.4); }
+  .s2 .decal { font-size: calc(var(--k) * 4.2); }
+  .s3 { left: calc(var(--k) * 30.2); top: calc(var(--k) * 45); width: calc(var(--k) * 11); height: calc(var(--k) * 11); }
   .s3 .decal { font-size: calc(var(--k) * 1.9); }
-  .s4 { left: calc(var(--k) * 38.8); top: calc(var(--k) * 45); width: calc(var(--k) * 15); height: calc(var(--k) * 5); }
+  .s4 { left: calc(var(--k) * 44.4); top: calc(var(--k) * 45); width: calc(var(--k) * 15); height: calc(var(--k) * 5); }
   .s4 .decal { font-size: calc(var(--k) * 2.6); }
-  .s5 { left: calc(var(--k) * 56.6); top: calc(var(--k) * 45); width: calc(var(--k) * 11.4); height: calc(var(--k) * 5); }
+  .s5 { left: calc(var(--k) * 62.2); top: calc(var(--k) * 45); width: calc(var(--k) * 17); height: calc(var(--k) * 5); }
   .s5 .decal { font-size: calc(var(--k) * 2.6); }
-  .s6 { left: calc(var(--k) * 38.8); top: calc(var(--k) * 52.6); width: calc(var(--k) * 10); height: calc(var(--k) * 3.6); }
+  .s6 { left: calc(var(--k) * 44.4); top: calc(var(--k) * 52.6); width: calc(var(--k) * 10.6); height: calc(var(--k) * 3.6); }
   .s6 .decal { font-size: calc(var(--k) * 1.6); }
-  .s7 { left: calc(var(--k) * 51.6); top: calc(var(--k) * 52.6); width: calc(var(--k) * 8); height: calc(var(--k) * 3.6); }
+  .s7 { left: calc(var(--k) * 57.8); top: calc(var(--k) * 52.6); width: calc(var(--k) * 9.8); height: calc(var(--k) * 3.6); }
   .s7 .decal { font-size: calc(var(--k) * 1.7); }
+  .s8 { left: calc(var(--k) * 71); top: calc(var(--k) * 34.9); width: calc(var(--k) * 10.6); height: calc(var(--k) * 3.6); }
+  .s8 .decal { font-size: calc(var(--k) * 1.6); }
 }
 
 /* ---------- stickers: gloss vinyl and foil that catch the light, drawn as a cel ---------- */

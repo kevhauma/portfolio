@@ -16,7 +16,7 @@ identity:
   email:                       # alias on your own domain, once the domain exists
   domain:                      # not bought yet
 
-# Exactly 7 (the intro layout has 7 decal slots), biggest use first.
+# Exactly 8 (the intro layout has 8 decal slots), biggest use first.
 # use: 0–1, set by you.
 stack:
   - { name: TypeScript, use: 1.0 }
@@ -26,6 +26,7 @@ stack:
   - { name: Tailwind, use: 0.6 }
   - { name: TanStack, use: 0.5 }
   - { name: ECharts, use: 0.4 }
+  - { name: Three.js, use: 0.3 }
 
 # ─── Experience: the timing screen (03) ──────────────────────────────────────
 

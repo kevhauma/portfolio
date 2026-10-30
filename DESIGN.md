@@ -149,7 +149,7 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 
 ### Secondary
 - **Castrol Red**: the signal. The race-number roundel, the leading stripe of the swoop ribbon and the page wipe, the setting disc behind the swoop, the active switch LED, the lap-counter ring on the bubble, text selection.
-- **Castrol Green**: the second stripe. Note decals, the trailing stripe of the swoop ribbon and the wipe, and the focus ring on the day sheet.
+- **Castrol Green**: the second stripe. The TypeScript and Three.js decals, the trailing stripe of the swoop ribbon and the wipe, and the focus ring on the day sheet.
 
 ### Tertiary
 - **Masking Tape**: arrival only. The tape strips that snap across the raw page at the rake before the paint goes on. Never used as a surface after arrival.
@@ -158,8 +158,8 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 - **Livery White**: the backing sheet (day ground), text on dark vinyl, white decals (always with an inset navy outline so they read as cut vinyl on a white sheet), and the night-race ink.
 - **Night Deep**: the night-race ground, and the darkened navy tone for navy links inside the navy kit panel.
 - **Primer Grey**: what is under the paint. Primer-tone decals, inactive switch LEDs, disabled actions and placeholder chips. On the intro sheet the primer sticker is cut from chrome foil (brushed silver, #8D939C to #F4F6F8), the one place the tone turns metal.
-- **Carbon Black**: one decal tone among the vinyl set (section 06's tone, the C# stack decal).
-- **Ink Secondary** / **Ink Secondary Night**: secondary text (stack label, pit-limiter dates and descriptions) on the day and night grounds respectively.
+- **Carbon Black**: one decal tone among the vinyl set (section 06's tone, the Node.js stack decal).
+- **Ink Secondary** / **Ink Secondary Night**: secondary text (pit-limiter dates and descriptions) on the day and night grounds respectively.
 - **Placement guide**: the side elevation of an AE86 hatchback, traced in Inkscape (`public/ae86.svg`, only its paths ship), filled in ink at 20% opacity on the intro sheet and masked with a fine print grain, so it reads as rough matte ink on the liner and never catches the light, the way a decal kit prints where its decals go. The front sits in frame on the right and the back runs behind the KEVIN decal (off the left edge on phones). The 23 roundel sits on its door, so the number reads as a race number, never as an age beside the name.
 - **Liner and cut tints**: the liner wordmark is ink at 6% (4.5% at night); the dashed cut line is ink at 50% (45% at night). Always derived from the current ink, never a new hue.
 
@@ -188,7 +188,7 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 - **Title** (italic, clamp(1.125rem, 2vw, 1.75rem), line-height 1.05, uppercase): kit ladder and fan entries, with a Hanken 500 sub-line in sentence case.
 - **Body** (Hanken 400, 1.0625rem, line-height 1.55): reading copy; ledes 500 at up to 1.25rem/1.45. Measure 46-68ch.
 - **Label** (Sakana italic, 0.75rem, letter-spacing 0.07em, uppercase): the display switches.
-- **Mono** (JetBrains 600, 0.6875rem, letter-spacing 0.03-0.04em, uppercase for print): stack label, kit footer, spec terms.
+- **Mono** (JetBrains 600, 0.6875rem, letter-spacing 0.03-0.04em, uppercase for print): kit footer, spec terms.
 
 ### Named Rules
 **The One Family Rule.** All livery lettering (names, numbers, titles, switches, stack decals, the sheet sticker, the kit panel, the fan, the plain-list headings) is Sakana; variety comes from size, colour and case, never from a second display face. A sheet's own world may carry one accent face, and only on the objects that belong to that world: Dela Gothic One on the garage's titles, Kalam on the cabin's J-cards, cassette labels and pencilled notes. An accent face never sets livery chrome or a sheet's page title.
@@ -201,7 +201,7 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 
 ## Layout
 
-The intro sheet is a plotted plate measured in a sheet unit, k = min(1vw, 1.62svh). On desktop (821px and up) the plate is 100k by 60k, centred, with every decal absolutely positioned at plotted coordinates in k so the whole composition scales as one sheet. The intro is one screen tall (or the plate plus most of the drop on a tall window), so the kit panel's sunset swoop closes the first screen as a background: the lowest decals lie on top of the ribbon and the disc, and it does not paint on there. At 820px and below the plate becomes a six-column stacked grid (gaps 16px by 14px): name full width, number and note sharing a row, spec full width, stack decals wrapping in a flex row, with the kit panel's swoop under them as on every other page.
+The intro sheet is a plotted plate measured in a sheet unit, k = min(1vw, 1.62svh). On desktop (821px and up) the plate is 100k by 60k, centred, with every decal absolutely positioned at plotted coordinates in k so the whole composition scales as one sheet. The intro is one screen tall (or the plate plus most of the drop on a tall window), so the kit panel's sunset swoop closes the first screen as a background: the lowest decals lie on top of the ribbon and the disc, and it does not paint on there. At 820px and below the plate becomes a six-column stacked grid (gaps 16px by 14px): name full width, the car with the number on its door, spec full width, stack decals wrapping in a flex row, with the kit panel's swoop under them as on every other page.
 
 Every sheet ends on the sunset swoop: sheets pad their bottom by the drop (`--drop`, 15vw), and the navy kit panel overlaps that band with an SVG top edge in a 1000 by 150 viewBox (uniform scale, since the drop is a share of the width): an S that runs low on the left and high on the right, the ribbon under it and the disc setting behind it on the left. Stub sheets add only 48-72px below their content, so the swoop sits close under it. Content containers cap at 1312px with 5vw gutters (16px on phones); the pit limiter caps at 46rem.
 

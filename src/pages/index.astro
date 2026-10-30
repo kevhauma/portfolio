@@ -3,6 +3,7 @@ import Livery from '../layouts/Livery.astro';
 import Decal from '../components/Decal.astro';
 import Kit from '../components/Kit.astro';
 import { github, raceNumber, stack } from '../data/site';
+import { techs } from '../data/projects';
 import '../styles/sheet.css';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -14,12 +15,14 @@ const car = {
   paths: [...carSource.matchAll(/<path[^>]*?\sd="([^"]+)"/g)].map(m => m[1])
 };
 
-const liner = Array.from({ length: 44 }, () =>
-  Array.from({ length: 4 }, () => `kevhauma livery kit · sheet 01 · race number ${raceNumber}`).join(' · ')
-);
-const tones = ['t-green', 't-black', 't-white', 't-red', 't-navy', 't-primer', 't-white'];
+// the liner is printed with every technology from the projects; each row starts further along the list so the rows don't line up
+const liner = Array.from({ length: 44 }, (_, i) => {
+  const from = (i * 7) % techs.length;
+  return [...techs.slice(from), ...techs, ...techs, ...techs.slice(0, from)].join(' · ');
+});
+const tones = ['t-green', 't-black', 't-white', 't-red', 't-navy', 't-primer', 't-white', 't-green'];
 // most of the kit is gloss vinyl; the black, the round white and the primer decal are foil, like the 23
-const finishes = ['gloss', 'holo', 'holo', 'gloss', 'gloss', 'chrome', 'gloss'] as const;
+const finishes = ['gloss', 'holo', 'holo', 'gloss', 'gloss', 'chrome', 'gloss', 'gloss'] as const;
 ---
 <Livery title="Kevin · frontend developer" description="Kevin is a frontend developer with a bachelor in applied computer science and five years of consultancy work. Race number 23." sec="01" arrival>
   <section class="sheet intro" aria-labelledby="name">
@@ -47,12 +50,7 @@ const finishes = ['gloss', 'holo', 'holo', 'gloss', 'gloss', 'chrome', 'gloss'] 
         </dl>
       </Decal>
 
-      <Decal class="d-note t-green" finish="gloss">
-        <p class="note">One person, many interfaces.</p>
-      </Decal>
-
-      <p class="stack-label" id="stack-label">Stack, sized by use <span class="ph">placeholder sizes</span></p>
-      <ul class="stack" aria-labelledby="stack-label">
+      <ul class="stack" aria-label="Favourite stack">
         {stack.map((s, i) => (
           <Decal as="li" class={`s${i + 1} ${tones[i]}`} round={i === 2} finish={finishes[i]}>
             {s.name}

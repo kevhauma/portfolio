@@ -371,3 +371,13 @@ export const supplement = projects.filter(p => p.kind === 'supplement');
 export const projectHref = (p: Project) => `/projects/${p.slug}/`;
 /** the fuse blades' colours, in fuse order: on the contents fuse box and on the supplement's thumb index */
 export const blades = ['#E2001A', '#2557A7', '#E0A800', '#00843D', '#F4F4F0', '#7E8794', '#16181D'];
+
+/** every technology the projects above name (their wiring keys and notes), deduped and without versions; printed on the intro sheet's liner */
+export const techs = [
+  'TypeScript', 'React', 'Angular', 'Vue', 'AngularJS', 'Next.js', 'Blitz.js', 'Meteor', 'Backbone.js',
+  'Redux', 'NgRx Signals', 'XState', 'TanStack Query', 'TanStack Form', 'React Hook Form', 'React Final Form', 'Formik',
+  'MUI', 'Telerik', 'Chakra UI', 'styled-components', 'shadcn/ui', 'ECharts', 'Konva', 'Three.js',
+  'TensorFlow.js', 'PapaParse', 'Dexie', 'IndexedDB', 'Web Workers', 'Vitest', 'discord.js', 'axios', 'node-html-parser',
+  'Express', 'socket.io', 'GraphQL', 'Prisma', 'PostgreSQL', 'MongoDB', 'MSSQL', 'Supabase',
+  '.NET', '.NET Framework', 'C++', 'Docker', 'GitHub Actions', 'Nx', 'MCP', 'Docusaurus'
+];
