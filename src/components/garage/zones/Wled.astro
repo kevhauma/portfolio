@@ -8,7 +8,7 @@ const swatches = [['WLED default orange', '#ffa000'], ['Warm white', '#ffd2a0'],
 ---
 {mode === 'panel' ? (
   <>
-    <p>A simulated strip, not the real one. Pick a colour and an effect: the strip under the shelf answers, and its light tints the pegboard and the bench below.</p>
+    <p>A simulated strip, not the real one.</p>
     <span class="g-lbl" id="wled-col">Colour</span>
     <div class="g-row" role="group" aria-labelledby="wled-col">
       {swatches.map(([n, c]) => <button class="g-swatch" type="button" data-c={c} aria-label={`${n} ${c}`} aria-pressed="false"><span style={`background:${c}`}></span></button>)}
@@ -26,7 +26,7 @@ const swatches = [['WLED default orange', '#ffa000'], ['Warm white', '#ffd2a0'],
   </>
 ) : (
   <>
-    <p>A simulated LED strip, not the real one: pick a colour and one of the WLED effects ({FX.join(', ')}) and it answers, tinting the pegboard and the bench below it.</p>
+    <p>A simulated LED strip, not the real one, with the WLED effects {FX.join(', ')}.</p>
     <p><Tag />Kevin's own presets will come from his presets.json.</p>
   </>
 )}

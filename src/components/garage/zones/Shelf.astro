@@ -16,7 +16,6 @@ const tools = ['gpx-to-kml', 'gpx-visualizer', 'routes-drawer', 'gpx-to-db'];
 ---
 {mode === 'panel' ? (
   <>
-    <p>Five side projects, one object each. Pick one up from the shelf, or from the row here.</p>
     <div class="g-inv" role="group" aria-label="Side projects">
       {shelfItems.map(i => <button class="g-slot" type="button" data-item={i.id} aria-pressed="false"><svg viewBox="0 0 26 26" aria-hidden="true" set:html={icon[i.id]} /><span>{i.name}</span></button>)}
     </div>
@@ -27,7 +26,7 @@ const tools = ['gpx-to-kml', 'gpx-visualizer', 'routes-drawer', 'gpx-to-db'];
       <p class="g-note"><Tag />A repo estimate; the real total follows.</p>
     </div>
     <div data-item-body="msgr" hidden>
-      <p>MessengertoStats turns Messenger chat exports into stats. Here is a tiny chat it could chew on:</p>
+      <p>MessengertoStats turns Messenger chat exports into stats.</p>
       <div class="g-chat" aria-label="Synthetic chat">
         <div class="msg a"><em>Sam</em>are we still on for friday?</div><div class="msg b"><em>Kevin</em>yes, garage at 8</div>
         <div class="msg a"><em>Sam</em>bringing the good coffee</div><div class="msg b"><em>Kevin</em>then you get the comfy stool</div>
@@ -41,7 +40,7 @@ const tools = ['gpx-to-kml', 'gpx-visualizer', 'routes-drawer', 'gpx-to-db'];
       <ul class="g-facts"><li>Top 3% of all teams worldwide</li><li>4th of 186 Belgian teams</li><li>49,200,184 points</li></ul>
     </div>
     <div data-item-body="f1" hidden>
-      <p>The F1 WLED tracker plays F1 lap data on a WLED strip. It sits right next to the strip on this shelf, so you can run a lap on it.</p>
+      <p>The F1 WLED tracker plays F1 lap data on a WLED strip.</p>
       <div class="g-row"><button class="g-btn" type="button" aria-pressed="false" data-f1-run>Run a lap on the strip</button></div>
       <p class="g-note"><Tag kind="synthetic" />The demo lap is three made-up cars, not real timing data.</p>
     </div>
@@ -56,7 +55,7 @@ const tools = ['gpx-to-kml', 'gpx-visualizer', 'routes-drawer', 'gpx-to-db'];
     <li><strong>Advent of Code</strong>: about 104 stars. {aoc.map(([y, s]) => `${y}: ${s}`).join(', ')}. <Tag />repo estimate; the real total follows.</li>
     <li><strong>MessengertoStats</strong>: stats from Messenger chat exports. <Tag kind="synthetic" />the demo chat in the scene is made up.</li>
     <li><strong>Google Hashcode 2018</strong>: team JustGoogleIt, #113 of 4,852 teams worldwide (top 3%), 4th of 186 Belgian teams, 49,200,184 points, with Xander, Wouter and Dries.</li>
-    <li><strong>F1 WLED tracker</strong>: plays F1 lap data on a WLED strip. It sits next to the strip in the scene. <Tag kind="synthetic" />the demo lap is made up.</li>
+    <li><strong>F1 WLED tracker</strong>: plays F1 lap data on a WLED strip. <Tag kind="synthetic" />the demo lap is made up.</li>
     <li><strong>GPS tools</strong>: {tools.join(', ')}. The routes end up on <a href="/map/">the map</a>.</li>
   </ul>
 )}

@@ -51,8 +51,10 @@
   .ck-ph-in .ck-ph-no { font-size: 15px; color: var(--red); letter-spacing: -.04em; }
   .ck-stage { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #5A5468 var(--ck-plastic); }
   .ck-sizer { margin: 0; }
-  .ck-hint { display: flex; align-items: center; gap: 12px; margin: 0; min-height: 76px; padding: 12px 96px 14px 16px; font: 600 .9375rem/1.4 var(--body); color: #D8D1E4; }
-  .ck-hint svg { flex: none; width: 34px; height: 14px; }
+  /* the wheel and gauges are off to the right: an arrow that leans that way is the whole cue */
+  .ck-hint { display: flex; align-items: center; justify-content: flex-end; margin: 0; min-height: 76px; padding: 12px 96px 14px 16px; }
+  .ck-hint svg { flex: none; width: 46px; height: 19px; animation: ck-nudge 1.6s ease-in-out infinite; }
+  @keyframes ck-nudge { 50% { transform: translateX(10px); } }
   /* the glovebox words sit off the left edge of the first view, so phones read them under the stage instead;
      the frame's own copies stay in the accessibility tree */
   .ck-sticker, .ck-lede, .ck-tbc { opacity: 0; }

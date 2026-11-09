@@ -7,7 +7,7 @@ const cmds = ['!help', '!quack', '!roll', '!uptime', '!about'];
 ---
 {mode === 'panel' ? (
   <>
-    <p>Quackbot was the Discord bot Kevin built. It ran from 2017 to 2020 for one community of about 2,000 members, and is retired now. Its old CRT still answers a few commands.</p>
+    <p>Quackbot was the Discord bot Kevin built. It ran from 2017 to 2020 for one community of about 2,000 members, and is retired now.</p>
     <div class="g-crt" role="log" aria-live="polite" aria-label="Quackbot chat" data-log><p><span class="bot">quackbot&gt;</span> online. type !help</p></div>
     <div class="g-row">{cmds.map(c => <button class="g-btn" type="button" data-cmd={c}>{c}</button>)}</div>
     <form class="g-cmd" data-form><label class="g-sr" for="qb-in">Command</label><input class="g-cmdline" id="qb-in" autocomplete="off" placeholder="type a command" spellcheck="false" /><button class="g-btn" type="submit">Send</button></form>
@@ -16,7 +16,7 @@ const cmds = ['!help', '!quack', '!roll', '!uptime', '!about'];
   </>
 ) : (
   <>
-    <p>The Discord bot Kevin built. It ran from 2017 to 2020 for one community of about 2,000 members, and is retired now. In the scene it is a small chat you can poke. <Tag kind="illustrative" />the replies there are written for this page.</p>
+    <p>The Discord bot Kevin built. It ran from 2017 to 2020 for one community of about 2,000 members, and is retired now. <Tag kind="illustrative" />the replies there are written for this page.</p>
     <p><a href="/projects/quackbot/">The full Quackbot story</a></p>
   </>
 )}

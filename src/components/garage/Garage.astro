@@ -21,7 +21,6 @@ const content: Record<ZoneId, typeof Wled> = { wled: Wled, printer: Printer, she
     <canvas data-gl aria-hidden="true"></canvas>
     <div class="g-title">
       <h1>Workbench</h1><span class="bar" aria-hidden="true"></span>
-      <p>The garage at dusk, drawn like a late-90s cel. <span class="fine">Point at something, click to look closer.</span><span class="touch">Tap something to look closer; drag sideways to look around.</span></p>
     </div>
     <div class="g-hover" data-hover-label aria-hidden="true"><svg viewBox="0 0 10 12"><path d="M1 1l8 5-8 5z" fill="#E2001A" stroke="#170f1f" stroke-width="1.5" stroke-linejoin="round" /></svg><span></span></div>
     <div class="g-fallback" data-fallback hidden>
@@ -46,7 +45,6 @@ const content: Record<ZoneId, typeof Wled> = { wled: Wled, printer: Printer, she
 
   <section class="g-index" id="garage-list" aria-labelledby="g-idx-title">
     <h2 id="g-idx-title">Everything in the garage</h2>
-    <p class="lede">The same ten things as the scene above, in plain words, for anyone who would rather read than wander around a painted garage.</p>
     <ul class="g-list">
       {zones.map(z => { const C = content[z.id]; return (
         <li id={`list-${z.id}`}>

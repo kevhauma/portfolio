@@ -66,7 +66,7 @@ export type Gig = {
 export const placeholder = { on: true, line: "Names are placeholders until Kevin's list is in." };
 
 export const lede =
-  'Listening and live shows, not playing. Four mixtapes sit in their cases on the console: open one, pick a track on the deck, and the view out of the windshield changes with it. Gig stubs ride in the visor and the vent.';
+  'Listening and live shows, not playing.';
 
 const t = (title: string, artist: string, view: string, counter: number): Track => ({ title, artist, view, counter });
 

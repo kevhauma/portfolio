@@ -8,7 +8,7 @@ const q = qualifying.internship;
 const clients = [...new Set(sectors.filter(s => s.client !== team && !s.nda).map(s => s.client))];
 ---
 <main id="pit" class="pit" aria-labelledby="pit-title">
-  <p class="pit-flag">Pit limiter is on: the livery is off and this is the whole site in one plain column. Switch it off at the top right for the full version.</p>
+  <p class="pit-flag">Pit limiter on</p>
   <h1 id="pit-title">Kevin</h1>
   <p class="pit-lede">Frontend developer at {team} since {since.slice(0, 4)}. {qualifying.title}, {qualifying.school} {qualifying.years}.</p>
   <p>Code on <a href={github.href}>{github.label}</a>.</p>

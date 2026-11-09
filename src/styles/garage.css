@@ -37,9 +37,6 @@ html[data-theme="night"] .g-stage { background-image: url(/garage/night-wide.web
 .g-title { position: absolute; left: 24px; top: 20px; z-index: 5; max-width: min(540px, 60vw); pointer-events: none; transition: opacity .35s; }
 .g-title h1 { margin: 0; display: inline-block; font: 400 clamp(40px, 5.2vw, 64px)/.92 var(--g-title); color: var(--g-paper); letter-spacing: .015em; text-transform: uppercase; transform: skewX(-9deg); transform-origin: left bottom; -webkit-text-stroke: 7px var(--g-ink); paint-order: stroke fill; }
 .g-title .bar { display: block; width: 72%; height: 7px; margin: 10px 0 0 6px; background: var(--red); border-radius: 2px; box-shadow: 0 0 0 2px var(--g-ink); transform: skewX(-24deg); }
-.g-title .touch { display: none; }
-@media (pointer: coarse) { .g-title .fine { display: none; } .g-title .touch { display: inline; } }
-.g-title p { margin: 14px 0 0; font: 500 15px/1.45 var(--body); color: var(--g-paper); max-width: 38ch; text-shadow: 0 1px 2px rgb(10 6 20 / .9), 0 0 12px rgb(10 6 20 / .6); }
 .g-stage.zoomed .g-title { opacity: 0; }
 
 .g-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; z-index: 6; text-align: center; }
@@ -165,7 +162,6 @@ html[data-theme="night"] .g-stage { background-image: url(/garage/night-wide.web
 @media (max-width: 719px) {
   .g-stage { height: 86svh; min-height: 540px; }
   .g-title { top: 72px; left: 18px; max-width: calc(100vw - 36px); }
-  .g-title p { font-size: 13.5px; }
   /* the stage is shorter than the screen here, so the bubble sits below it: use the full width */
   .g-hotbar { left: 8px; right: 8px; bottom: 14px; }
   .g-dbox { left: 8px; right: 8px; width: auto; top: auto; bottom: 10px; height: 56%; }

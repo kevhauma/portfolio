@@ -27,9 +27,8 @@ const light = (code: string) => ['W', 'Y', 'S'].includes(code);
 
       <header class="ct-intro">
         <h1 class="mh">Projects</h1>
-        <p>Six builds, one chapter each, and seven smaller jobs in the fuse box. Every page opens on the wiring diagram of how it was built. Pick a connector or a fuse to turn to it.</p>
       </header>
-      <p class="ct-legend"><span class="fig fig-m" aria-hidden="true">Fig. 0.1 · Main harness</span>Own builds hang above the loom, client work below it. Every client job was done as a consultant at Zinderlabs.</p>
+      <p class="ct-legend"><span class="fig fig-m" aria-hidden="true">Fig. 0.1 · Main harness</span><span aria-hidden="true">↑</span> Own builds<br /><span aria-hidden="true">↓</span> Clients, via Zinderlabs</p>
 
       <h2 class="sr">Chapters</h2>
       {slots.map(s => {

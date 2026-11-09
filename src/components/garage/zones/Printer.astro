@@ -7,7 +7,6 @@ const { mode } = Astro.props;
 ---
 {mode === 'panel' ? (
   <>
-    <p>A slicer preview. Drag the scrubber, or use the arrow keys, and the bracket stacks up on the bed; the yellow band and the traced outline mark the layer being printed.</p>
     <label class="g-lbl" for="print-layer">Layer</label>
     <input class="g-range" id="print-layer" type="range" min="0" max={printSpec.layers} step="1" value={printSpec.start} data-layer />
     <div class="g-readout" aria-live="polite" data-read></div>
@@ -16,7 +15,7 @@ const { mode } = Astro.props;
   </>
 ) : (
   <>
-    <p>A slicer preview: drag the scrubber and a small functional bracket builds up layer by layer, with the layer count and height shown.</p>
+    <p>A slicer preview of a small functional bracket: a base plate with two screw holes, an upright and two gussets. 90 by 56 mm, 54 mm tall.</p>
     <p><Tag />The bracket is a placeholder model; real prints, G-code and settings follow later.</p>
   </>
 )}

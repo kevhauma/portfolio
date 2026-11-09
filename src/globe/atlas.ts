@@ -32,7 +32,7 @@ export function mountAtlas(stage: HTMLElement, globe: Globe) {
     <svg class="flag" aria-hidden="true"><use href="#fl-${c.id}"/></svg>
     <h2 class="ink cn${c.name.length > 12 ? ' xl' : c.name.length > 9 ? ' long' : ''}">${esc(c.name)}</h2>${nowLine()}${unfoldBtn()}</div>`;
   const blurb = () => `<div class="face front blurb"><span class="ref">B1</span>
-    <p><span class="full">Everywhere Kevin has ridden, driven, cycled and walked. </span>Pick a country from the notes.</p>
+    <p><span class="full">Everywhere Kevin has ridden, driven, cycled and walked.</span></p>
     <button class="whole" type="button" data-go="overview">Whole globe</button>
     <p class="sample">Sample trips for now</p></div>`;
   const legend = () => `<div class="face front legend" role="group" aria-label="Show or hide each mode"><span class="ref">A2</span><h3 class="ink">Show</h3>
