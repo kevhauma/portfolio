@@ -15,7 +15,7 @@ export type Section = {
 export const sections: Section[] = [
   { n: '01', slug: 'intro', href: '/', title: 'Intro', sub: 'Frontend first', tone: 'navy', focus: [.33, .47] },
   { n: '02', slug: 'experience', href: '/experience/', title: 'Experience', sub: 'The timing screen', tone: 'red', focus: [.52, .6] },
-  { n: '03', slug: 'projects', href: '/projects/', title: 'Projects', sub: 'The workshop manual', tone: 'green', focus: [.45, .45] },
+  { n: '03', slug: 'projects', href: '/projects/', title: 'Projects', sub: 'The workshop manual', tone: 'green', focus: [.7, .3] },
   { n: '04', slug: 'map', href: '/map/', title: 'The map', sub: 'Travel, photos, motorsport', tone: 'white', focus: [.55, .34] },
   { n: '05', slug: 'music', href: '/music/', title: 'Music', sub: 'The touge tape', tone: 'primer', focus: [.47, .42] },
   { n: '06', slug: 'workbench', href: '/workbench/', title: 'Workbench', sub: 'WLED, prints and side projects', tone: 'black', focus: [.52, .52] }

@@ -1,5 +1,5 @@
 // Captures each section's first screen for the fan menu: public/fan/<slug>.webp.
-// Run against a built site: `npm run build && npm run preview`, then `npm run snaps [baseUrl]`.
+// Run against a built site: `npm run build && npm run preview`, then `npm run snaps [baseUrl] [slug...]`.
 // Uses the installed Chrome over the DevTools protocol; set CHROME to its path if it lives elsewhere.
 import { spawn } from 'node:child_process';
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -46,12 +46,15 @@ try {
   await send('Page.enable');
   await send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1.5, mobile: false });
   await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
-  for (const s of sections) {
+  const only = process.argv.slice(3);
+  for (const s of sections.filter(s => !only.length || only.includes(s.slug))) {
     const loaded = once('Page.loadEventFired');
     await send('Page.navigate', { url: base + s.href });
     await loaded;
     // the snapshot shows the page, not the shell that sits on top of it
     await send('Runtime.evaluate', { expression: `document.head.insertAdjacentHTML('beforeend', '<style>.controls,.bubble,.skip{display:none!important}</style>')` });
+    // reduced motion opens the manual at once; its stripe shows the closed cover
+    if (s.slug === 'projects') await send('Runtime.evaluate', { expression: `document.documentElement.classList.add('book-shut')` });
     await sleep(2500); // globe tiles and the garage scene settle
     const { data } = await send('Page.captureScreenshot', { format: 'webp', quality: 62 });
     writeFileSync(new URL(`${s.slug}.webp`, out), Buffer.from(data, 'base64'));
