@@ -143,7 +143,16 @@ img, svg { display: block; }
 .fan-list li:has(a:hover, a:focus-visible) { filter: var(--cel-outline) drop-shadow(16px 4px 0 rgb(7 18 41 / .45)); z-index: 3; }
 .fan.open .fan-list a:is(:hover, :focus-visible) { clip-path: var(--wide); }
 .fan.open .fan-list li:not(.current) a:is(:hover, :focus-visible) { translate: var(--lx, 0px) var(--ly, 0px); }
-.fan-list a::after { content: ""; position: absolute; inset: 0; background: rgb(7 18 41 / .32); backdrop-filter: grayscale(.7) brightness(.78) contrast(.92); transition: opacity .3s var(--ease); }
+/* the snapshots are upscaled, so every stripe is reprinted through a 45° navy dot screen that hides the softness */
+.fan-list a::before {
+  --pitch: 5px;
+  --dot: radial-gradient(circle, rgb(7 18 41 / .42) calc(var(--pitch) * .3), transparent calc(var(--pitch) * .3 + .75px));
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--dot) 0 0 / var(--pitch) var(--pitch), var(--dot) calc(var(--pitch) / 2) calc(var(--pitch) / 2) / var(--pitch) var(--pitch);
+  mix-blend-mode: multiply; backdrop-filter: blur(.6px);
+}
+/* unpicked stripes wash to navy */
+.fan-list a::after { content: ""; position: absolute; inset: 0; background: rgb(19 37 79 / .55); backdrop-filter: grayscale(1) brightness(.85); transition: opacity .3s var(--ease); }
 .fan-list a:is(:hover, :focus-visible, .chosen)::after { opacity: 0; }
 .fan-label { z-index: 1; }
 .fan-n { -webkit-text-stroke: .08em var(--cel-ink); paint-order: stroke fill; text-shadow: .05em .03em 0 var(--cel-ink); }
