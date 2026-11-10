@@ -9,7 +9,6 @@ colors:
   castrol-green: "#00843D"
   primer-grey: "#B9BEC6"
   carbon-black: "#0E0F12"
-  masking-tape: "#E4D6B2"
   ink-secondary: "#3B4A6B"
   ink-secondary-night: "#B8C3DA"
 typography:
@@ -125,11 +124,11 @@ components:
 
 Every page is a sheet in a race-livery decal kit. The ground is a white backing liner printed with a faint wordmark raked at 14 degrees; the content sits on it as die-cut vinyl decals in navy, Castrol red, Castrol green, white and carbon black, each inside a dashed plotter cut line. The system is proof by construction: the craft is in how precisely the kit is cut, set and printed.
 
-Lettering is all Sakana, a single-weight racing face slanted onto the rake, the way race numbers and sponsor names are cut. Body copy is Hanken Grotesk, set plainly; JetBrains Mono is reserved for what a plotter or a compiler would print (labels, spec terms, the kit footer). Density is poster-scale on the intro sheet and editorial on stub and kit panels. Two geometric laws: the rake and the swoop. Lettering, LEDs, the page wipe, the masking tape and the kit ladder lean at 14 degrees (tan 0.2493); the livery stripes do not rule straight but swoop, as one constant-width ribbon bent into an S with a big red disc setting behind it (the sunset swoop, after the Castrol Celica GT-Four and the GT86 swoop poster).
+Lettering is all Sakana, a single-weight racing face slanted onto the rake, the way race numbers and sponsor names are cut. Body copy is Hanken Grotesk, set plainly; JetBrains Mono is reserved for what a plotter or a compiler would print (labels, spec terms, the kit footer). Density is poster-scale on the intro sheet and editorial on stub and kit panels. Two geometric laws: the rake and the swoop. Lettering, LEDs, the page wipe and the kit ladder lean at 14 degrees (tan 0.2493); the livery stripes do not rule straight but swoop, as one constant-width ribbon bent into an S with a big red disc setting behind it (the sunset swoop, after the Castrol Celica GT-Four and the GT86 swoop poster).
 
 The kit is drawn like the workbench garage, as a late-90s anime cel: every object has a heavy ink line that thickens on its shade side, paint is flat and steps from light to shade in hard bands, a lit surface carries one painted highlight, and the low sun setting on the left (the swoop's disc) throws every object's shadow long to the right, along the rake. Each sheet keeps its own world and palette (the decal sheet, the pit wall, the walnut desk, the AE86 cabin at dusk); the cel is how all of them are drawn.
 
-Motion is earned and visitor-owned: one arrival per visit (raw HTML, masking tape snaps at the rake, paint fills), then only visitor-triggered motion. Page switches pass through a raked paint wipe under 600ms. Reduced motion makes all of it instant. A recruiter mode (the pit limiter) replaces the livery with one plain, complete page.
+Motion is earned and visitor-owned: one arrival per visit (key on: the AE86 tach sweeps to the stop and back to idle, then the sheet wipes in), then only visitor-triggered motion. Page switches pass through a raked paint wipe under 600ms. Reduced motion makes all of it instant. A recruiter mode (the pit limiter) replaces the livery with one plain, complete page.
 
 **Key Characteristics:**
 - White backing sheet, raked liner wordmark and dashed cut lines, framed by the sunset swoop.
@@ -150,9 +149,6 @@ A Castrol-inspired livery adapted around navy: big panels in navy, red as the si
 ### Secondary
 - **Castrol Red**: the signal. The race-number roundel, the leading stripe of the swoop ribbon and the page wipe, the setting disc behind the swoop, the active switch LED, the lap-counter ring on the bubble, text selection.
 - **Castrol Green**: the second stripe. The TypeScript and Three.js decals, the trailing stripe of the swoop ribbon and the wipe, and the focus ring on the day sheet.
-
-### Tertiary
-- **Masking Tape**: arrival only. The tape strips that snap across the raw page at the rake before the paint goes on. Never used as a surface after arrival.
 
 ### Neutral
 - **Livery White**: the backing sheet (day ground), text on dark vinyl, white decals (always with an inset navy outline so they read as cut vinyl on a white sheet), and the night-race ink.
@@ -274,7 +270,7 @@ Kevin's AE86 at dusk from the right-hand driver's seat (`src/components/cockpit/
 
 ### Page Wipe and Arrival
 - **Wipe:** every sheet switch reveals the new page through a raked clip with a red/navy/green stripe band crossing at the rake (0.52s, ease out).
-- **Arrival:** once per visit on the intro: the unstyled page, masking-tape strips snapping in at the rake, then the livery paints in.
+- **Arrival** (`src/components/Arrival.astro`, `src/scripts/arrival.ts`): once per visit on the intro, key on. One big AE86 tach, drawn as a cel like the cabin cluster (chrome bezel in three bands, black face with a raked shade half, white Hanken numerals, Castrol red zone from 7500, a white needle with a red tip, odometer reading 000023), sits on Night Deep in both themes with its long sun shadow to the right. The needle sweeps to 9000 and drops back to idle with a small settle (1.25s) while the shift lamp flashes red at the top, then the sheet arrives through the page wipe. The switches and bubble stay hidden until then. Any pointer, key, wheel or touch skips to the sheet; reduced motion and the pit limiter skip it entirely.
 
 ## Do's and Don'ts
 

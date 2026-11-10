@@ -1,0 +1,25 @@
+/* The arrival, once per visit on the intro (src/components/Arrival.astro, src/scripts/arrival.ts): key on, the AE86's
+   tach sweeps to the stop and drops back to idle, then the sheet wipes in. html.arriving is set in the head before
+   first paint, so the first frame is already the tach. */
+
+.ignition { display: none; position: fixed; inset: 0; z-index: 80; place-items: center; background: var(--deep); pointer-events: none; }
+html.arriving .ignition { display: grid; }
+html.arriving :is(.controls, .bubble) { visibility: hidden; }
+
+.tach { width: min(76vmin, 620px); height: auto; overflow: visible; }
+.tach-nums { font: 500 25px var(--body); }
+.tach-unit { font: 600 11px var(--mono); letter-spacing: .1em; fill: var(--primer); }
+.tach-odo { font: 600 17px var(--mono); letter-spacing: .32em; fill: #F2EEE6; }
+.tach .lamp { fill: #3A1410; }
+.tach .needle { transform: rotate(-120deg); }
+html.igniting .tach .needle { animation: sweep 1.25s both; }
+html.igniting .tach .lamp { animation: shift 1.25s steps(1) both; }
+@keyframes sweep {
+  0% { transform: rotate(-120deg); animation-timing-function: cubic-bezier(.55, 0, .3, 1); }
+  42% { transform: rotate(120deg); animation-timing-function: linear; }
+  50% { transform: rotate(118deg); animation-timing-function: cubic-bezier(.45, 0, .2, 1); }
+  88% { transform: rotate(-101deg); animation-timing-function: ease-out; }
+  94% { transform: rotate(-94deg); animation-timing-function: ease-in-out; }
+  100% { transform: rotate(-96deg); }
+}
+@keyframes shift { 0% { fill: #3A1410; } 34% { fill: #FF3A2E; } 58% { fill: #3A1410; } }

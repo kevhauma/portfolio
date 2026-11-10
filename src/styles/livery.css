@@ -1,5 +1,5 @@
 /* Race Livery: the shared shell. Tokens, base, display switches, number bubble, fan nav,
-   pit limiter, page wipe and the arrival. */
+   pit limiter and page wipe. */
 
 @property --p { syntax: '<number>'; inherits: true; initial-value: 0; }
 
@@ -22,7 +22,6 @@
   --green: #00843D;
   --primer: #B9BEC6;
   --black: #0E0F12;
-  --tape: #E4D6B2;
 
   /* roles */
   --ground: var(--white);
@@ -225,26 +224,6 @@ img, svg { display: block; }
   to { transform: translateX(calc(100vw + 6vh)); }
 }
 ::view-transition-group(bubble), ::view-transition-group(controls) { animation-duration: .3s; }
-
-/* ---------- arrival: raw HTML, masking tape, paint ---------- */
-html.raw body,
-html.raw :is(.controls, .bubble, #livery),
-html.raw :is(.controls, .bubble, #livery) *,
-html.raw :is(.controls, .bubble, #livery)::before,
-html.raw :is(.controls, .bubble, #livery)::after,
-html.raw :is(.controls, .bubble, #livery) *::before,
-html.raw :is(.controls, .bubble, #livery) *::after { all: revert; }
-html.raw :is(.liner, .car, .swoop, .handoff, .sw-led) { display: none !important; }
-html.raw { background: #fff; color-scheme: light; }
-html.raw .bubble { position: fixed !important; right: 8px; bottom: 8px; }
-html.raw .controls { display: flex !important; gap: 4px; justify-content: flex-end; margin: 8px; }
-.tape { position: fixed; inset: 0; z-index: 80; pointer-events: none; view-transition-name: tape; }
-.tape i { position: absolute; left: -10vw; width: 120vw; height: clamp(22px, 3.4vh, 36px); background: var(--tape); transform-origin: 0 50%; transform: rotate(calc(var(--rake) * -1)) scaleX(0); box-shadow: 0 0 0 1.5px rgb(60 48 20 / .55), 0 4px 0 rgb(60 48 20 / .22); }
-.tape.snap i { transition: transform .26s cubic-bezier(.3, .9, .3, 1) var(--d); transform: rotate(calc(var(--rake) * -1)) scaleX(1); }
-.tape.off i { transition: transform .34s cubic-bezier(.6, 0, .9, .4) var(--d), opacity .34s linear var(--d); transform: rotate(calc(var(--rake) * -1)) translate(18vw, -6vh) scaleX(1); opacity: 0; }
-::view-transition-group(tape) { animation: none; }
-::view-transition-old(tape) { animation: none; display: none; }
-::view-transition-new(tape) { animation: none; }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {

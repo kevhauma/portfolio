@@ -1,0 +1,51 @@
+---
+/* The once-per-visit arrival on the intro: the AE86's tach on the night ground, turned by src/scripts/arrival.ts. */
+import '../styles/arrival.css';
+
+const INK = '#0A1330', WHITE = '#F2EEE6', RED = '#E2001A';
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const P = (r: number, th: number): [number, number] => [r2(r * Math.sin(th * Math.PI / 180)), r2(-r * Math.cos(th * Math.PI / 180))];
+const band = (r0: number, r1: number, a0: number, a1: number) => {
+  const [ax, ay] = P(r1, a0), [bx, by] = P(r1, a1), [qx, qy] = P(r0, a1), [dx, dy] = P(r0, a0), L = a1 - a0 > 180 ? 1 : 0;
+  return `M${ax} ${ay}A${r1} ${r1} 0 ${L} 1 ${bx} ${by}L${qx} ${qy}A${r0} ${r0} 0 ${L} 0 ${dx} ${dy}Z`;
+};
+
+/* the tach: 0 to 9000 over 240°, red from 7500, drawn as a cel like the cabin's cluster */
+const R = 170, RED_AT = 7.5;
+const A = (v: number) => -120 + v / 9 * 240;
+let tach = '';
+for (let v = 0; v <= 9; v += .5) {
+  const maj = v % 1 === 0, [x0, y0] = P(R - 6, A(v)), [x1, y1] = P(R - (maj ? 26 : 16), A(v));
+  tach += `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${v >= RED_AT ? RED : WHITE}" stroke-width="${maj ? 4 : 2}"/>`;
+}
+for (let v = 0; v <= 9; v++) {
+  const [x, y] = P(R - 48, A(v));
+  tach += `<text x="${x}" y="${r2(y + 8)}" fill="${v >= RED_AT ? RED : WHITE}">${v}</text>`;
+}
+
+---
+<div class="ignition" aria-hidden="true">
+  <svg class="tach" viewBox="-220 -220 480 460">
+    <line x1="0" y1="0" x2="56" y2="14" stroke="rgb(0 3 12 / .55)" stroke-width="368" stroke-linecap="round" />
+    <circle r="184" fill="#A7ADB6" stroke={INK} stroke-width="5" />
+    <path d={band(173, 181, 40, 200)} fill="#6F7580" />
+    <path d={band(173, 181, -100, -20)} fill="#F4F6F8" />
+    <circle r={R} fill="#1B1D27" stroke={INK} stroke-width="4" />
+    <path d={`M${P(R - 2, 40).join(' ')}A${R - 2} ${R - 2} 0 0 1 ${P(R - 2, 220).join(' ')}Z`} fill="#13141B" />
+    <path d={band(R - 18, R - 6, A(RED_AT), 120)} fill={RED} />
+    <g class="tach-nums" text-anchor="middle"><Fragment set:html={tach} /></g>
+    <circle class="lamp" cy="-72" r="9" stroke={INK} stroke-width="2.5" />
+    <text class="tach-unit" y="52" text-anchor="middle">x1000 r/min</text>
+    <rect x="-52" y="66" width="104" height="26" fill="#020306" stroke="#2C2F3A" stroke-width="2" />
+    <text class="tach-odo" y="85" text-anchor="middle">000023</text>
+    <g class="needle">
+      <path d={`M-7 26L-2.6 ${-(R - 14)}L2.6 ${-(R - 14)}L7 26Z`} fill={WHITE} stroke={INK} stroke-width="2.5" />
+      <path d={`M-4.6 ${-(R - 14) * .64}L-2.6 ${-(R - 14)}L2.6 ${-(R - 14)}L4.6 ${-(R - 14) * .64}Z`} fill={RED} />
+    </g>
+    <circle r="17" fill="#15161D" stroke="#3A3D4A" stroke-width="3" />
+    <path d="M-9.4 -1.7A9.4 9.4 0 0 1 -1.7 -9.4" stroke="#9AA0B0" stroke-width="3" fill="none" />
+    <!-- one glint across the lens, raked -->
+    <clipPath id="lens"><circle r={R} /></clipPath>
+    <path d="M-50 -170L-28 -170L-113 170L-135 170Z" fill="#fff" opacity=".07" clip-path="url(#lens)" />
+  </svg>
+</div>
