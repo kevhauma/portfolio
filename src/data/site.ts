@@ -8,15 +8,17 @@ export type Section = {
   sub: string;
   /** livery colour role for this sheet's stripe */
   tone: 'navy' | 'red' | 'green' | 'white' | 'primer' | 'black';
+  /** where the section's signature sits in its fan snapshot (public/fan/<slug>.webp), as fractions */
+  focus: [number, number];
 };
 
 export const sections: Section[] = [
-  { n: '01', slug: 'intro', href: '/', title: 'Intro', sub: 'Frontend first', tone: 'navy' },
-  { n: '02', slug: 'experience', href: '/experience/', title: 'Experience', sub: 'The timing screen', tone: 'red' },
-  { n: '03', slug: 'projects', href: '/projects/', title: 'Projects', sub: 'The workshop manual', tone: 'green' },
-  { n: '04', slug: 'map', href: '/map/', title: 'The map', sub: 'Travel, photos, motorsport', tone: 'white' },
-  { n: '05', slug: 'music', href: '/music/', title: 'Music', sub: 'The touge tape', tone: 'primer' },
-  { n: '06', slug: 'workbench', href: '/workbench/', title: 'Workbench', sub: 'WLED, prints and side projects', tone: 'black' }
+  { n: '01', slug: 'intro', href: '/', title: 'Intro', sub: 'Frontend first', tone: 'navy', focus: [.33, .47] },
+  { n: '02', slug: 'experience', href: '/experience/', title: 'Experience', sub: 'The timing screen', tone: 'red', focus: [.52, .6] },
+  { n: '03', slug: 'projects', href: '/projects/', title: 'Projects', sub: 'The workshop manual', tone: 'green', focus: [.45, .45] },
+  { n: '04', slug: 'map', href: '/map/', title: 'The map', sub: 'Travel, photos, motorsport', tone: 'white', focus: [.55, .34] },
+  { n: '05', slug: 'music', href: '/music/', title: 'Music', sub: 'The touge tape', tone: 'primer', focus: [.47, .42] },
+  { n: '06', slug: 'workbench', href: '/workbench/', title: 'Workbench', sub: 'WLED, prints and side projects', tone: 'black', focus: [.52, .52] }
 ];
 
 export const raceNumber = 23;

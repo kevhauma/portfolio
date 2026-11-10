@@ -134,23 +134,32 @@ img, svg { display: block; }
 .fan::backdrop { background: rgb(7 18 41 / .4); }
 .fan-list { list-style: none; margin: 0; padding: 0; }
 .fan-list li { position: absolute; inset: 0; pointer-events: none; }
-.fan-list a { position: absolute; inset: 0; pointer-events: auto; text-decoration: none; transform-origin: 0 100%; transform: scale(0); transition: transform .55s var(--ease) var(--d, 0ms), clip-path .32s var(--ease); }
+.fan-list a { position: absolute; inset: 0; pointer-events: auto; text-decoration: none; clip-path: var(--clip); transform-origin: 0 100%; transform: scale(0); transition: transform .55s var(--ease) var(--d, 0ms), translate .3s var(--ease), clip-path .32s var(--ease), background-size .32s var(--ease), background-position .32s var(--ease); }
 .fan.portrait .fan-list a { transform-origin: 100% 100%; transform: translateX(105%); }
 .fan.open .fan-list a { transform: none; }
 .fan.open .fan-list li.current a { transform: translate(var(--lx, 0px), var(--ly, 0px)); }
 .fan-list li { filter: var(--cel-outline); }
 .fan-list li.current { filter: var(--cel-outline) drop-shadow(16px 4px 0 rgb(7 18 41 / .45)); z-index: 2; }
+/* picking: the stripe under the pointer or focus spreads over its neighbours, lifts out of the fan and comes up to full colour */
+.fan-list li:has(a:hover, a:focus-visible) { filter: var(--cel-outline) drop-shadow(16px 4px 0 rgb(7 18 41 / .45)); z-index: 3; }
+.fan.open .fan-list a:is(:hover, :focus-visible) { clip-path: var(--wide); }
+.fan.open .fan-list li:not(.current) a:is(:hover, :focus-visible) { translate: var(--lx, 0px) var(--ly, 0px); }
+.fan-list a::after { content: ""; position: absolute; inset: 0; background: rgb(7 18 41 / .32); backdrop-filter: grayscale(.7) brightness(.78) contrast(.92); transition: opacity .3s var(--ease); }
+.fan-list a:is(:hover, :focus-visible, .chosen)::after { opacity: 0; }
+.fan-label { z-index: 1; }
 .fan-n { -webkit-text-stroke: .08em var(--cel-ink); paint-order: stroke fill; text-shadow: .05em .03em 0 var(--cel-ink); }
 .fan-list a:focus-visible { outline: none; }
 .fan-list a:focus-visible .fan-t, .fan-list a:hover .fan-t { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; }
 .fan-list a:focus-visible .fan-n { text-decoration: underline; text-decoration-thickness: 4px; text-underline-offset: 8px; }
-.fan-list a.tone-navy { background: var(--navy); color: var(--white); }
-.fan-list a.tone-red { background: var(--red); color: var(--white); }
-.fan-list a.tone-green { background: var(--green); color: var(--white); }
-.fan-list a.tone-white { background: var(--white); color: var(--navy); }
-.fan-list a.tone-primer { background: var(--primer); color: var(--navy); }
-.fan-list a.tone-black { background: var(--black); color: var(--white); }
-.fan-label { position: absolute; left: 0; top: 0; transform-origin: 0 50%; display: flex; align-items: center; gap: .5em; white-space: nowrap; }
+.fan-list a.tone-navy { --tone: var(--navy); color: var(--white); }
+.fan-list a.tone-red { --tone: var(--red); color: var(--white); }
+.fan-list a.tone-green { --tone: var(--green); color: var(--white); }
+.fan-list a.tone-white { --tone: var(--white); color: var(--navy); }
+.fan-list a.tone-primer { --tone: var(--primer); color: var(--navy); }
+.fan-list a.tone-black { --tone: var(--black); color: var(--white); }
+/* the stripe shows its page's snapshot (background-image set inline, framed by shell.ts); the tone holds while it loads */
+.fan-list a { background-color: var(--tone); background-repeat: no-repeat; }
+.fan-label { position: absolute; left: 0; top: 0; transform-origin: 0 50%; display: flex; align-items: center; gap: .5em; white-space: nowrap; background: var(--tone); padding: .55em 1em .55em .7em; box-shadow: var(--cel-ink-line), 10px 2.5px 0 var(--cel-line) rgb(7 18 41 / .45); }
 .fan-n { font: 900 italic clamp(2.25rem, 5.4vw, 5rem)/.8 var(--display); letter-spacing: -.02em; margin-right: calc(var(--lean) * 2); }
 .fan-t { display: flex; flex-direction: column; gap: 4px; font: 800 italic clamp(.95rem, 1.6vw, 1.375rem)/1 var(--display); text-transform: uppercase; letter-spacing: .02em; }
 .fan-t small { font: 500 normal .8125rem/1.2 var(--body); letter-spacing: 0; text-transform: none; }

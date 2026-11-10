@@ -72,6 +72,30 @@ function rayHit(theta: number, W: number, H: number): [number, number] {
   return [H / t, 0];
 }
 const poly = (pts: [number, number][]) => 'polygon(' + pts.map(([x, y]) => `${x.toFixed(1)}px ${y.toFixed(1)}px`).join(',') + ')';
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+
+/* landscape stripe between two angles from the bottom-left corner, always four points so clip-path can tween */
+function wedge(hi: number, lo: number, W: number, H: number) {
+  hi = Math.min(hi, Math.PI / 2); lo = Math.max(lo, 0);
+  const p0 = rayHit(hi, W, H), p1 = rayHit(lo, W, H);
+  const crossesCorner = p0[1] === 0 && p1[0] === W && p1[1] > 0;
+  const mid: [number, number] = crossesCorner ? [W, 0] : [(p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2];
+  return poly([[0, H], p0, mid, p1]);
+}
+/* how far a hovered or focused stripe spreads over its neighbours */
+const SPREAD = 0.3;
+
+/* each stripe is a window onto its page's snapshot (16:10, see scripts/snap-fan.mjs): slightly zoomed,
+   slid so the section's signature sits at (px, py) on the stripe, never leaving a gap at the screen edge */
+function frameSnap(a: HTMLAnchorElement, px: number, py: number, W: number, H: number) {
+  const [fx, fy] = a.dataset.focus!.split(',').map(Number);
+  const cw = Math.max(W, H * 1.6), ch = cw / 1.6, bw = cw * 1.3, bh = ch * 1.3;
+  a.style.backgroundSize = `${bw.toFixed(1)}px ${bh.toFixed(1)}px`;
+  a.style.backgroundPosition = `${clamp(px - fx * bw, W - bw, 0).toFixed(1)}px ${clamp(py - fy * bh, H - bh, 0).toFixed(1)}px`;
+  /* the page-aligned frame the chosen stripe settles into as it widens */
+  a.dataset.fullSize = `${cw.toFixed(1)}px ${ch.toFixed(1)}px`;
+  a.dataset.fullPos = `${((W - cw) / 2).toFixed(1)}px ${((H - ch) / 2).toFixed(1)}px`;
+}
 
 function layoutFan() {
   const W = innerWidth, H = innerHeight;
@@ -86,20 +110,21 @@ function layoutFan() {
       const last = i === links.length - 1;
       const h = (H - slope) / links.length;
       const y0 = i * h, y1 = y0 + h;
-      a.style.clipPath = poly([[0, i === 0 ? 0 : y0 + slope], [W, y0], [W, last ? H : y1 + 1], [0, last ? H : y1 + slope + 1]]);
+      const band = (e: number) => poly([[0, i === 0 ? 0 : y0 - e + slope], [W, i === 0 ? 0 : y0 - e], [W, last ? H : y1 + e + 1], [0, last ? H : y1 + e + slope + 1]]);
+      a.style.setProperty('--clip', band(0));
+      a.style.setProperty('--wide', band(h * SPREAD));
       a.style.setProperty('--d', `${(links.length - 1 - i) * 40}ms`);
       /* sit the label on the band's centre line, which falls at the same rake */
       const midY = (y0 + y1) / 2 + slope * (1 - 20 / W);
       label.style.transform = `translate(20px, ${midY.toFixed(1)}px) rotate(-14deg) translateY(-50%)`;
       a.style.setProperty('--lx', '-12px');
       a.style.setProperty('--ly', '0px');
+      frameSnap(a, W * 0.66, (y0 + y1) / 2 + slope * 0.34, W, H);
       return;
     }
     const hi = Math.PI / 2 - i * STEP, lo = hi - STEP;
-    const p0 = rayHit(hi, W, H), p1 = rayHit(lo, W, H);
-    const crossesCorner = p0[1] === 0 && p1[0] === W && p1[1] > 0;
-    const mid: [number, number] = crossesCorner ? [W, 0] : [(p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2];
-    a.style.clipPath = poly([[0, H], p0, mid, p1]);
+    a.style.setProperty('--clip', wedge(hi, lo, W, H));
+    a.style.setProperty('--wide', wedge(hi + STEP * SPREAD, lo - STEP * SPREAD, W, H));
     a.style.setProperty('--d', `${i * 45}ms`);
     const bis = (hi + lo) / 2;
     const end = rayHit(bis, W, H);
@@ -109,6 +134,8 @@ function layoutFan() {
     label.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${(-bis * 180 / Math.PI).toFixed(2)}deg) translateY(-50%)`;
     a.style.setProperty('--lx', `${(Math.cos(bis) * 14).toFixed(1)}px`);
     a.style.setProperty('--ly', `${(-Math.sin(bis) * 14).toFixed(1)}px`);
+    const far = len * 0.74;
+    frameSnap(a, Math.cos(bis) * far, H - Math.sin(bis) * far, W, H);
   });
 }
 
@@ -166,7 +193,10 @@ links.forEach(a => a.addEventListener('click', e => {
   /* the chosen stripe widens over the screen, then the wipe lands the next sheet */
   e.preventDefault();
   a.style.clipPath = a.dataset.full!;
-  a.parentElement!.style.zIndex = '3';
+  a.style.backgroundSize = a.dataset.fullSize!;
+  a.style.backgroundPosition = a.dataset.fullPos!;
+  a.classList.add('chosen');
+  a.parentElement!.style.zIndex = '4';
   setTimeout(() => { location.href = a.href; }, 300);
 }));
 
@@ -175,5 +205,5 @@ addEventListener('pageshow', e => {
   if (!e.persisted) return;
   fan.classList.remove('open');
   if (fan.open) fan.close();
-  links.forEach(a => { a.parentElement!.style.zIndex = ''; });
+  links.forEach(a => { a.parentElement!.style.zIndex = ''; a.style.clipPath = ''; a.classList.remove('chosen'); });
 });

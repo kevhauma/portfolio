@@ -7,7 +7,7 @@ const { sec } = Astro.props;
   <ul class="fan-list">
     {sections.map(s => (
       <li class:list={{ current: s.n === sec }}>
-        <a href={s.href} data-sec={s.n} class={`tone-${s.tone}`} aria-current={s.n === sec ? 'page' : undefined}>
+        <a href={s.href} data-sec={s.n} data-focus={s.focus.join(',')} class={`tone-${s.tone}`} style={`background-image: url(/fan/${s.slug}.webp)`} aria-current={s.n === sec ? 'page' : undefined}>
           <span class="fan-label">
             <span class="fan-n">{s.n}</span>
             <span class="fan-t">{s.title}<small>{s.sub}</small><span class="lap"><span class="sr">visited</span></span></span>
